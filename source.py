@@ -1,5 +1,6 @@
 from helium import *
 import json
+import re
 
 PAGE_URL = 'https://facebook.com/theanh28.page'
 SCROLL_DOWN	= 1
@@ -35,9 +36,28 @@ def get_attribute(element, selector, attr):
 		return str(element.get_attribute(attr))
 	except: return ''
 	
+def get_comment_info(comment):
+	cmt_url = get_attribute(comment, '._3mf5', 'href')
+	cmt_id = cmt_url.split('=')[-1]
+
+	user_url = cmt_url.split('?')[0]
+	user_id = user_url.split('https://www.facebook.com/')[-1].replace('/', '')
+	user_name = get_attribute(comment, '._6qw4', 'innerText')
+
+	utime = get_attribute(comment, 'abbr', 'data-utime')
+	text = get_attribute(comment, '._3l3x ', 'textContent')
+
+	return {
+		'id': cmt_id,
+		'utime': utime,
+		'user_url': user_url,
+		'user_id': user_id,
+		'user_name': user_name,
+        'text': text,
+	}
 
 ############################################################
-print('Start crawling', PAGE_URL)
+print('Go to page', PAGE_URL)
 driver = start_chrome(PAGE_URL, headless=True)
 
 ############################################################
@@ -70,52 +90,18 @@ print('Click See more buttons of comments')
 click_multiple_button(COMMENTABLE_SELECTOR + ' .fss')
 
 ############################################################
+total = 0
 listJsonPosts = []
 listHtmlPosts = driver.find_elements_by_css_selector(POSTS_SELECTOR)
+print('Start crawling', len(listHtmlPosts), 'posts...')
 
 for post in listHtmlPosts:
-	post_id = get_attribute(post, '._5pcp', 'id').split(';;')[0].split(';')[-1]
+	post_url = get_attribute(post, '._5pcq', 'href').split('?')[0]
+	post_id = re.findall('\d+', post_url)[-1]
 	utime = get_attribute(post, 'abbr', 'data-utime')
 	post_text = get_attribute(post, '.userContent', 'textContent')
 	total_shares = get_attribute(post, '[data-testid="UFI2SharesCount/root"]', 'innerText')
 	total_cmts = get_attribute(post, '._3hg-', 'innerText')
-
-	listJsonCmts = []
-	listHtmlCmts = post.find_elements_by_css_selector('._7a9a>li>div>._4eek ')
-
-	for comment in listHtmlCmts:
-		cmt_id = str(comment.get_attribute('data-ft')).split(':"')[-1].replace('"}', '')
-		cmt_utime = get_attribute(comment, 'abbr', 'data-utime')
-		cmt_user_id = get_attribute(comment, '._3mf5', 'data-hovercard').split('=')[-1]
-		cmt_user_name = get_attribute(comment, '._6qw4', 'innerText')
-		cmt_text = get_attribute(comment, '._3l3x ', 'textContent')
-
-		listJsonReplies = []
-		listHtmlReplies= post.find_elements_by_css_selector('._7a9h li')
-
-		for reply in listHtmlReplies:
-			reply_id = str(reply.get_attribute('data-ft')).split(':"')[-1].replace('"}', '')
-			reply_utime = get_attribute(reply, 'abbr', 'data-utime')
-			reply_user_id = get_attribute(reply, '._3mf5', 'data-hovercard').split('=')[-1]
-			reply_user_name = get_attribute(reply, '._6qw4', 'innerText')
-			reply_text = get_attribute(reply, '._3l3x ', 'textContent')
-
-			listJsonReplies.append({
-				'id': reply_id,
-				'utime': reply_utime,
-				'user_id': reply_user_id,
-				'user_name': reply_user_name,
-		        'text': reply_text,
-			})
-
-		listJsonCmts.append({
-			'id': cmt_id,
-			'utime': cmt_utime,
-	        'user_id': cmt_user_id,
-	        'user_name': cmt_user_name,
-	        'text': cmt_text,
-	        'replies': listJsonReplies
-		})
 
 	listJsonReacts = []
 	listHtmlReacts = post.find_elements_by_css_selector('._1n9l')
@@ -124,19 +110,37 @@ for post in listHtmlPosts:
 		react_text = react.get_attribute('aria-label')
 		listJsonReacts.append(react_text)
 
+	listJsonCmts = []
+	listHtmlCmts = post.find_elements_by_css_selector('._7a9a>li>div>._4eek')
+	print('Crawling', len(listHtmlCmts), 'comments of post', post_id)
+
+	total += len(listHtmlCmts)
+	for comment in listHtmlCmts:
+		listJsonReplies = []
+		listHtmlReplies = post.find_elements_by_css_selector('._7a9h>ul>li>div>._4eek')
+
+		total += len(listHtmlReplies)
+		for reply in listHtmlReplies:
+			reply_info = get_comment_info(reply)
+			listJsonReplies.append(reply_info)
+
+		comment_info = get_comment_info(comment)
+		comment_info.update({ 'replies': listJsonReplies })
+		listJsonCmts.append(comment_info)
+
 	listJsonPosts.append({
+		'url': post_url,
         'id': post_id,
         'utime': utime,
         'text': post_text,
         'total_shares': total_shares,
+        'reactions': listJsonReacts,
         'total_cmts': total_cmts,
         'crawled_cmts': listJsonCmts,
-        'reactions': listJsonReacts
 	})
 
-print(json.dumps(
-	listJsonPosts, 
-	indent=4, 
-	ensure_ascii=False	
-).encode('utf8').decode())
+print('Total comments and replies crawled:', total)
+with open('data.json', 'w', encoding='utf-8') as file:
+	print('Save crawled data...')
+	json.dump(listJsonPosts, file, ensure_ascii=False, indent=4)
 kill_browser()
