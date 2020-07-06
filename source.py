@@ -1,11 +1,10 @@
 from helium import *
-import json
-import re
+import json, re
 
 PAGE_URL = 'https://facebook.com/theanh28.page'
-SCROLL_DOWN	= 1
-VIEW_MORE_CMTS = 0
-VIEW_MORE_REPLIES = 1
+SCROLL_DOWN	= 2
+VIEW_MORE_CMTS = 2
+VIEW_MORE_REPLIES = 0
 
 POSTS_SELECTOR = '[class="_427x"] .userContentWrapper'
 COMMENTABLE_SELECTOR = POSTS_SELECTOR + ' .commentable_item'
