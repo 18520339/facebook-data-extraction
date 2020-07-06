@@ -1,14 +1,13 @@
 from helium import *
+import json
 
-PAGE_URL = 'https://facebook.com/KTXDHQGConfessions'
-SCROLL_DOWN	= 2
+PAGE_URL = 'https://facebook.com/theanh28.page'
+SCROLL_DOWN	= 1
 VIEW_MORE_CMTS = 0
-VIEW_MORE_REPLIES = 0
+VIEW_MORE_REPLIES = 1
 
 POSTS_SELECTOR = '[class="_427x"] .userContentWrapper'
 COMMENTABLE_SELECTOR = POSTS_SELECTOR + ' .commentable_item'
-REPLIES_SELECTOR = COMMENTABLE_SELECTOR + ' li ._7a9h'
-
 CMTS = type('Enum', (), {
 	'MOST_RELEVANT': 'RANKED_THREADED',  
 	'NEWEST': 'RECENT_ACTIVITY', 
@@ -30,8 +29,12 @@ def filter_comments(by=CMTS.MOST_RELEVANT):
 	click_multiple_button('[data-ordering="RANKED_THREADED"]')
 	click_multiple_button('[data-ordering="'+ by + '"]')
 
-def get_attribute(element, class_name, attr):
-	return element.web_element.find_element_by_class_name(class_name).get_attribute(attr)
+def get_attribute(element, selector, attr):
+	try: 
+		element = element.find_element_by_css_selector(selector)
+		return str(element.get_attribute(attr))
+	except: return ''
+	
 
 ############################################################
 print('Start crawling', PAGE_URL)
@@ -61,65 +64,79 @@ for i in range(VIEW_MORE_CMTS):
 
 for i in range(VIEW_MORE_REPLIES):
 	print('Click Replies buttons times', i + 1, '/', VIEW_MORE_REPLIES)
-	click_multiple_button(REPLIES_SELECTOR + ' ._4sxc')
+	click_multiple_button(COMMENTABLE_SELECTOR + ' ._7a9h ._4sxc')
+
+print('Click See more buttons of comments')
+click_multiple_button(COMMENTABLE_SELECTOR + ' .fss')
 
 ############################################################
 listJsonPosts = []
-for post in find_all(S(POSTS_SELECTOR)):
-	post_id = get_attribute(post, '_5pcp', 'id').split(';')[1] 
-	utime = get_attribute(post, '_5ptz', 'data-utime')
-	post_text = get_attribute(post, 'userContent', 'textContent')
-	total_shares = get_attribute(post, '', '')
-	total_cmts = get_attribute(post, '', '')
+listHtmlPosts = driver.find_elements_by_css_selector(POSTS_SELECTOR)
 
-	crawled_cmts = []
-	for comment in post.web_element.find_element_by_class_name(''):
-		cmt_id = get_attribute(comment, '', '')
-		cmt_utime = get_attribute(comment, '', '')
-		cmt_user_id = get_attribute(comment, '', '')
-		cmt_user_name = get_attribute(comment, '', '')
-		cmt_text = get_attribute(comment, '', '')
-		total_replies = get_attribute(comment, '', '')
+for post in listHtmlPosts:
+	post_id = get_attribute(post, '._5pcp', 'id').split(';;')[0].split(';')[-1]
+	utime = get_attribute(post, 'abbr', 'data-utime')
+	post_text = get_attribute(post, '.userContent', 'textContent')
+	total_shares = get_attribute(post, '[data-testid="UFI2SharesCount/root"]', 'innerText')
+	total_cmts = get_attribute(post, '._3hg-', 'innerText')
 
-		crawled_replies = []
-		for reply in comment.web_element.find_element_by_class_name(''):
-			reply_id = get_attribute(reply, '', '')
-			reply_utime = get_attribute(reply, '', '')
-			reply_user_id = get_attribute(reply, '', '')
-			reply_user_name = get_attribute(reply, '', '')
-			reply_text = get_attribute(reply, '', '')
+	listJsonCmts = []
+	listHtmlCmts = post.find_elements_by_css_selector('._7a9a>li>div>._4eek ')
 
-			crawled_replies.append({
+	for comment in listHtmlCmts:
+		cmt_id = str(comment.get_attribute('data-ft')).split(':"')[-1].replace('"}', '')
+		cmt_utime = get_attribute(comment, 'abbr', 'data-utime')
+		cmt_user_id = get_attribute(comment, '._3mf5', 'data-hovercard').split('=')[-1]
+		cmt_user_name = get_attribute(comment, '._6qw4', 'innerText')
+		cmt_text = get_attribute(comment, '._3l3x ', 'textContent')
+
+		listJsonReplies = []
+		listHtmlReplies= post.find_elements_by_css_selector('._7a9h li')
+
+		for reply in listHtmlReplies:
+			reply_id = str(reply.get_attribute('data-ft')).split(':"')[-1].replace('"}', '')
+			reply_utime = get_attribute(reply, 'abbr', 'data-utime')
+			reply_user_id = get_attribute(reply, '._3mf5', 'data-hovercard').split('=')[-1]
+			reply_user_name = get_attribute(reply, '._6qw4', 'innerText')
+			reply_text = get_attribute(reply, '._3l3x ', 'textContent')
+
+			listJsonReplies.append({
 				'id': reply_id,
-				'utime ': reply_utime,
+				'utime': reply_utime,
 				'user_id': reply_user_id,
 				'user_name': reply_user_name,
 		        'text': reply_text,
 			})
 
-		crawled_cmts.append({
+		listJsonCmts.append({
 			'id': cmt_id,
-			'utime ': cmt_utime,
+			'utime': cmt_utime,
 	        'user_id': cmt_user_id,
 	        'user_name': cmt_user_name,
 	        'text': cmt_text,
-	        'total_replies': total_replies,
-	        'crawled_replies': crawled_replies
+	        'replies': listJsonReplies
 		})
 
-	reactions = []
-	for react in post.web_element.find_element_by_class_name(''):
-		react_text = get_attribute(react, '', '')
-		reactions.append(react_text)
+	listJsonReacts = []
+	listHtmlReacts = post.find_elements_by_css_selector('._1n9l')
+
+	for react in listHtmlReacts:
+		react_text = react.get_attribute('aria-label')
+		listJsonReacts.append(react_text)
 
 	listJsonPosts.append({
         'id': post_id,
-        'utime ': utime,
+        'utime': utime,
         'text': post_text,
-        'total_shares': 0,
-        'total_cmts': 0,
-        'crawled_cmts': crawled_cmts,
-        'reactions': reactions
+        'total_shares': total_shares,
+        'total_cmts': total_cmts,
+        'crawled_cmts': listJsonCmts,
+        'reactions': listJsonReacts
 	})
 
+print(json.dumps(
+	listJsonPosts, 
+	indent=4, 
+	ensure_ascii=False	
+).encode('utf8').decode())
 kill_browser()
