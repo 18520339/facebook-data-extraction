@@ -10,3 +10,5 @@
 + Get information of posts in page
 + Filter comments to crawl
 + Not required sign in
+
+**Reference:** https://github.com/mherrmann/selenium-python-helium
