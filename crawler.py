@@ -35,7 +35,7 @@ def get_comment_info(comment):
 		'user_url': user_url,
 		'user_id': user_id,
 		'user_name': user_name,
-        'text': text,
+		'text': text,
 	}
 
 
@@ -99,13 +99,13 @@ for post in listHtmlPosts:
 
 	listJsonPosts.append({
 		'url': post_url,
-        'id': post_id,
-        'utime': utime,
-        'text': post_text,
-        'total_shares': total_shares,
-        'total_cmts': total_cmts,
-        'crawled_cmts': listJsonCmts,
-        'reactions': listJsonReacts,
+		'id': post_id,
+		'utime': utime,
+		'text': post_text,
+		'total_shares': total_shares,
+		'total_cmts': total_cmts,
+		'crawled_cmts': listJsonCmts,
+		'reactions': listJsonReacts,
 	})
 
 print('Total comments and replies crawled:', total)
