@@ -3,6 +3,8 @@ import re
 
 PAGE_URL = 'https://www.facebook.com/KTXDHQGConfessions/'
 SCROLL_DOWN	= 7
+
+FILTER_CMTS_BY = load_page.CMTS.ALL_COMMENTS
 VIEW_MORE_CMTS = 2
 VIEW_MORE_REPLIES = 2
 
@@ -37,7 +39,13 @@ def get_comment_info(comment):
 	}
 
 
-load_page.start(PAGE_URL, SCROLL_DOWN, VIEW_MORE_CMTS, VIEW_MORE_REPLIES)
+load_page.start(
+	PAGE_URL, 
+	SCROLL_DOWN, 
+	FILTER_CMTS_BY, 
+	VIEW_MORE_CMTS, 
+	VIEW_MORE_REPLIES
+)
 driver = load_page.driver
 total = 0
 

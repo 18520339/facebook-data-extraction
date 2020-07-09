@@ -19,12 +19,18 @@ def click_multiple_button(selector):
 	driver.execute_script(js_script)
 	while find_all(S(COMMENTABLE_SELECTOR + ' [role="progressbar"]')) != []: pass
 
-def filter_comments(by=CMTS.MOST_RELEVANT):
+def filter_comments(by):
 	if by == CMTS.MOST_RELEVANT: return
 	click_multiple_button('[data-ordering="RANKED_THREADED"]')
 	click_multiple_button('[data-ordering="'+ by + '"]')
 
-def start(url='', scroll_down=0, view_more_cmts=0, view_more_replies=0):
+def start(
+	url= '', 
+	scroll_down=0, 
+	filter_cmts_by=CMTS.MOST_RELEVANT, 
+	view_more_cmts=0, 
+	view_more_replies=0
+):
 	print('Go to page', url)
 	global driver
 	driver = start_chrome(url, headless=True)
@@ -41,8 +47,8 @@ def start(url='', scroll_down=0, view_more_cmts=0, view_more_replies=0):
 		print('Load more posts times', i + 2, '/', scroll_down)
 		load_more_posts()
 
-	print('Filter comments by', CMTS.ALL_COMMENTS)
-	filter_comments(CMTS.ALL_COMMENTS)
+	print('Filter comments by', filter_cmts_by)
+	filter_comments(filter_cmts_by)
 
 	for i in range(view_more_cmts):
 		print('Click View more comments buttons times', i + 1, '/', view_more_cmts)
