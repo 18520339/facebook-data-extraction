@@ -2,7 +2,7 @@ import load_page
 import re
 
 PAGE_URL = 'https://www.facebook.com/KTXDHQGConfessions/'
-SCROLL_DOWN	= 7
+SCROLL_DOWN = 7
 
 FILTER_CMTS_BY = load_page.CMTS.ALL_COMMENTS
 VIEW_MORE_CMTS = 2
