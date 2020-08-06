@@ -3,7 +3,7 @@ import json
 
 POSTS_SELECTOR = '[class="_427x"] .userContentWrapper'
 COMMENTABLE_SELECTOR = POSTS_SELECTOR + ' .commentable_item'
-CMTS = type('Enum', (), {
+FILTER_CMTS = type('Enum', (), {
 	'MOST_RELEVANT': 'RANKED_THREADED',  
 	'NEWEST': 'RECENT_ACTIVITY', 
 	'ALL_COMMENTS': 'RANKED_UNFILTERED'
@@ -20,19 +20,19 @@ def click_multiple_button(selector):
 	while find_all(S(COMMENTABLE_SELECTOR + ' [role="progressbar"]')) != []: pass
 
 def filter_comments(by):
-	if by == CMTS.MOST_RELEVANT: return
+	if by == FILTER_CMTS.MOST_RELEVANT: return
 	click_multiple_button('[data-ordering="RANKED_THREADED"]')
 	click_multiple_button('[data-ordering="'+ by + '"]')
 
 def start(
 	url= '', 
 	scroll_down=0, 
-	filter_cmts_by=CMTS.MOST_RELEVANT, 
+	filter_cmts_by=FILTER_CMTS.MOST_RELEVANT, 
 	view_more_cmts=0, 
 	view_more_replies=0
 ):
-	print('Go to page', url)
 	global driver
+	print('Go to page', url)
 	driver = start_chrome(url, headless=True)
 
 	print('Load more posts and check for Not Now button')

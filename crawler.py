@@ -4,7 +4,7 @@ import re
 PAGE_URL = 'https://www.facebook.com/KTXDHQGConfessions/'
 SCROLL_DOWN = 7
 
-FILTER_CMTS_BY = load_page.CMTS.ALL_COMMENTS
+FILTER_CMTS_BY = load_page.FILTER_CMTS.ALL_COMMENTS
 VIEW_MORE_CMTS = 2
 VIEW_MORE_REPLIES = 2
 
@@ -12,12 +12,15 @@ def get_child_attribute(element, selector, attr):
 	try: 
 		element = element.find_element_by_css_selector(selector)
 		return str(element.get_attribute(attr))
-	except: return ''
+	except: 
+		return ''
 	
 def get_comment_info(comment):
 	cmt_url = get_child_attribute(comment, '._3mf5', 'href')
-	cmt_id = cmt_url.split('=')[-1]
+	utime = get_child_attribute(comment, 'abbr', 'data-utime')
+	text = get_child_attribute(comment, '._3l3x ', 'textContent')
 
+	cmt_id = cmt_url.split('=')[-1]
 	if cmt_id == None:
 		cmt_id = comment.get_attribute('data-ft').split(':"')[-1][:-2]
 		user_url = user_id = user_name = 'Acc clone'
@@ -25,9 +28,6 @@ def get_comment_info(comment):
 		user_url = cmt_url.split('?')[0]
 		user_id = user_url.split('https://www.facebook.com/')[-1].replace('/', '')
 		user_name = get_child_attribute(comment, '._6qw4', 'innerText')
-
-	utime = get_child_attribute(comment, 'abbr', 'data-utime')
-	text = get_child_attribute(comment, '._3l3x ', 'textContent')
 
 	return {
 		'id': cmt_id,
@@ -69,7 +69,6 @@ for post in listHtmlPosts:
 
 	if num_of_cmts > 0:
 		print('Crawling', num_of_cmts, 'comments of post', post_id)
-
 		for comment in listHtmlCmts:
 			comment_owner = comment.find_elements_by_css_selector('._7a9b')
 			comment_info = get_comment_info(comment_owner[0])
@@ -82,7 +81,6 @@ for post in listHtmlPosts:
 
 			if num_of_replies > 0:
 				print('Crawling', num_of_replies, 'replies for', comment_info['user_name'] + "'s comment")
-				
 				for reply in listHtmlReplies:
 					reply_info = get_comment_info(reply)
 					listJsonReplies.append(reply_info)
