@@ -38,7 +38,6 @@ def get_comment_info(comment):
 		'text': text,
 	}
 
-
 load_page.start(
 	PAGE_URL, 
 	SCROLL_DOWN, 
