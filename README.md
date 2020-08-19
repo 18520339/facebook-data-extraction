@@ -17,6 +17,8 @@
     - **FILTER_CMTS_BY**: show comments by `MOST_RELEVANT` / `NEWEST` / `ALL_COMMENTS`
     - **VIEW_MORE_CMTS**: number of times for loading more comments
     - **VIEW_MORE_REPLIES**: number of times for loading more replies
-3. Start crawling: `python crawler.py`
+3. Start crawling: 
+    - Sign out Facebook (Cause some CSS Selectors will be different as sign in)
+    - Run `python crawler.py`
 
 **Reference:** https://github.com/mherrmann/selenium-python-helium
