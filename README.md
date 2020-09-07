@@ -19,7 +19,7 @@
         "text": "",
         "total_shares": "",
         "total_cmts": "",
-        "reactions": "",
+        "reactions": ['reactions displayed below post content'],
         "crawled_cmts": [
             {
                 "id": "",
@@ -29,7 +29,6 @@
                 "user_name": "",
                 "text": "",
                 "replies": [
-                    { "id": "", "utime": "", "user_id": "", "user_name": "",  "text": "" },
                     { "id": "", "utime": "", "user_id": "", "user_name": "",  "text": "" },
                     { "id": "", "utime": "", "user_id": "", "user_name": "",  "text": "" },
                     { "id": "", "utime": "", "user_id": "", "user_name": "",  "text": "" },
