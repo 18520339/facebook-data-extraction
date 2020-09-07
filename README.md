@@ -19,7 +19,7 @@
         "text": "",
         "total_shares": "",
         "total_cmts": "",
-        "reactions": ['reactions displayed below post content'],
+        "reactions": ["reactions displayed below post content"],
         "crawled_cmts": [
             {
                 "id": "",
