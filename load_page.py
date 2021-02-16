@@ -76,4 +76,3 @@ def stop_and_save(fileName, listPosts):
     with open(fileName, 'w', encoding='utf-8') as file:
         json.dump(listPosts, file, ensure_ascii=False, indent=4)
     kill_browser()
-	
