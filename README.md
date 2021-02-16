@@ -60,10 +60,10 @@
 
 ## Usage:
 
-1. Download [Tor Browser](https://www.torproject.org/download/)
-2. Install Helium: `pip install helium`
+1. Download and install [Tor Browser](https://www.torproject.org/download/)
+2. Install [Helium](https://github.com/mherrmann/selenium-python-helium): `pip install helium`
 3. Customize the `crawler.py` file:
-    - **TOR_PATH**: specify `tor.exe` path if using proxies, leave empty if not
+    - **TOR_PATH**: specify path of `tor.exe` if using proxies, leave empty if not
     - **PAGE_URL**: url of Facebook page
     - **SCROLL_DOWN**: number of scroll times for loading more posts
     - **FILTER_CMTS_BY**: show comments by `MOST_RELEVANT` / `NEWEST` / `ALL_COMMENTS`
@@ -72,5 +72,3 @@
 4. Start crawling:
     - Sign out Facebook (cause some CSS Selectors will be different as sign in)
     - Run `python crawler.py`
-
-**Reference:** https://github.com/mherrmann/selenium-python-helium
