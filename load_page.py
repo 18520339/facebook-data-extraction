@@ -1,4 +1,4 @@
-from proxies import *
+from browser import *
 import psutil
 import shutil
 import json
@@ -32,13 +32,6 @@ def filter_comments(by):
     click_multiple_button('[data-ordering="RANKED_THREADED"]')
     click_multiple_button('[data-ordering="' + by + '"]')
 
-def setup_driver(tor_path, browser_options, url):
-    if not os.path.isfile(tor_path):
-        print('Go to page', url)
-        if type(browser_options) == ChromeOptions: return start_chrome(url)
-        elif type(browser_options) == FirefoxOptions: return  start_firefox(url)
-    return setup_proxy_server(browser_options, tor_path, url)
-
 def start(
     tor_path = '',
     browser_options = BROWSER_OPTIONS.FIREFOX,
@@ -52,9 +45,9 @@ def start(
     driver = setup_driver(tor_path, browser_options, page_url)
 
     click_popup('[title="Accept All"]', 'Click Accept Cookies button')
-    print('Load more posts')
+    print('Load more posts times 1 /', scroll_down)
     load_more_posts()
-
+    
     click_popup('#expanding_cta_close_button', 'Click Not Now button')
     for i in range(scroll_down - 1):
         print('Load more posts times', i + 2, '/', scroll_down)

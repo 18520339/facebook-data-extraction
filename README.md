@@ -60,6 +60,8 @@
     - Sign out Facebook (cause some CSS Selectors will be different as sign in)
     - Run `python crawler.py`
 
+**Note**: With some proxies, Facebook will require to sign in. In that case, just rerun the scripts
+
 ## Test Proxy Server:
 
 ```python

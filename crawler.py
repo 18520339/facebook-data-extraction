@@ -1,9 +1,9 @@
-import proxies
+import browser
 import load_page
 import re
 
 TOR_PATH = r"C:\Users\Quan Kun\Tor Browser\Browser\TorBrowser\Tor\tor.exe"
-BROWSER_OPTIONS = proxies.BROWSER_OPTIONS.FIREFOX
+BROWSER_OPTIONS = browser.BROWSER_OPTIONS.FIREFOX
 
 PAGE_URL = 'https://www.facebook.com/KTXDHQGConfessions/'
 SCROLL_DOWN = 7
