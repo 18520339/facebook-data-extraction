@@ -63,9 +63,12 @@
 ## Test Proxy Server:
 
 ```python
+from proxies import *
+
 browser_options = BROWSER_OPTIONS.FIREFOX
 tor_path = r"C:\Users\User Name\Tor Browser\Browser\TorBrowser\Tor\tor.exe" # path of tor.exe
 url = 'http://check.torproject.org'
+
 setup_proxy_server(browser_options, tor_path, url)
 # kill_browser()
 ```
