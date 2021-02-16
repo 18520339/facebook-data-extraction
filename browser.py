@@ -48,4 +48,4 @@ def setup_driver(tor_path, browser_options, url):
             return start_chrome(url, headless=False)
         elif type(browser_options) == FirefoxOptions: 
             return  start_firefox(url, headless=False)
-    return setup_proxy_server(tor_path, browser_optionstor_path, url)
+    return setup_proxy_server(tor_path, browser_options, url)

@@ -2,7 +2,7 @@ import browser
 import load_page
 import re
 
-TOR_PATH = r"C:\Users\Quan Kun\Tor Browser\Browser\TorBrowser\Tor\tor.exe"
+TOR_PATH = r"C:\Users\Quan Kun\Downloads\Tor\tor.exe"
 BROWSER_OPTIONS = browser.BROWSER_OPTIONS.FIREFOX
 
 PAGE_URL = 'https://www.facebook.com/KTXDHQGConfessions/'

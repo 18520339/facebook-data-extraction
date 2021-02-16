@@ -45,13 +45,10 @@ def start(
     driver = setup_driver(tor_path, browser_options, page_url)
 
     click_popup('[title="Accept All"]', 'Click Accept Cookies button')
-    print('Load more posts times 1 /', scroll_down)
-    load_more_posts()
-    
-    click_popup('#expanding_cta_close_button', 'Click Not Now button')
-    for i in range(scroll_down - 1):
-        print('Load more posts times', i + 2, '/', scroll_down)
+    for i in range(scroll_down):
+        print('Load more posts times', i + 1, '/', scroll_down)
         load_more_posts()
+        click_popup('#expanding_cta_close_button', 'Click Not Now button')
 
     print('Filter comments by', filter_cmts_by)
     filter_comments(filter_cmts_by)
