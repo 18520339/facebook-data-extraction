@@ -67,11 +67,11 @@
 ```python
 from browser import *
 
-browser_options = BROWSER_OPTIONS.FIREFOX
 tor_path = r"C:\Users\User Name\Tor Browser\Browser\TorBrowser\Tor\tor.exe" # path of tor.exe
+browser_options = BROWSER_OPTIONS.FIREFOX
 url = 'http://check.torproject.org'
 
-setup_proxy_server(browser_options, tor_path, url)
+setup_proxy_server(tor_path, browser_options, url)
 # kill_browser()
 ```
 
