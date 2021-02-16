@@ -1,7 +1,7 @@
 import load_page
 import re
 
-TOR_PATH = r"C:\Users\Quan Kun\Tor Browser\Browser\TorBrowser\Tor\tor.ex"
+TOR_PATH = r"C:\Users\Quan Kun\Tor Browser\Browser\TorBrowser\Tor\tor.exe"
 PAGE_URL = 'https://www.facebook.com/KTXDHQGConfessions/'
 SCROLL_DOWN = 7
 
