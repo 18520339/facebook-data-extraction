@@ -1,6 +1,7 @@
 import load_page
 import re
 
+TOR_PATH = r"C:\Users\Quan Kun\Tor Browser\Browser\TorBrowser\Tor\tor.ex"
 PAGE_URL = 'https://www.facebook.com/KTXDHQGConfessions/'
 SCROLL_DOWN = 7
 
@@ -39,6 +40,7 @@ def get_comment_info(comment):
 	}
 
 load_page.start(
+	TOR_PATH,
 	PAGE_URL, 
 	SCROLL_DOWN, 
 	FILTER_CMTS_BY, 
