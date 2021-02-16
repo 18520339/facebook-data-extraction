@@ -40,7 +40,7 @@ def start(
     if os.path.isfile(tor_path):
         print("Use Tor's SOCKS proxy server with Firefox")
         torBrowser = os.popen(tor_path)
-        options.add_argument('--proxy-server=socks5://localhost:9050')
+        options.add_argument('--proxy-server=socks5://127.0.0.1:9150')
 
     print('Go to page', url)
     driver = start_firefox(url, headless=False, options=options)
