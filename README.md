@@ -50,6 +50,7 @@
 2. Install [Helium](https://github.com/mherrmann/selenium-python-helium): `pip install helium`
 3. Customize the `crawler.py` file:
     - **TOR_PATH**: specify path of `tor.exe` if using proxies, leave empty if not
+    - **BROWSER_OPTIONS**: run scripts using `CHROME` / `FIREFOX`
     - **PAGE_URL**: url of Facebook page
     - **SCROLL_DOWN**: number of scroll times for loading more posts
     - **FILTER_CMTS_BY**: show comments by `MOST_RELEVANT` / `NEWEST` / `ALL_COMMENTS`
@@ -66,7 +67,7 @@ browser_options = BROWSER_OPTIONS.FIREFOX
 tor_path = r"C:\Users\User Name\Tor Browser\Browser\TorBrowser\Tor\tor.exe" # path of tor.exe
 url = 'http://check.torproject.org'
 setup_proxy_server(browser_options, tor_path, url)
-kill_browser()
+# kill_browser()
 ```
 
-![](https://github.com/)
+![](https://github.com/18520339/facebook-crawling/blob/master/test_proxy.png?raw=true)
