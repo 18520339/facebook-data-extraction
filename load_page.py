@@ -3,7 +3,6 @@ from selenium.webdriver import FirefoxOptions
 import json
 import os
 
-
 POSTS_SELECTOR = '[class="_427x"] .userContentWrapper'
 COMMENTABLE_SELECTOR = POSTS_SELECTOR + ' .commentable_item'
 FILTER_CMTS = type('Enum', (), {
@@ -12,32 +11,28 @@ FILTER_CMTS = type('Enum', (), {
     'ALL_COMMENTS': 'RANKED_UNFILTERED'
 })
 
-
 def load_more_posts():
     js_script = 'window.scrollTo(0, document.body.scrollHeight)'
     driver.execute_script(js_script)
     while find_all(S('.async_saving [role="progressbar"]')) != []: pass
-
 
 def click_multiple_button(selector):
     js_script = "document.querySelectorAll('" + selector + "').forEach(btn => btn.click())"
     driver.execute_script(js_script)
     while find_all(S(COMMENTABLE_SELECTOR + ' [role="progressbar"]')) != []: pass
 
-
 def filter_comments(by):
     if by == FILTER_CMTS.MOST_RELEVANT: return
     click_multiple_button('[data-ordering="RANKED_THREADED"]')
     click_multiple_button('[data-ordering="' + by + '"]')
 
-
 def start(
 	tor_path='',
-    url = '',
-    scroll_down = 0,
-    filter_cmts_by = FILTER_CMTS.MOST_RELEVANT,
-    view_more_cmts = 0,
-    view_more_replies = 0
+	url = '',
+	scroll_down = 0,
+	filter_cmts_by = FILTER_CMTS.MOST_RELEVANT,
+	view_more_cmts = 0,
+	view_more_replies = 0
 ):
     global driver
     options = FirefoxOptions()
@@ -76,9 +71,9 @@ def start(
     print('Click See more buttons of comments')
     click_multiple_button(COMMENTABLE_SELECTOR + ' .fss')
 
-
 def stop_and_save(fileName, listPosts):
     print('Save crawled data...')
     with open(fileName, 'w', encoding='utf-8') as file:
         json.dump(listPosts, file, ensure_ascii=False, indent=4)
     kill_browser()
+	
