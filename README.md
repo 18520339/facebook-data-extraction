@@ -37,13 +37,6 @@
                         "user_name": "",
                         "text": ""
                     },
-                    {
-                        "id": "",
-                        "utime": "",
-                        "user_id": "",
-                        "user_name": "",
-                        "text": ""
-                    },
                 ]
             }
         ]
