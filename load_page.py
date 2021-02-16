@@ -1,7 +1,7 @@
-from helium import *
-from selenium.webdriver import FirefoxOptions
+from proxies import *
+import psutil
+import shutil
 import json
-import os
 
 POSTS_SELECTOR = '[class="_427x"] .userContentWrapper'
 COMMENTABLE_SELECTOR = POSTS_SELECTOR + ' .commentable_item'
@@ -10,6 +10,12 @@ FILTER_CMTS = type('Enum', (), {
     'NEWEST': 'RECENT_ACTIVITY',
     'ALL_COMMENTS': 'RANKED_UNFILTERED'
 })
+
+def click_popup(selector, title):
+    btn = find_all(S(selector))
+    if btn != []:
+        print(title)
+        click(btn[0].web_element.text)
 
 def load_more_posts():
     js_script = 'window.scrollTo(0, document.body.scrollHeight)'
@@ -26,33 +32,30 @@ def filter_comments(by):
     click_multiple_button('[data-ordering="RANKED_THREADED"]')
     click_multiple_button('[data-ordering="' + by + '"]')
 
+def setup_driver(tor_path, browser_options, url):
+    if not os.path.isfile(tor_path):
+        print('Go to page', url)
+        if type(browser_options) == ChromeOptions: return start_chrome(url)
+        elif type(browser_options) == FirefoxOptions: return  start_firefox(url)
+    return setup_proxy_server(browser_options, tor_path, url)
+
 def start(
-	tor_path='',
-	url = '',
-	scroll_down = 0,
-	filter_cmts_by = FILTER_CMTS.MOST_RELEVANT,
-	view_more_cmts = 0,
-	view_more_replies = 0
+    tor_path = '',
+    browser_options = BROWSER_OPTIONS.FIREFOX,
+    page_url = '',
+    scroll_down = 0,
+    filter_cmts_by = FILTER_CMTS.MOST_RELEVANT,
+    view_more_cmts = 0,
+    view_more_replies = 0
 ):
     global driver
-    options = FirefoxOptions()
+    driver = setup_driver(tor_path, browser_options, page_url)
 
-    if os.path.isfile(tor_path):
-        print("Use Tor's SOCKS proxy server with Firefox")
-        torBrowser = os.popen(tor_path)
-        options.add_argument('--proxy-server=socks5://127.0.0.1:9150')
-
-    print('Go to page', url)
-    driver = start_firefox(url, headless=False, options=options)
-
-    print('Load more posts and check for Not Now button')
+    click_popup('[title="Accept All"]', 'Click Accept Cookies button')
+    print('Load more posts')
     load_more_posts()
 
-    btnNotNow = find_all(S('#expanding_cta_close_button'))
-    if btnNotNow != []:
-        print('Click Not Now button')
-        click(btnNotNow[0].web_element.text)
-
+    click_popup('#expanding_cta_close_button', 'Click Not Now button')
     for i in range(scroll_down - 1):
         print('Load more posts times', i + 2, '/', scroll_down)
         load_more_posts()
@@ -76,3 +79,7 @@ def stop_and_save(fileName, listPosts):
     with open(fileName, 'w', encoding='utf-8') as file:
         json.dump(listPosts, file, ensure_ascii=False, indent=4)
     kill_browser()
+    
+    if os.path.exists('__pycache__'): shutil.rmtree('__pycache__')
+    for proc in psutil.process_iter():
+        if proc.name() == 'tor.exe': proc.kill()
