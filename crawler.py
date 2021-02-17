@@ -6,10 +6,10 @@ import json
 
 PAGE_URL = 'https://www.facebook.com/KTXDHQGConfessions/'
 TOR_PATH = browser.TOR_PATH.NONE
-BROWSER_OPTIONS = browser.BROWSER_OPTIONS.CHROME
+BROWSER_OPTIONS = browser.BROWSER_OPTIONS.FIREFOX
 
-USE_PROXY = False
-SPEED_UP = False
+USE_PROXY = True
+SPEED_UP = True
 HEADLESS = False
 
 SCROLL_DOWN = 7
@@ -80,6 +80,7 @@ with open('data.json', 'w', encoding='utf-8') as file:
         total_shares = get_child_attribute(post, '[data-testid="UFI2SharesCount/root"]', 'innerText')
         total_cmts = get_child_attribute(post, '._3hg-', 'innerText')
 
+        del json_cmts
         json_cmts = []
         html_cmts = post.find_elements_by_css_selector('._7a9a>li')
 
@@ -92,6 +93,7 @@ with open('data.json', 'w', encoding='utf-8') as file:
                 comment_owner = comment.find_elements_by_css_selector('._7a9b')
                 comment_info = get_comment_info(comment_owner[0])
 
+                del json_replies
                 json_replies = []
                 html_replies = comment.find_elements_by_css_selector('._7a9g')
 
@@ -107,6 +109,7 @@ with open('data.json', 'w', encoding='utf-8') as file:
                 comment_info.update({'replies': json_replies})
                 json_cmts.append(comment_info)
 
+        del json_reacts
         json_reacts = []
         html_reacts = post.find_elements_by_css_selector('._1n9l')
 

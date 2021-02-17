@@ -25,6 +25,7 @@ BROWSER_OPTIONS = type('Enum', (), {
 
 def simplify(browser_options=BROWSER_OPTIONS.FIREFOX):
     if type(browser_options) == ChromeOptions:
+        browser_options.add_argument("--disable-blink-features=AutomationControlled")
         browser_options.add_experimental_option('prefs', {
             "profile.managed_default_content_settings.images": 2,
             "profile.managed_default_content_settings.stylesheets": 2,
@@ -35,8 +36,8 @@ def simplify(browser_options=BROWSER_OPTIONS.FIREFOX):
             "profile.default_content_setting_values.notifications": 2,
         })
     elif type(browser_options) == FirefoxOptions:    
-        browser_options.set_preference('permissions.default.stylesheet', 2)
         browser_options.set_preference('permissions.default.image', 2)
+        browser_options.set_preference('permissions.default.stylesheet', 2)
         browser_options.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false')
     return browser_options
 
@@ -47,13 +48,12 @@ def setup_free_proxy(
     browser_options = BROWSER_OPTIONS.FIREFOX, 
     headless = False
 ):
-    
     proxies = request_proxy.get_proxy_list()
-    proxy_server = proxies[0].get_address()
+    proxy_server = random.choice(proxies).get_address()
     print('Current Free Proxy:', proxy_server)
 
     host = proxy_server.split(':')[0]
-    port = proxy_server.split(':')[1]
+    port = int(proxy_server.split(':')[1])
     print('Go to page', page_url)
 
     if type(browser_options) == ChromeOptions:
@@ -63,8 +63,11 @@ def setup_free_proxy(
     elif type(browser_options) == FirefoxOptions:
         browser_options.set_preference('network.proxy.type', 1)
         browser_options.set_preference("network.proxy.http", host)
-        browser_options.set_preference("network.proxy.http_port", int(port))
+        browser_options.set_preference("network.proxy.http_port", port)
+        browser_options.set_preference("network.proxy.ssl", host)
+        browser_options.set_preference("network.proxy.ssl_port", port)
         return start_firefox(page_url, headless=headless, options=browser_options)
+
 
 def setup_tor_proxy(
     page_url, 
