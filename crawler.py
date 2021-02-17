@@ -1,16 +1,22 @@
 import browser
-import load_page
+import page
 import re
+import json
 
-TOR_PATH = r"C:\Users\Quan Kun\Downloads\Tor\tor.exe"
-BROWSER_OPTIONS = browser.BROWSER_OPTIONS.FIREFOX
 
 PAGE_URL = 'https://www.facebook.com/KTXDHQGConfessions/'
-SCROLL_DOWN = 7
+TOR_PATH = browser.TOR_PATH.NONE
+BROWSER_OPTIONS = browser.BROWSER_OPTIONS.CHROME
 
-FILTER_CMTS_BY = load_page.FILTER_CMTS.ALL_COMMENTS
+USE_PROXY = False
+SPEED_UP = False
+HEADLESS = False
+
+SCROLL_DOWN = 7
+FILTER_CMTS_BY = page.FILTER_CMTS.ALL_COMMENTS
 VIEW_MORE_CMTS = 2
 VIEW_MORE_REPLIES = 2
+
 
 def get_child_attribute(element, selector, attr):
     try:
@@ -18,6 +24,7 @@ def get_child_attribute(element, selector, attr):
         return str(element.get_attribute(attr))
     except:
         return ''
+
 
 def get_comment_info(comment):
     cmt_url = get_child_attribute(comment, '._3mf5', 'href')
@@ -43,74 +50,81 @@ def get_comment_info(comment):
     }
 
 
-load_page.start(
-    TOR_PATH,
+driver = browser.setup_driver(
+    PAGE_URL, 
+    TOR_PATH, 
     BROWSER_OPTIONS,
-    PAGE_URL,
+    USE_PROXY,
+    SPEED_UP,
+    HEADLESS
+)
+
+page.load(
+    driver,
     SCROLL_DOWN,
     FILTER_CMTS_BY,
     VIEW_MORE_CMTS,
     VIEW_MORE_REPLIES
 )
-driver = load_page.driver
+
 total = 0
+html_posts = driver.find_elements_by_css_selector('[class="_427x"] .userContentWrapper')
+print('Start crawling', len(html_posts), 'posts...')
 
-listJsonPosts = []
-listHtmlPosts = driver.find_elements_by_css_selector('[class="_427x"] .userContentWrapper')
-print('Start crawling', len(listHtmlPosts), 'posts...')
+with open('data.json', 'w', encoding='utf-8') as file:
+    for post in html_posts:
+        post_url = get_child_attribute(post, '._5pcq', 'href').split('?')[0]
+        post_id = re.findall('\d+', post_url)[-1]
+        utime = get_child_attribute(post, 'abbr', 'data-utime')
+        post_text = get_child_attribute(post, '.userContent', 'textContent')
+        total_shares = get_child_attribute(post, '[data-testid="UFI2SharesCount/root"]', 'innerText')
+        total_cmts = get_child_attribute(post, '._3hg-', 'innerText')
 
-for post in listHtmlPosts:
-    post_url = get_child_attribute(post, '._5pcq', 'href').split('?')[0]
-    post_id = re.findall('\d+', post_url)[-1]
-    utime = get_child_attribute(post, 'abbr', 'data-utime')
-    post_text = get_child_attribute(post, '.userContent', 'textContent')
-    total_shares = get_child_attribute(post, '[data-testid="UFI2SharesCount/root"]', 'innerText')
-    total_cmts = get_child_attribute(post, '._3hg-', 'innerText')
+        json_cmts = []
+        html_cmts = post.find_elements_by_css_selector('._7a9a>li')
 
-    listJsonCmts = []
-    listHtmlCmts = post.find_elements_by_css_selector('._7a9a>li')
+        num_of_cmts = len(html_cmts)
+        total += num_of_cmts
 
-    num_of_cmts = len(listHtmlCmts)
-    total += num_of_cmts
+        if num_of_cmts > 0:
+            print('Crawling', num_of_cmts, 'comments of post', post_id)
+            for comment in html_cmts:
+                comment_owner = comment.find_elements_by_css_selector('._7a9b')
+                comment_info = get_comment_info(comment_owner[0])
 
-    if num_of_cmts > 0:
-        print('Crawling', num_of_cmts, 'comments of post', post_id)
-        for comment in listHtmlCmts:
-            comment_owner = comment.find_elements_by_css_selector('._7a9b')
-            comment_info = get_comment_info(comment_owner[0])
+                json_replies = []
+                html_replies = comment.find_elements_by_css_selector('._7a9g')
 
-            listJsonReplies = []
-            listHtmlReplies = comment.find_elements_by_css_selector('._7a9g')
+                num_of_replies = len(html_replies)
+                total += num_of_replies
 
-            num_of_replies = len(listHtmlReplies)
-            total += num_of_replies
+                if num_of_replies > 0:
+                    print('Crawling', num_of_replies, 'replies for', comment_info['user_name'] + "'s comment")
+                    for reply in html_replies:
+                        reply_info = get_comment_info(reply)
+                        json_replies.append(reply_info)
 
-            if num_of_replies > 0:
-                print('Crawling', num_of_replies, 'replies for', comment_info['user_name'] + "'s comment")
-                for reply in listHtmlReplies:
-                    reply_info = get_comment_info(reply)
-                    listJsonReplies.append(reply_info)
+                comment_info.update({'replies': json_replies})
+                json_cmts.append(comment_info)
 
-            comment_info.update({'replies': listJsonReplies})
-            listJsonCmts.append(comment_info)
+        json_reacts = []
+        html_reacts = post.find_elements_by_css_selector('._1n9l')
 
-    listJsonReacts = []
-    listHtmlReacts = post.find_elements_by_css_selector('._1n9l')
+        for react in html_reacts:
+            react_text = react.get_attribute('aria-label')
+            json_reacts.append(react_text)
 
-    for react in listHtmlReacts:
-        react_text = react.get_attribute('aria-label')
-        listJsonReacts.append(react_text)
-
-    listJsonPosts.append({
-        'url': post_url,
-        'id': post_id,
-        'utime': utime,
-        'text': post_text,
-        'total_shares': total_shares,
-        'total_cmts': total_cmts,
-        'crawled_cmts': listJsonCmts,
-        'reactions': listJsonReacts,
-    })
+        json.dump({
+            'url': post_url,
+            'id': post_id,
+            'utime': utime,
+            'text': post_text,
+            'total_shares': total_shares,
+            'total_cmts': total_cmts,
+            'crawled_cmts': json_cmts,
+            'reactions': json_reacts,
+        }, file, ensure_ascii=False)
+        file.write('\n')
 
 print('Total comments and replies crawled:', total)
-load_page.stop_and_save('data.json', listJsonPosts)
+browser.close()
