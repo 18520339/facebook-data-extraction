@@ -3,17 +3,17 @@ import page
 import re
 import json
 
-
 PAGE_URL = 'https://www.facebook.com/KTXDHQGConfessions/'
 TOR_PATH = browser.TOR_PATH.NONE
 BROWSER_OPTIONS = browser.BROWSER_OPTIONS.FIREFOX
 
 USE_PROXY = True
+PRIVATE = True
 SPEED_UP = True
 HEADLESS = False
 
 SCROLL_DOWN = 7
-FILTER_CMTS_BY = page.FILTER_CMTS.ALL_COMMENTS
+FILTER_CMTS_BY = page.FILTER_CMTS.MOST_RELEVANT
 VIEW_MORE_CMTS = 2
 VIEW_MORE_REPLIES = 2
 
@@ -22,16 +22,15 @@ def get_child_attribute(element, selector, attr):
     try:
         element = element.find_element_by_css_selector(selector)
         return str(element.get_attribute(attr))
-    except:
-        return ''
+    except: return ''
 
 
 def get_comment_info(comment):
     cmt_url = get_child_attribute(comment, '._3mf5', 'href')
     utime = get_child_attribute(comment, 'abbr', 'data-utime')
     text = get_child_attribute(comment, '._3l3x ', 'textContent')
-
     cmt_id = cmt_url.split('=')[-1]
+
     if cmt_id == None:
         cmt_id = comment.get_attribute('data-ft').split(':"')[-1][:-2]
         user_url = user_id = user_name = 'Acc clone'
@@ -50,28 +49,26 @@ def get_comment_info(comment):
     }
 
 
-driver = browser.setup_driver(
-    PAGE_URL, 
-    TOR_PATH, 
-    BROWSER_OPTIONS,
-    USE_PROXY,
-    SPEED_UP,
-    HEADLESS
-)
+while True:
+    driver = browser.setup_driver(
+        PAGE_URL, TOR_PATH, BROWSER_OPTIONS, 
+        USE_PROXY, PRIVATE, SPEED_UP, HEADLESS
+    )
+    if driver.current_url in PAGE_URL: 
+        if page.load(
+            driver, PAGE_URL, SCROLL_DOWN, FILTER_CMTS_BY, 
+            VIEW_MORE_CMTS, VIEW_MORE_REPLIES
+        ): break
+    else: print(f"Redirect detected => {'Rerun' if USE_PROXY else 'Please use proxy'}\n")
+    driver.close()
 
-page.load(
-    driver,
-    SCROLL_DOWN,
-    FILTER_CMTS_BY,
-    VIEW_MORE_CMTS,
-    VIEW_MORE_REPLIES
-)
 
+html_posts = driver.find_elements_by_css_selector(page.POSTS_SELECTOR)
+file_name = re.findall('\.com/(.*)', PAGE_URL)[0].split('/')[0]
 total = 0
-html_posts = driver.find_elements_by_css_selector('[class="_427x"] .userContentWrapper')
-print('Start crawling', len(html_posts), 'posts...')
 
-with open('data.json', 'w', encoding='utf-8') as file:
+print('Start crawling', len(html_posts), 'posts...')
+with open(f'data/{file_name}.json', 'w', encoding='utf-8') as file:
     for post in html_posts:
         post_url = get_child_attribute(post, '._5pcq', 'href').split('?')[0]
         post_id = re.findall('\d+', post_url)[-1]
@@ -80,7 +77,6 @@ with open('data.json', 'w', encoding='utf-8') as file:
         total_shares = get_child_attribute(post, '[data-testid="UFI2SharesCount/root"]', 'innerText')
         total_cmts = get_child_attribute(post, '._3hg-', 'innerText')
 
-        del json_cmts
         json_cmts = []
         html_cmts = post.find_elements_by_css_selector('._7a9a>li')
 
@@ -88,12 +84,11 @@ with open('data.json', 'w', encoding='utf-8') as file:
         total += num_of_cmts
 
         if num_of_cmts > 0:
-            print('Crawling', num_of_cmts, 'comments of post', post_id)
+            print(f'Crawling {num_of_cmts} comments of post {post_id}')
             for comment in html_cmts:
                 comment_owner = comment.find_elements_by_css_selector('._7a9b')
                 comment_info = get_comment_info(comment_owner[0])
 
-                del json_replies
                 json_replies = []
                 html_replies = comment.find_elements_by_css_selector('._7a9g')
 
@@ -101,7 +96,7 @@ with open('data.json', 'w', encoding='utf-8') as file:
                 total += num_of_replies
 
                 if num_of_replies > 0:
-                    print('Crawling', num_of_replies, 'replies for', comment_info['user_name'] + "'s comment")
+                    print(f"Crawling {num_of_replies} replies of {comment_info['user_name']}'s comment")
                     for reply in html_replies:
                         reply_info = get_comment_info(reply)
                         json_replies.append(reply_info)
@@ -109,7 +104,6 @@ with open('data.json', 'w', encoding='utf-8') as file:
                 comment_info.update({'replies': json_replies})
                 json_cmts.append(comment_info)
 
-        del json_reacts
         json_reacts = []
         html_reacts = post.find_elements_by_css_selector('._1n9l')
 
@@ -127,7 +121,10 @@ with open('data.json', 'w', encoding='utf-8') as file:
             'crawled_cmts': json_cmts,
             'reactions': json_reacts,
         }, file, ensure_ascii=False)
+
+        del json_cmts
         file.write('\n')
 
+del html_posts
 print('Total comments and replies crawled:', total)
 browser.close()
