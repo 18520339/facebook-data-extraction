@@ -1,141 +1,175 @@
-# Facebook Crawling with Python
+# Facebook crawling using IP hiding techniques
+
+Crawling id, user info, content, date, comments and replies of posts in a Facebook page
 
 > Demo: https://www.youtube.com/watch?v=Fx0UWOzYsig
 
-## Features:
+## Overview
 
--   Get information of posts
--   Filter comments
--   Not required sign in
--   Simplfy browser to minimize time complexity
--   Use proxies to prevent from banning with:
-    -   Random proxies from [Free Proxy List](https://free-proxy-list.net/) that are just checked and updated every 10 minutes
-    -   [Tor Relays](https://github.com/18520339/facebook-crawling/tree/master/tor) which used in [Tor Browser](https://www.torproject.org/), a network is comprised of thousands of volunteer-run servers
+### I. Features
 
-## Usage:
+1.  Getting information of posts.
+2.  Filtering comments.
+3.  Not required sign in.
+4.  Checking redirect
+5.  Running with Incognito window.
+6.  Simplifying browser to minimize time complexity.
+7.  Hiding IP address to prevent from banning by:
+    -   Collecting proxies and filtering the slowest ones from:
+        -   http://proxyfor.eu/geo.php
+        -   http://free-proxy-list.net
+        -   http://rebro.weebly.com/proxy-list.html
+        -   http://www.samair.ru/proxy/time-01.htm
+        -   https://www.sslproxies.org
+    -   [Tor Relays](https://github.com/18520339/facebook-crawling/tree/master/tor) which used in [Tor Browser](https://www.torproject.org/), a network is comprised of thousands of volunteer-run servers.
 
-### I. Install library:
+### II. Weaknesses
 
-> pip install -r requirement.txt
+-   Unable to handle a few failed responses. Example: **RATE LIMIT EXCEEDED** response (Facebook prevents from loading more) => have to run without **HEADLESS** to detect
+-   Quite slow when running with a large number of _loading more_.
 
--   [Helium](https://github.com/mherrmann/selenium-python-helium): a wrapper around [Selenium](https://selenium-python.readthedocs.io/) with more high-level API for web automation
--   [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer): used for getting proxies from [Free Proxy List](https://free-proxy-list.net/)
+### III. Result
 
-### II. Customize parameters in crawler.py:
+-   Each post will be seperated [line by line](https://raw.githubusercontent.com/18520339/facebook-crawling/master/data/KTXDHQGConfessions-inline.json)
 
-1.  **Running Browser**:
+-   Most of my successful tests were on **Firefox** with [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer) proxy server
+-   Lastest run on **Firefox** with **Incognito** windows using [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer):
 
-    -   **PAGE_URL**: url of Facebook page
-    -   **TOR_PATH**: use proxy with Tor with `WINDOWS` / `MAC` / `LINUX` / `NONE`:
-    -   **BROWSER_OPTIONS**: run scripts using `CHROME` / `FIREFOX`
+    ![](https://github.com/18520339/facebook-crawling/blob/master/img/result.png?raw=true)
 
-    -   **USE_PROXY**: run with proxy or not. If **True** &rarr; Check:
-        -   IF **TOR_PATH** $\neq$ `NONE` &rarr; Use Tor's SOCKS proxy server
-        -   ELSE &rarr; Get proxies from [Free Proxy List](https://free-proxy-list.net/)
-    -   HEADLESS: run with header Browser or not
-    -   SPEED_UP: simplify Browser for minizing loading time:
+<details>
+    <summary>
+        <b>Example data fields for a post</b>
+    </summary>
+    
+```json
+{
+    "url": "https://www.facebook.com/KTXDHQGConfessions/videos/352525915858361/",
+    "id": "352525915858361",
+    "utime": "1603770573",
+    "text": "Diễn tập PCCC tại KTX khu B tòa E1. ----------- #ktx_cfs Nguồn : Trường Vũ",
+    "reactions": ["308 Like", "119 Haha", "28 Wow"],
+    "total_shares": "26 Shares",
+    "total_cmts": "169 Comments",
+    "crawled_cmts": [
+        {
+            "id": "Y29tbWVudDozNDM0NDI0OTk5OTcxMDgyXzM0MzQ0MzIyMTY2MzcwMjc%3D",
+            "utime": "1603770714",
+            "user_url": "https://www.facebook.com/KTXDHQGConfessions/",
+            "user_id": "KTXDHQGConfessions",
+            "user_name": "KTX ĐHQG Confessions",
+            "text": "Toà t á bây :) #Lép",
+            "replies": [
+                {
+                    "id": "Y29tbWVudDozNDM0NDI0OTk5OTcxMDgyXzM0MzQ0OTc5MDk5NjM3OTE%3D",
+                    "utime": "1603772990",
+                    "user_url": "https://www.facebook.com/KTXDHQGConfessions/",
+                    "user_id": "KTXDHQGConfessions",
+                    "user_name": "KTX ĐHQG Confessions",
+                    "text": "Nguyễn Hoàng Đạt thật đáng tự hào :) #Lép"
+                }
+            ]
+        }
+    ]
+}
+```
+</details>
 
-        -   With `CHROME` :
+## Usage
+
+### I. Install libraries
+
+    pip install -r requirements.txt
+
+-   [Helium](https://github.com/mherrmann/selenium-python-helium): a wrapper around [Selenium](https://selenium-python.readthedocs.io/) with more high-level API for web automation.
+-   [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer): used for collecting free proxies.
+
+### II. Customize parameters in [crawler.py](https://github.com/18520339/facebook-crawling/blob/master/crawler.py)
+
+1.  **Running browser**:
+
+    -   **PAGE_URL**: url of Facebook page.
+    -   **TOR_PATH**: use proxy with Tor for `WINDOWS` / `MAC` / `LINUX` / `NONE`:
+    -   **BROWSER_OPTIONS**: run scripts using `CHROME` / `FIREFOX`.
+    -   **PRIVATE**: run with private mode:
+        -   Prevent from **Selenium** detection &#10153; **navigator.driver** must be _undefined_ (check in Dev Tools).
+        -   Start browser with **Incognito** / **Private Window**.
+    -   **USE_PROXY**: run with proxy or not. If **True** &#10153; check:
+        -   IF **TOR_PATH** &ne; `NONE` &#10153; Use **Tor's SOCKS** proxy server.
+        -   ELSE &#10153; Randomize proxies with [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer).
+    -   **HEADLESS**: run with headless browser or not.
+    -   **SPEED_UP**: simplify browser for minizing loading time:
+
+        -   With **Chrome** :
 
         ```python
-            # Prevent Selenium detection => navigator.driver = undefined (check in dev tools)
-            browser_options.add_argument("--disable-blink-features=AutomationControlled")
-
-            # Disable loading image, CSS, ...
-            browser_options.add_experimental_option('prefs', {
-                "profile.managed_default_content_settings.images": 2,
-                "profile.managed_default_content_settings.stylesheets": 2,
-                "profile.managed_default_content_settings.cookies": 2,
-                "profile.managed_default_content_settings.geolocation": 2,
-                "profile.managed_default_content_settings.media_stream": 2,
-                "profile.managed_default_content_settings.plugins": 1,
-                "profile.default_content_setting_values.notifications": 2,
-            })
+        # Disable loading image, CSS, ...
+        browser_options.add_experimental_option('prefs', {
+            "profile.managed_default_content_settings.images": 2,
+            "profile.managed_default_content_settings.stylesheets": 2,
+            "profile.managed_default_content_settings.cookies": 2,
+            "profile.managed_default_content_settings.geolocation": 2,
+            "profile.managed_default_content_settings.media_stream": 2,
+            "profile.managed_default_content_settings.plugins": 1,
+            "profile.default_content_setting_values.notifications": 2,
+        })
         ```
 
-        -   With `FIREFOX` :
+        -   With **Firefox** :
 
         ```python
-            # Disable loading image, CSS, Flash
-            browser_options.set_preference('permissions.default.image', 2)
-            browser_options.set_preference('permissions.default.stylesheet', 2)
-            browser_options.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false')
+        # Disable loading image, CSS, Flash
+        browser_options.set_preference('permissions.default.image', 2)
+        browser_options.set_preference('permissions.default.stylesheet', 2)
+        browser_options.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false')
         ```
 
-2.  **Loading Page**:
+2.  **Loading page**:
 
-    -   **SCROLL_DOWN**: number of scroll times for loading more posts
-    -   **FILTER_CMTS_BY**: show comments by `MOST_RELEVANT` / `NEWEST` / `ALL_COMMENTS`
-    -   **VIEW_MORE_CMTS**: number of times for loading more comments
-    -   **VIEW_MORE_REPLIES**: number of times for loading more replies
+    -   **SCROLL_DOWN**: number of times to scroll for **view more posts**.
+    -   **FILTER_CMTS_BY**: filter comments by `MOST_RELEVANT` / `NEWEST` / `ALL_COMMENTS`.
+        ![](https://github.com/18520339/facebook-crawling/blob/master/img/filter.png?raw=true)
+    -   **VIEW_MORE_CMTS**: number of times to click **view more comments**.
+    -   **VIEW_MORE_REPLIES**: number of times to click **view more replies**.
 
-### III. Start crawling:
+### III. Start running
 
-> python crawler.py
+    python crawler.py
 
--   Sign out Facebook (cause some CSS Selectors will be different as sign in)
--   Note that with some proxies:
+-   Run at sign out state, cause some CSS Selectors will be different as sign in.
+-   With some proxies, it might be quite slow or required to sign in.
+-   **To achieve higher speed**:
+    -   If this is first time using these scripts, you can **run without tor & proxies** until Facebook requires to sign in
+    -   Or using some popular **VPN** sevices (also **run without tor & proxies**): [Touch VPN](https://touchvpn.net/platform) (free), [Hotspot Shield VPN](https://www.hotspotshield.com/vpn) (free, Premium available), ...
+    -   Learn more about [4 ways to hide your IP address & compare their speed](https://whatismyipaddress.com/hide-ip)
+-   **To archive large number of comments**:
+    -   Load more posts to collect more comments in case failed to view more comments / replies.
+    -   Should use browser without headless to detect failed responses (comments / replies not load anymore).
 
-    -   It might be quite slow
-    -   Facebook will require to sign in
+## Test proxy server
 
--   Each post will be written line by line when completed. Data Field:
-
-    ```json
-    {
-        "url": "",
-        "id": "",
-        "utime": "",
-        "text": "",
-        "total_shares": "",
-        "total_cmts": "",
-        "reactions": [""],
-        "crawled_cmts": [
-            {
-                "id": "",
-                "utime": "",
-                "user_url": "",
-                "user_id": "",
-                "user_name": "",
-                "text": "",
-                "replies": [
-                    {
-                        "id": "",
-                        "utime": "",
-                        "user_id": "",
-                        "user_name": "",
-                        "text": ""
-                    }
-                ]
-            }
-        ]
-    }
-    ```
-
-## Test Proxy Server:
-
-1. With [Free Proxy List](https://free-proxy-list.net/):
+1. With [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer):
 
 ```python
-    from browser import *
-    page_url = 'http://check.torproject.org'
-    request_proxy = RequestProxy()
-    browser_options = BROWSER_OPTIONS.FIREFOX
+from browser import *
+page_url = 'http://check.torproject.org'
+proxy_server = random.choice(proxies).get_address()
+browser_options = BROWSER_OPTIONS.FIREFOX
 
-    setup_free_proxy(page_url, request_proxy, browser_options)
-    # kill_browser()
+setup_free_proxy(page_url, proxy_server, browser_options)
+# kill_browser()
 ```
 
 2. With [Tor Relays](https://github.com/18520339/facebook-crawling/tree/master/tor):
 
 ```python
-    from browser import *
-    page_url = 'http://check.torproject.org'
-    tor_path = TOR_PATH.WINDOWS
-    browser_options = BROWSER_OPTIONS.FIREFOX
+from browser import *
+page_url = 'http://check.torproject.org'
+tor_path = TOR_PATH.WINDOWS
+browser_options = BROWSER_OPTIONS.FIREFOX
 
-    setup_tor_proxy(page_url, tor_path, browser_options)
-    # kill_browser()
+setup_tor_proxy(page_url, tor_path, browser_options)
+# kill_browser()
 ```
 
-![](https://github.com/18520339/facebook-crawling/blob/master/test_proxy.png?raw=true)
+![](https://github.com/18520339/facebook-crawling/blob/master/img/proxy.png?raw=true)
