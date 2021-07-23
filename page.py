@@ -9,7 +9,6 @@ FILTER_CMTS = type('Enum', (), {
     'ALL_COMMENTS': 'RANKED_UNFILTERED'
 })
 
-
 def timer(func):
     def wrapper(*args, **kwargs):
         start = time.time()
@@ -18,11 +17,9 @@ def timer(func):
         print('=> Loading time:', end - start)
     return wrapper
 
-
 def click_popup(selector):
     btn = find_all(S(selector))
     if btn != []: click(btn[0])
-
 
 def failed_to_load(driver, page_url):
     if driver.current_url not in page_url:
@@ -33,13 +30,11 @@ def failed_to_load(driver, page_url):
         return True
     return False
 
-
 @timer
 def load_more_posts(driver):
     driver.execute_script('window.scrollTo(0, document.body.scrollHeight)')
     while find_all(S('.async_saving [role="progressbar"]')) != []: pass
     time.sleep(5)
-
 
 @timer
 def click_multiple_buttons(driver, selector):
@@ -48,12 +43,10 @@ def click_multiple_buttons(driver, selector):
         while find_all(S(f'{COMMENTABLE_SELECTOR} [role="progressbar"]')) != []: pass
         time.sleep(5)
 
-
 def filter_comments(driver, by):
     if by == FILTER_CMTS.MOST_RELEVANT: return
     click_multiple_buttons(driver, '[data-ordering="RANKED_THREADED"]')
     click_multiple_buttons(driver, f'[data-ordering="{by}"]')
-
 
 def load(driver, page_url, scroll_down=0, filter_cmts_by=FILTER_CMTS.MOST_RELEVANT, view_more_cmts=0, view_more_replies=0):
     print('Click Accept Cookies button')

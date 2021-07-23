@@ -17,13 +17,11 @@ FILTER_CMTS_BY = page.FILTER_CMTS.MOST_RELEVANT
 VIEW_MORE_CMTS = 2
 VIEW_MORE_REPLIES = 2
 
-
 def get_child_attribute(element, selector, attr):
     try:
         element = element.find_element_by_css_selector(selector)
         return str(element.get_attribute(attr))
     except: return ''
-
 
 def get_comment_info(comment):
     cmt_url = get_child_attribute(comment, '._3mf5', 'href')
@@ -47,7 +45,6 @@ def get_comment_info(comment):
         'text': text,
     }
 
-
 while True:
     driver = browser.setup_driver(PAGE_URL, TOR_PATH, BROWSER_OPTIONS, USE_PROXY, PRIVATE, SPEED_UP, HEADLESS)
     if driver.current_url in PAGE_URL: 
@@ -62,7 +59,7 @@ total = 0
 
 print('Start crawling', len(html_posts), 'posts...')
 with open(f'data/{file_name}.json', 'w', encoding='utf-8') as f:
-    for post in html_posts:
+    for post_index, post in enumerate(html_posts):
         post_url = get_child_attribute(post, '._5pcq', 'href').split('?')[0]
         post_id = re.findall('\d+', post_url)[-1]
         utime = get_child_attribute(post, 'abbr', 'data-utime')
@@ -77,7 +74,7 @@ with open(f'data/{file_name}.json', 'w', encoding='utf-8') as f:
         total += num_of_cmts
 
         if num_of_cmts > 0:
-            print(f'Crawling {num_of_cmts} comments of post {post_id}')
+            print(f'{post_index}. Crawling {num_of_cmts} comments of post {post_id}')
             for comment in html_cmts:
                 comment_owner = comment.find_elements_by_css_selector('._7a9b')
                 comment_info = get_comment_info(comment_owner[0])
@@ -89,7 +86,7 @@ with open(f'data/{file_name}.json', 'w', encoding='utf-8') as f:
                 total += num_of_replies
 
                 if num_of_replies > 0:
-                    print(f"Crawling {num_of_replies} replies of {comment_info['user_name']}'s comment")
+                    print(f"|-- Crawling {num_of_replies} replies of {comment_info['user_name']}'s comment")
                     for reply in html_replies:
                         reply_info = get_comment_info(reply)
                         json_replies.append(reply_info)
