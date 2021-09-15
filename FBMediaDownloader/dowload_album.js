@@ -1,9 +1,13 @@
 import fetch from "node-fetch";
-import fs from "fs";
-import { ACCESS_TOKEN } from "./config.js";
+import { saveToFile, sleep } from "./utils.js";
+import {
+  ACCESS_TOKEN,
+  WAIT_BEFORE_NEXT_FETCH,
+  ID_LINK_SEPERATOR,
+  FOLDER_TO_SAVE,
+} from "./config.js";
 
 const HOST = "https://graph.facebook.com";
-const SEPERATOR = ":";
 
 const fetchAlbumDataFromCursor = async (albumId, cursor, limit = 100) => {
   // create link to fetch
@@ -18,7 +22,7 @@ const fetchAlbumDataFromCursor = async (albumId, cursor, limit = 100) => {
 
   // return all_links + next cursor
   return {
-    all_links: json.data.map((_) => _.id + SEPERATOR + _.largest_image.source),
+    all_links: json.data.map((_) => _.id + ID_LINK_SEPERATOR + _.largest_image.source),
     nextCursor: json.paging?.cursors?.after || null,
   };
 };
@@ -44,6 +48,11 @@ const fetchAlbumData = async (
     nextCursor = data.nextCursor;
     hasNextCursor = nextCursor != null;
     currentPage++;
+
+    if (WAIT_BEFORE_NEXT_FETCH) {
+      console.log(`Sleeping ${WAIT_BEFORE_NEXT_FETCH}ms ...`);
+      await sleep(WAIT_BEFORE_NEXT_FETCH);
+    }
   }
 
   return all_links;
@@ -53,15 +62,6 @@ export const saveAlbumPhotoLinks = async (albumId, override = false) => {
   console.log(`Fetching album ${albumId}...`);
   const links = await fetchAlbumData(albumId);
 
-  const fileName = `data/${albumId}.txt`;
-  console.log(`Writting ${links.length} photo links to ${fileName}...`);
-  fs.writeFile(
-    fileName,
-    links.join("\n"),
-    { flag: override ? "w" : "a+" },
-    (err) => {
-      if (err) throw err;
-      console.log("> Saved!");
-    }
-  );
+  const fileName = `${FOLDER_TO_SAVE}/${albumId}.txt`;
+  saveToFile(fileName, links.join("\n"), override);
 };
