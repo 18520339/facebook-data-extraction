@@ -2,6 +2,22 @@
 
 Tham khảo cách làm việc với Facebook API từ [Hoàng Minh Dùng MMO](https://www.youtube.com/watch?v=auTBuwZOrBo&list=PL4BMIU_JnQBRSVZcc_ey0LDZdARdeuCh2&index=1)
 
+## CHUẨN BỊ
+
+Để có thể chạy được code thì bạn cần:
+
+0. Cài NodeJS. Tải code về.
+
+1. Lấy AccessToken của bạn [Cách lấy](https://ahachat.com/help/blog/cach-lay-token-facebook#2-token-facebook-theo-t%C3%A0i-kho%E1%BA%A3n-c%C3%A1-nh%C3%A2n)
+
+2. Bỏ access token vào file [config.js](./config.js)
+
+3. Cũng trong config.js. Bạn có thể tùy chỉnh đường dẫn lưu ảnh _FOLDER_TO_SAVE_IMAGES_ hoặc đường dẫn lưu link _FOLDER_TO_SAVE_LINKS_
+
+4. Lấy album_id, mã của album muốn tải ảnh. Thường hiện trên đường dẫn url của album (trong file [index.js](./index.js) có ví dụ)
+
+5. Dán album_id vào file hàm trong [index.js](./index.js). Dùng hàm nào thì đọc tiếp phía dưới.
+
 ## LƯU _ID_ VÀ _LINK_ ẢNH
 
 - Dùng hàm _saveAlbumPhotoLinks_:
@@ -19,3 +35,7 @@ Tham khảo cách làm việc với Facebook API từ [Hoàng Minh Dùng MMO](ht
   - Tham số album_id: id của album (string)
 - Hàm này sẽ tải và lưu tất cả hình có trong album ảnh.
 - Các file ảnh sau khi tải sẽ được lưu trong folder dạng [/images/{album_id}/{photo_id}.png](./images/).
+
+## CHẠY CODE
+
+Chỉ cần mở terminal và gõ _node index.js_ tại folder chứa project là xong. Đợi thành quả thôi.
