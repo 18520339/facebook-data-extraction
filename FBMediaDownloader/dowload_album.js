@@ -1,6 +1,7 @@
 import fetch from "node-fetch";
 import {
   ACCESS_TOKEN,
+  FB_API_HOST,
   WAIT_BEFORE_NEXT_FETCH,
   ID_LINK_SEPERATOR,
   FOLDER_TO_SAVE_LINKS,
@@ -9,17 +10,14 @@ import {
 import {
   createIfNotExistDir,
   deleteFile,
-  downloadFile,
   downloadFileSync,
   saveToFile,
   sleep,
 } from "./utils.js";
 
-const HOST = "https://graph.facebook.com";
-
 const fetchAlbumDataFromCursor = async ({ albumId, cursor, limit = 100 }) => {
   // create link to fetch
-  let url = `${HOST}/${albumId}/photos?fields=largest_image&limit=${limit}&access_token=${ACCESS_TOKEN}`;
+  let url = `${FB_API_HOST}/${albumId}/photos?fields=largest_image&limit=${limit}&access_token=${ACCESS_TOKEN}`;
   if (cursor) {
     url += `&after=${cursor}`;
   }
