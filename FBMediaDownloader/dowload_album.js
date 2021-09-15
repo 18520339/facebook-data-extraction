@@ -16,15 +16,21 @@ const fetchAlbumDataFromCursor = async (albumId, cursor, limit = 100) => {
     url += `&after=${cursor}`;
   }
 
-  // fetch data
-  const response = await fetch(url);
-  const json = await response.json();
+  try {
+    // fetch data
+    const response = await fetch(url);
+    const json = await response.json();
 
-  // return all_links + next cursor
-  return {
-    all_links: json.data.map((_) => _.id + ID_LINK_SEPERATOR + _.largest_image.source),
-    nextCursor: json.paging?.cursors?.after || null,
-  };
+    // return all_links + next cursor
+    return {
+      all_links: json.data.map(
+        (_) => _.id + ID_LINK_SEPERATOR + _.largest_image.source
+      ),
+      nextCursor: json.paging?.cursors?.after || null,
+    };
+  } catch (e) {
+    return {};
+  }
 };
 
 const fetchAlbumData = async (
@@ -41,17 +47,22 @@ const fetchAlbumData = async (
     console.log(`Fetching page: ${currentPage}, pageSize: ${pageSize} ...`);
 
     const data = await fetchAlbumDataFromCursor(albumId, nextCursor, pageSize);
-    all_links = all_links.concat(data.all_links);
 
-    console.log(`> Fetched ${data.all_links.length} photos.`);
+    if (data.all_links) {
+      all_links = all_links.concat(data.all_links);
 
-    nextCursor = data.nextCursor;
-    hasNextCursor = nextCursor != null;
-    currentPage++;
+      console.log(`> Fetched ${data.all_links.length} photos.`);
 
-    if (WAIT_BEFORE_NEXT_FETCH) {
-      console.log(`Sleeping ${WAIT_BEFORE_NEXT_FETCH}ms ...`);
-      await sleep(WAIT_BEFORE_NEXT_FETCH);
+      nextCursor = data.nextCursor;
+      hasNextCursor = nextCursor != null;
+      currentPage++;
+
+      if (WAIT_BEFORE_NEXT_FETCH) {
+        console.log(`Sleeping ${WAIT_BEFORE_NEXT_FETCH}ms ...`);
+        await sleep(WAIT_BEFORE_NEXT_FETCH);
+      }
+    } else {
+      console.log("FAILED.");
     }
   }
 
