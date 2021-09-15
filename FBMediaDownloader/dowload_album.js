@@ -51,7 +51,9 @@ const fetchAlbumData = async (
     if (data.all_links) {
       all_links = all_links.concat(data.all_links);
 
-      console.log(`> Fetched ${data.all_links.length} photos.`);
+      console.log(
+        `> Fetched ${data.all_links.length} photos. (Total: ${all_links.length})`
+      );
 
       nextCursor = data.nextCursor;
       hasNextCursor = nextCursor != null;
