@@ -29,14 +29,47 @@ export const saveToFile = (fileName, data, override = false) => {
 };
 
 // https://stackoverflow.com/a/12751657
-export const downloadImage = function (uri, filename, callback) {
-  request.head(uri, function (err, res, body) {
-    // console.log("content-type:", res.headers["content-type"]);
-    // console.log("content-length:", res.headers["content-length"]);
+export const downloadFile = function ({
+  uri,
+  filename,
+  successCallback = () => {},
+  failedCallback = () => {},
+}) {
+  try {
+    request.head(uri, function (err, res, body) {
+      if (err) {
+        failedCallback(err);
+      } else {
+        request(uri)
+          .pipe(fs.createWriteStream(filename, { flags: "w+" }))
+          .on("close", successCallback);
+      }
+    });
+  } catch (e) {
+    console.error("ERROR", e);
+  }
+};
 
-    request(uri)
-      .pipe(fs.createWriteStream(filename, { flags: "w+" }))
-      .on("close", callback);
+export const downloadFileSync = async function ({
+  uri,
+  filename,
+  successCallback = () => {},
+  failedCallback = () => {},
+}) {
+  await new Promise((resolve, reject) => {
+    request.head(uri, function (err, res, body) {
+      if (err) {
+        failedCallback(err);
+        reject(err);
+      } else {
+        request({ uri, gzip: true })
+          .pipe(fs.createWriteStream(filename, { flags: "w+" }))
+          .on("close", () => {
+            successCallback();
+            resolve();
+          });
+      }
+    });
   });
 };
 

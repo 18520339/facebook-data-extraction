@@ -5,7 +5,7 @@ Tham khảo cách làm việc với Facebook API từ [Hoàng Minh Dùng MMO](ht
 ## LƯU _ID_ VÀ _LINK_ ẢNH
 
 - Dùng hàm _saveAlbumPhotoLinks_:
-  - tham số duy nhất là album_id: id của album (string)
+  - tham số album_id: id của album (string)
 - Hàm này sẽ tải và lưu id của từng hình, link của từng hình có trong album ảnh.
 - Dữ liệu sau khi tải xong được lưu vào file dạng [/links/{album_id}.txt](./links/).
 - Từng dòng trong file chứa 2 thông tin: (cách nhau bởi **dấu chấm phẩy ;**)
@@ -16,6 +16,6 @@ Tham khảo cách làm việc với Facebook API từ [Hoàng Minh Dùng MMO](ht
 ## LƯU FILE _ẢNH_
 
 - Dùng hàm _saveAlbumPhoto_:
-  - Tham số duy nhất là album_id: id của album
+  - Tham số album_id: id của album (string)
 - Hàm này sẽ tải và lưu tất cả hình có trong album ảnh.
 - Các file ảnh sau khi tải sẽ được lưu trong folder dạng [/images/{album_id}/{photo_id}.png](./images/).

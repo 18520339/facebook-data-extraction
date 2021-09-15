@@ -9,7 +9,8 @@ import {
 import {
   createIfNotExistDir,
   deleteFile,
-  downloadImage,
+  downloadFile,
+  downloadFileSync,
   saveToFile,
   sleep,
 } from "./utils.js";
@@ -44,7 +45,7 @@ const fetchAlbumData = async ({
   albumId,
   pageNum = Infinity,
   pageSize = 100, // max is 100 in facebook graph API
-  pageFetchedCallback = () => {},
+  pageFetchedCallback = async () => {},
 }) => {
   let currentPage = 1;
   let hasNextCursor = true;
@@ -69,7 +70,7 @@ const fetchAlbumData = async ({
       );
 
       // callback when each page fetched
-      pageFetchedCallback(data.imgData);
+      await pageFetchedCallback(data.imgData);
 
       // get next cursor AND increase pageNum
       nextCursor = data.nextCursor;
@@ -110,23 +111,39 @@ export const saveAlbumPhoto = async (albumId) => {
   console.log(`STARTING FETCH ALBUM ${albumId}...`);
   fetchAlbumData({
     albumId,
-    pageFetchedCallback: (pageImgsData) => {
+    pageFetchedCallback: async (pageImgsData) => {
       // create dir if not exist
       const dir = `${FOLDER_TO_SAVE_IMAGES}/${albumId}`;
       createIfNotExistDir(dir);
 
       // save all photo to directory
       console.log(`Saving images ...`);
+      const promises = [];
+
       for (let data of pageImgsData) {
         const seperated = data.split(ID_LINK_SEPERATOR);
         const photo_id = seperated[0];
         const link = seperated[1];
 
         const savePath = `${dir}/${photo_id}.png`;
-        downloadImage(link, savePath, () => {
-          console.log(`> Saved ${savePath}`);
-        });
+        promises.push(
+          downloadFileSync({
+            uri: link,
+            filename: savePath,
+            successCallback: () => {
+              console.log(`> Saved ${savePath}`);
+            },
+            failedCallback: (e) => {
+              console.log(`ERROR while save image ${savePath}`);
+            },
+          })
+        );
       }
+
+      try {
+        await Promise.all(promises);
+        console.log(`> Saved ${promises.length} images.`);
+      } catch (e) {}
     },
   });
 };
