@@ -38,4 +38,8 @@ Tham khảo cách làm việc với Facebook API từ [Hoàng Minh Dùng MMO](ht
 
 ## CHẠY CODE
 
-Chỉ cần mở terminal và gõ _node index.js_ tại folder chứa project là xong. Đợi thành quả thôi.
+Chỉ cần mở terminal tại folder chứa code và gõ
+- _npm install_
+- _node index.js_
+
+Kết quả sẽ xuất trong màn hình console

@@ -1,24 +1,39 @@
-import { saveAlbumPhoto, saveAlbumPhotoLinks } from "./dowload_album.js";
 import {
-  getTimeLineAlbumId,
+  fetchAlbumInfo,
+  saveAlbumPhoto,
+  saveAlbumPhotoLinks,
+} from "./dowload_album.js";
+import {
+  fetchTimeLineAlbumId,
   saveTimeLineAlbum_FBPage,
   saveTimeLineAlbumPhotoLinks_FBPage,
 } from "./download_timeline_album.js";
 
-// Lưu tất cả hình trong timeline album của 1 page fb
-saveTimeLineAlbum_FBPage("BoxGirlVn");
+// ============ Lấy thông tin album timeline từ page id trên fb ============
+(async () => {
+  const album_id = await fetchTimeLineAlbumId("ColourfulSpace");
+  console.log(album_id);
 
-// Lưu tất cả id ảnh và link ảnh trong timeline album của 1 page fb
+  if (album_id) {
+    const album_info = await fetchAlbumInfo(album_id);
+    console.log(album_info);
+  }
+})();
+
+// ============ Lưu tất cả hình trong timeline album của 1 page fb ============
+// saveTimeLineAlbum_FBPage("BoxGirlVn");
+
+// ============ Lưu tất cả id ảnh và link ảnh trong timeline album của 1 page  ============
 // saveTimeLineAlbumPhotoLinks_FBPage("BoxGirlVn");
 
-// Lưu tất cả hình trong 1 album bất kỳ (nếu biết trước id của album)
+// ============ Lưu tất cả hình trong 1 album bất kỳ (nếu biết trước id của album) ============
 // saveAlbumPhoto("245004546697321");
 
-// Lưu tất cả id ảnh và link ảnh trong 1 album bất kỳ (nếu biết trước id của album)
+// ============ Lưu tất cả id ảnh và link ảnh trong 1 album bất kỳ (nếu biết trước id của album) ============
 // saveAlbumPhotoLinks("245004546697321");
 
 // ================================ EXAMPLES =================================
-// ColourfulSpace: https://www.facebook.com/media/set/?vanity=ColourfulSpace&set=a.945632905514659
+//  ColourfulSpace: https://www.facebook.com/media/set/?vanity=ColourfulSpace&set=a.945632905514659
 // saveAlbumPhotoLinks("945632905514659");
 // saveAlbumPhoto("945632905514659"); // CẨN THẬN: hơn 30 nghìn ảnh lận đó, lưu vào máy là hơi bị LÂU và NẶNG luôn :))
 
