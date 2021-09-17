@@ -1,5 +1,17 @@
+// Lấy group id - trường hợp url của group hiển thị tên chứ ko hiển thị id
+javascript: (function () {
+  const list_a = document.querySelectorAll("a");
+  for (let a of Array.from(list_a)) {
+    const found = /(?<=\/groups\/)(.+\d)(?=\/user\/)/.exec(a);
+    if (found && found[0]) {
+      window.prompt("GROUP ID:", found[0]);
+      return;
+    }
+  }
+  alert("Group id Not found!");
+})();
 
-// Chỉ dùng cho trang m.facebook.com
+// Lấy access token - Chỉ dùng cho trang m.facebook.com
 javascript: (function () {
   if (window.location.host === "m.facebook.com") {
     console.log("Đang lấy token ...");
@@ -23,7 +35,7 @@ javascript: (function () {
   }
 })();
 
-// Dùng cho www.facebook.com - script chưa được kiểm định an toàn
+// Lấy access token Dùng cho www.facebook.com - script chưa được kiểm định an toàn
 javascript: (function () {
   var uid = document.cookie.match(/c_user=(d+)/)[1],
     dtsg = document.getElementsByName("fb_dtsg")[0].value,

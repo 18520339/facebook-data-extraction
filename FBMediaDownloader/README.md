@@ -78,8 +78,10 @@ Kết quả sẽ xuất trong màn hình console
 
 ## BOOKMARK HỖ TRỢ
 
-- <a href='javascript: (function () {if(window.location.host==="m.facebook.com"){console.log("Đang lấy token ...");fetch("https://m.facebook.com/composer/ocelot/async_loader/?publisher=feed").then((response)=>response.text()).then((text)=>{if("<"==text[0]){alert("Chưa đăng nhập. Bạn cần đăng nhập fb thì mới lấy được token.")}else{window.prompt("Token:",/(?<=accessToken\\":\\")(.*?)(?=\\")/.exec(text)[0])}})}else{alert("Bookmark này chỉ hoạt động trên trang m.facebook.com\nBạn hãy vào trang trên và ấn lại bookmark để lấy token an toàn nhé.");window.open("https://m.facebook.com")}})()'>Bookmark</a>
-  giúp lấy Access Token FB AN TOÀN ([Soruce Code](./more/get_fb_token_bookmark.js))
+Mình cũng sẵn tiện viết 1 vài đoạn bookmark script. Các bạn có thể vào [bookmarks.js](./scripts/bookmarks.js) để lấy.
+
+- Bookmark lấy **Access Token**
+- Bookmark lấy **Group ID** - trường hợp url của group hiển thị tên chứ ko hiển thị id
 
 ## LINK NGON
 

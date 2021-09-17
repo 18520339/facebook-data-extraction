@@ -6,7 +6,8 @@ import {
   ID_LINK_SEPERATOR,
   FOLDER_TO_SAVE_LINKS,
   FOLDER_TO_SAVE_IMAGES,
-} from "./config.js";
+  PHOTO_FILE_FORMAT,
+} from "../config.js";
 import {
   createIfNotExistDir,
   deleteFile,
@@ -98,26 +99,21 @@ const fetchAlbumPhotos = async ({
 // Bạn có thể thêm những trường khác vào url để lấy được nhiều thông tin hơn, tìm hiểu các trường trong https://developers.facebook.com/tools/explorer/
 export const fetchAlbumInfo = async (albumId) => {
   // create link to fetch
-  let url = `${FB_API_HOST}/${albumId}?fields=count,link,name,updated_time,id,created_time,type,from&access_token=${ACCESS_TOKEN}`;
+  let url = `${FB_API_HOST}/${albumId}?fields=count,link,name&access_token=${ACCESS_TOKEN}`;
 
   try {
     // fetch data
     const response = await fetch(url);
     const json = await response.json();
 
+    if(json.error) throw json.error;
+
     // return album infomation
     return {
       id: albumId,
-      type: json.type,
       count: json.count,
       link: json.link,
       name: json.name,
-      created_time: json.created_time,
-      updated_time: json.updated_time,
-      from: {
-        name: json.from?.name,
-        id: json.from?.id,
-      },
     };
   } catch (e) {
     console.error("ERROR while fetch album information", e);
@@ -159,7 +155,7 @@ export const saveAlbumPhoto = async (albumId) => {
         const photo_id = seperated[0];
         const link = seperated[1];
 
-        const savePath = `${dir}/${photo_id}.png`;
+        const savePath = `${dir}/${photo_id}.${PHOTO_FILE_FORMAT}`;
         promises.push(
           downloadFileSync({
             uri: link,

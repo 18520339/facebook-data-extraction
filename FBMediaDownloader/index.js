@@ -2,12 +2,15 @@ import {
   fetchAlbumInfo,
   saveAlbumPhoto,
   saveAlbumPhotoLinks,
-} from "./dowload_album.js";
+} from "./scripts/download_album.js";
 import {
   fetchTimeLineAlbumId,
   saveTimeLineAlbum_FBPage,
   saveTimeLineAlbumPhotoLinks_FBPage,
-} from "./download_timeline_album.js";
+} from "./scripts/download_timeline_album.js";
+
+// import { menu } from "./scripts/menu.js";
+// menu();
 
 // ============ Lấy thông tin album timeline từ page id trên fb ============
 (async () => {
