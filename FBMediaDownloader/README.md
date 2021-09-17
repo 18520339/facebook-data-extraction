@@ -2,9 +2,11 @@
 
 1 Tool nhỏ viết bằng Nodejs. Giúp tải nhanh 1 album ảnh bất kì trên facebook, bạn chỉ cần có id của album ảnh đó là được.
 
+![Album with 30k photos](./screenshots/1.png)
+
 ## Ưu Điểm
 
-### **2 CHẾ ĐỘ**
+### **CÓ 2 CHẾ ĐỘ**
 
 - Bạn có thể tải tất cả **FILE ẢNH** trong album.
 - Hoặc có thể tải tất cả **LINK** của các ảnh trong album. Và lưu danh sách link đó vào **1 file**. (Rồi sau này muốn làm gì đống link đó thì tùy bạn).
