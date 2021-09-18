@@ -1,5 +1,11 @@
-import fetch from "node-fetch";
-import { ACCESS_TOKEN, FB_API_HOST } from "../config.js";
+import { FB_API_HOST, MEDIA_TYPE } from "./constants.js";
+import {
+  ACCESS_TOKEN,
+  FOLDER_TO_SAVE_GROUP_MEDIA,
+  PHOTO_FILE_FORMAT,
+  VIDEO_FILE_FORMAT,
+} from "../config.js";
+import { createIfNotExistDir, downloadFileSync, myFetch } from "./utils.js";
 
 // Lấy ra các thông tin cần thiết (id, ảnh, video) từ dữ liệu attachment.
 const getMediaFromAttachment = (attachment) => {
@@ -27,14 +33,14 @@ const getMediaFromAttachment = (attachment) => {
     }*/
   if (type === "photo") {
     filtered_media.push({
-      type: "photo",
+      type: MEDIA_TYPE.PHOTO,
       id: id,
       url: attachment.media.image.src,
     });
   }
 
   /*
-    Attachment LOẠI VIDEO_AUTOPLAY có định dạng như sau
+    Attachment LOẠI VIDEO_AUTOPLAY, VIDEO_INLINE, VIDEO có định dạng như sau
     {
         "media": {
             "image": {
@@ -51,9 +57,13 @@ const getMediaFromAttachment = (attachment) => {
         "type": "video_autoplay",
         "url": "https://www.facebook.com/groups/j2team.community.girls/permalink/1045907852835609/"
     } */
-  if (type === "video_autoplay") {
+  if (
+    type === "video_autoplay" ||
+    type === "video_inline" ||
+    type === "video"
+  ) {
     filtered_media.push({
-      type: "video",
+      type: MEDIA_TYPE.VIDEO,
       id: id,
       url: attachment.media.source,
     });
@@ -94,27 +104,20 @@ const getMediaFromAttachment = (attachment) => {
   return filtered_media;
 };
 
-// fetch tất cả bài post (feed) trong 1 group, và lấy ra các media (ảnh, video, ..) trong các bài post đó
+// fetch tất cả bài post (feed) trong 1 group, và lấy ra các media (ảnh, video, ..) trong các bài post đó (NẾU CÓ)
 // Trả về danh sách chứa {id, url} của từng media
-export const fetchGroupFeeds = async (groupId, page_limit = Infinity) => {
-  const fetchOnce = async (_url) => {
-    try {
-      const response = await fetch(_url);
-      const json = await response.json();
-      return json;
-    } catch (e) {
-      return {};
-    }
-  };
-
-  const PAGE_LIMIT = 2;
-  const all_media = []; // store all media {id, url}
+const fetchGroupPostMedia = async ({
+  groupId,
+  pageLimit = Infinity, // Số lần fetch, mỗi lần fetch được khoảng 25 bài post (?)
+  pageFetchedCallback = () => {},
+}) => {
+  const all_media = []; // store all media {id, url, type}
   let page = 1;
-  let url = `${FB_API_HOST}/${groupId}/feed?fields=attachments&access_token=${ACCESS_TOKEN}`;
+  let url = `${FB_API_HOST}/${groupId}/feed?fields=attachments{media,type,subattachments,target}&access_token=${ACCESS_TOKEN}`;
 
-  while (url && page <= PAGE_LIMIT) {
+  while (url && page <= pageLimit) {
     console.log(`FETCHING page ${page}...`);
-    const fetchData = await fetchOnce(url);
+    const fetchData = await myFetch(url);
     page++;
 
     if (fetchData?.data) {
@@ -126,8 +129,13 @@ export const fetchGroupFeeds = async (groupId, page_limit = Infinity) => {
         });
       });
 
-      console.log(`> Found ${media.length} media.`);
       all_media.push(...media);
+      console.log(
+        `> Found ${media.length} media. (Total: ${all_media.length})`
+      );
+
+      // callback when each page fetched
+      await pageFetchedCallback(media);
 
       // get next paging
       url = fetchData?.paging?.next;
@@ -136,7 +144,76 @@ export const fetchGroupFeeds = async (groupId, page_limit = Infinity) => {
     }
   }
 
-  console.log(`> TOTAL FOUND: ${all_media.length} media.`);
+  return all_media;
 };
 
-fetchGroupFeeds(697332711026460);
+// Hàm này fetch tất cả các bài post của 1 group, và tải về media (photo, video) có trong các bài post
+export const saveGroupPostMedia = async ({
+  groupId,
+  downloadVideo = true,
+  pageLimit = Infinity,
+}) => {
+  console.log(`FETCHING POST MEDIA IN GROUP ${groupId}...`);
+  fetchGroupPostMedia({
+    groupId: groupId,
+    pageLimit: pageLimit,
+    pageFetchedCallback: async (media) => {
+      // create dir if not exist
+      const dir = `${FOLDER_TO_SAVE_GROUP_MEDIA}/${groupId}`;
+      createIfNotExistDir(dir);
+
+      // save all photo to directory
+      console.log(`Saving media ...`);
+      const promises = [];
+
+      for (let data of media) {
+        const { id: media_id, url: media_url, type: media_type } = data;
+
+        if (!downloadVideo && media_type === MEDIA_TYPE.VIDEO) continue;
+
+        const file_format =
+          media_type === MEDIA_TYPE.PHOTO
+            ? PHOTO_FILE_FORMAT
+            : VIDEO_FILE_FORMAT;
+
+        const savePath = `${dir}/${media_id}.${file_format}`;
+
+        promises.push(
+          downloadFileSync({
+            uri: media_url,
+            filename: savePath,
+            successCallback: () => {
+              console.log(`> Saved ${savePath}`);
+            },
+            failedCallback: (e) => {
+              console.log(`ERROR while save media ${savePath}`, e.toString());
+            },
+          })
+        );
+      }
+
+      try {
+        await Promise.all(promises);
+        console.log(`> Saved ${promises.length} media.`);
+      } catch (e) {}
+    },
+  });
+};
+
+saveGroupPostMedia({
+  groupId: 2769931233237192, //697332711026460,
+  downloadVideo: true,
+  pageLimit: 2,
+});
+// fetchGroupPostMedia({ groupId: 697332711026460, pageLimit: 1 });
+
+// downloadFileSync({
+//   uri: "https://video.fsgn2-2.fna.fbcdn.net/v/t42.1790-2/242040606_1052870295479615_1737332562906232233_n.mp4?_nc_cat=100&ccb=1-5&_nc_sid=985c63&efg=eyJybHIiOjM1NCwicmxhIjo1MTIsInZlbmNvZGVfdGFnIjoic3ZlX3NkIn0%3D&_nc_ohc=V8NFPv8kz40AX__P_dn&rl=354&vabr=197&_nc_ht=video.fsgn2-2.fna&oh=cf8a3a478db83801cdb58a470b450d23&oe=6147FC49",
+//   filename: "test.mp4",
+//   successCallback: () => {
+//     console.log("saved");
+//   },
+//   failedCallback: () => {
+//     console.log("failed");
+//   },
+// });

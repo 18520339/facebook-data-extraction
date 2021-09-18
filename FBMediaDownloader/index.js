@@ -13,15 +13,15 @@ import {
 // menu();
 
 // ============ Lấy thông tin album timeline từ page id trên fb ============
-(async () => {
-  const album_id = await fetchTimeLineAlbumId("ColourfulSpace");
-  console.log(album_id);
+// (async () => {
+//   const album_id = await fetchTimeLineAlbumId("ColourfulSpace");
+//   console.log(album_id);
 
-  if (album_id) {
-    const album_info = await fetchAlbumInfo(album_id);
-    console.log(album_info);
-  }
-})();
+//   if (album_id) {
+//     const album_info = await fetchAlbumInfo(album_id);
+//     console.log(album_info);
+//   }
+// })();
 
 // ============ Lưu tất cả hình trong timeline album của 1 page fb ============
 // saveTimeLineAlbum_FBPage("BoxGirlVn");
@@ -30,7 +30,7 @@ import {
 // saveTimeLineAlbumPhotoLinks_FBPage("BoxGirlVn");
 
 // ============ Lưu tất cả hình trong 1 album bất kỳ (nếu biết trước id của album) ============
-// saveAlbumPhoto("245004546697321");
+saveAlbumPhoto("245004546697321");
 
 // ============ Lưu tất cả id ảnh và link ảnh trong 1 album bất kỳ (nếu biết trước id của album) ============
 // saveAlbumPhotoLinks("245004546697321");

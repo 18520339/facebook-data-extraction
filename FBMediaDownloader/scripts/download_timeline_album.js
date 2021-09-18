@@ -3,7 +3,8 @@
 // album này sẽ không hiện trên trang web facebook (hoặc có mà mình ko biết cách tìm ở đâu), cần dùng tool để lấy
 
 import fetch from "node-fetch";
-import { ACCESS_TOKEN, FB_API_HOST } from "../config.js";
+import { FB_API_HOST } from "./constants.js";
+import { ACCESS_TOKEN } from "../config.js";
 import { saveAlbumPhoto, saveAlbumPhotoLinks } from "./download_album.js";
 
 export const fetchTimeLineAlbumId = async (page_id) => {

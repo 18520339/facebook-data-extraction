@@ -1,7 +1,6 @@
-import fetch from "node-fetch";
+import { FB_API_HOST } from "./constants.js";
 import {
   ACCESS_TOKEN,
-  FB_API_HOST,
   WAIT_BEFORE_NEXT_FETCH,
   ID_LINK_SEPERATOR,
   FOLDER_TO_SAVE_LINKS,
@@ -12,43 +11,35 @@ import {
   createIfNotExistDir,
   deleteFile,
   downloadFileSync,
+  myFetch,
   saveToFile,
   sleep,
 } from "./utils.js";
 
 // Hàm này fetch và trả về 2 thứ:
-// 1. Toàn bộ link ảnh (max 100) từ 1 vị trí (cursor) nhất định trong album ảnh
+// 1. Toàn bộ link ảnh (max 100) từ 1 vị trí (cursor) nhất định trong album ảnh. Định dạng: [[{id: .., url: ...}, ...]
 // 2. Vị trí của ảnh tiếp theo (next cursor) (nếu có)
 const fetchAlbumPhotosFromCursor = async ({ albumId, cursor, limit = 100 }) => {
   // create link to fetch
   let url = `${FB_API_HOST}/${albumId}/photos?fields=largest_image&limit=${limit}&access_token=${ACCESS_TOKEN}`;
-  if (cursor) {
-    url += `&after=${cursor}`;
-  }
+  if (cursor) url += `&after=${cursor}`;
 
-  try {
-    // fetch data
-    const response = await fetch(url);
-    const json = await response.json();
+  const json = await myFetch(url);
 
-    // return imgData + next cursor
-    return {
-      imgData: json.data.map(
-        (_) => _.id + ID_LINK_SEPERATOR + _.largest_image.source
-      ),
-      nextCursor: json.paging?.cursors?.after || null,
-    };
-  } catch (e) {
-    return {};
-  }
+  // return imgData + next cursor
+  return {
+    imgData: json.data?.map((_) => ({ id: _.id, url: _.largest_image.source })),
+    nextCursor: json.paging?.cursors?.after || null,
+  };
 };
 
 // Hàm này fetch về toàn bộ ảnh từ 1 album. Sử dụng hàm fetchAlbumPhotosFromCursor
 // Liên tục fetch ảnh và lấy nextCursor, rồi lại fetch ảnh tiếp ở cursor mới. Liên tục cho tới khi không còn nextCursor
+// Dữ liệu trả về là 1 mảng chứa dữ liệu {id, url} của từng ảnh. Có dạng [{id: .., url: ...}, {id: .., url: ...}, ...]
 const fetchAlbumPhotos = async ({
   albumId,
-  pageNum = Infinity,
-  pageSize = 100, // max is 100 in facebook graph API
+  pageSize = 100, // max is 100
+  pageLimit = Infinity,
   pageFetchedCallback = async () => {},
 }) => {
   let currentPage = 1;
@@ -56,7 +47,7 @@ const fetchAlbumPhotos = async ({
   let nextCursor = null;
   let allImgsData = [];
 
-  while (hasNextCursor && currentPage <= pageNum) {
+  while (hasNextCursor && currentPage <= pageLimit) {
     console.log(`Fetching page: ${currentPage}, pageSize: ${pageSize}...`);
 
     const data = await fetchAlbumPhotosFromCursor({
@@ -67,7 +58,7 @@ const fetchAlbumPhotos = async ({
 
     if (data.imgData) {
       // concat data to result array
-      allImgsData = allImgsData.concat(data.imgData);
+      allImgsData.push(...data.imgData);
 
       console.log(
         `> Fetched ${data.imgData.length} photos. (Total: ${allImgsData.length})`
@@ -89,6 +80,7 @@ const fetchAlbumPhotos = async ({
     } else {
       // FAILED => re-fetch currentPage
       console.log("FAILED.");
+      break;
     }
   }
 
@@ -106,7 +98,7 @@ export const fetchAlbumInfo = async (albumId) => {
     const response = await fetch(url);
     const json = await response.json();
 
-    if(json.error) throw json.error;
+    if (json.error) throw json.error;
 
     // return album infomation
     return {
@@ -131,7 +123,11 @@ export const saveAlbumPhotoLinks = async (albumId) => {
   fetchAlbumPhotos({
     albumId,
     pageFetchedCallback: (pageImgsData) => {
-      saveToFile(fileName, pageImgsData.join("\n"), false);
+      saveToFile(
+        fileName,
+        pageImgsData.map((_) => _.id + ID_LINK_SEPERATOR + _.url).join("\n"),
+        false
+      );
     },
   });
 };
@@ -151,20 +147,18 @@ export const saveAlbumPhoto = async (albumId) => {
       const promises = [];
 
       for (let data of pageImgsData) {
-        const seperated = data.split(ID_LINK_SEPERATOR);
-        const photo_id = seperated[0];
-        const link = seperated[1];
+        const { id: photo_id, url: photo_url } = data;
 
         const savePath = `${dir}/${photo_id}.${PHOTO_FILE_FORMAT}`;
         promises.push(
           downloadFileSync({
-            uri: link,
+            uri: photo_url,
             filename: savePath,
             successCallback: () => {
               console.log(`> Saved ${savePath}`);
             },
             failedCallback: (e) => {
-              console.log(`ERROR while save image ${savePath}`);
+              console.log(`ERROR while save image ${savePath}`, e.toString());
             },
           })
         );

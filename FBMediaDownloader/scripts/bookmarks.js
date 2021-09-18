@@ -74,6 +74,13 @@ javascript: (function () {
       return;
     }
   }
+
+  const location_check = /(?<=\/groups\/)(.*?)($|(?=&))/.exec(location.href);
+  if (location_check && location_check[0]) {
+    window.prompt(`GROUP ID của ${group_name}:`, location_check[0]);
+    return;
+  }
+
   window.prompt(
     "Không tìm thấy GROUP ID nào trong trang web!\nBạn có đang ở đúng trang group chưa?\nTrang web Ví dụ:",
     "https://www.facebook.com/groups/j2team.community.girls"

@@ -1,5 +1,17 @@
 import fs from "fs";
+import fetch from "node-fetch";
 import request from "request";
+
+export const myFetch = async (_url) => {
+  try {
+    const response = await fetch(_url);
+    const json = await response.json();
+    return json;
+  } catch (e) {
+    console.log("ERROR", e.toString());
+    return null;
+  }
+};
 
 export const sleep = (ms) => {
   return new Promise((resolve) => {
