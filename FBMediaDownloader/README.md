@@ -69,19 +69,25 @@
 
 ## CHẠY CODE
 
-Chỉ cần mở terminal tại folder chứa code và gõ
+Chỉ cần mở terminal tại folder chứa code và:
 
 - _npm install_
+- _bỏ comment_ hàm muốn dùng trong file index.js
 - _node index.js_
 
-Kết quả sẽ xuất trong màn hình console
+Kết quả sẽ xuất trong màn hình console.
 
 ## BOOKMARK HỖ TRỢ
 
 Mình cũng sẵn tiện viết 1 vài đoạn bookmark script. Các bạn có thể vào [bookmarks.js](./scripts/bookmarks.js) để lấy.
 
+Có những bookmark sau:
+
 - Bookmark lấy **Access Token**
+- Bookmark lấy **Album ID** - khi đang xem 1 album
 - Bookmark lấy **Group ID** - trường hợp url của group hiển thị tên chứ ko hiển thị id
+- Bookmark lấy **User ID** - khi đang xem profile của 1 user
+- Bookmark lấy **Timeline Album ID** của Page FB - khi đang xem trang Home của 1 Page FB (script này ko ổn định, tùy page)
 
 ## LINK NGON
 
