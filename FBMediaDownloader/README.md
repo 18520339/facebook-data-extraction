@@ -24,7 +24,7 @@
 - Timeline Album chỉ có trên TRANG FB, không có trên GROUP FB hay FB CÁ NHÂN (hoặc có mà mình chưa tìm ra)
 - Bạn chỉ cần truyền vào id của TRANG FB là tool sẽ tự tìm timline album của TRANG và tải về cho bạn (NẾU CÓ).
 
-### **TỈ LỆ BỊ CHECKPOINT THẤP**
+### **KHÔNG BỊ CHECKPOINT**
 
 - Tool dùng acccess token của bạn để fetch dữ liệu từ Facebook (Các API mình tham khảo từ [Đây](https://developers.facebook.com/tools/explorer)).
 - Mỗi lần fetch lấy dữ liệu ảnh của album, sẽ lấy được 1 json object, chứa tối đa 100 link ảnh.
