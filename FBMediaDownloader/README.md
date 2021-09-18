@@ -33,6 +33,18 @@
 - Do có độ trễ nên khó bị check point lắm nhé.
 - Mình đã thử ở album [Này](https://www.facebook.com/media/set?vanity=ColourfulSpace&set=a.945632905514659). Trên 30 NGHÌN ảnh, tải rất mượt và không vấn đề gì nhé.
 
+### BOOKMARK HỖ TRỢ
+
+Mình cũng sẵn tiện viết 1 vài đoạn bookmark script. Các bạn có thể vào [bookmarks.js](./scripts/bookmarks.js) để lấy.
+
+Có những bookmark sau:
+
+- Bookmark lấy **Access Token**
+- Bookmark lấy **Album ID** - khi đang xem 1 album
+- Bookmark lấy **Group ID** - trường hợp url của group hiển thị tên chứ ko hiển thị id
+- Bookmark lấy **User ID** - khi đang xem profile của 1 user
+- Bookmark lấy **Timeline Album ID** của Page FB - khi đang xem trang Home của 1 Page FB (script này ko ổn định, tùy page)
+
 ## CHUẨN BỊ
 
 Để có thể chạy được code thì bạn cần:
@@ -54,7 +66,7 @@
 - Dùng hàm _saveAlbumPhotoLinks_:
   - tham số album_id: id của album (string)
 - Hàm này sẽ tải và lưu id của từng hình, link của từng hình có trong album ảnh.
-- Dữ liệu sau khi tải xong được lưu vào file dạng *{album_id}.txt*.
+- Dữ liệu sau khi tải xong được lưu vào file dạng _{album_id}.txt_.
 - Từng dòng trong file chứa 2 thông tin: (cách nhau bởi **dấu chấm phẩy ;**)
   - **photo_id** (id của hình)
   - **photo_url** (link của hình)
@@ -65,7 +77,7 @@
 - Dùng hàm _saveAlbumPhoto_:
   - Tham số album_id: id của album (string)
 - Hàm này sẽ tải và lưu tất cả hình có trong album ảnh.
-- Các file ảnh sau khi tải sẽ được lưu dưới dạng *{album_id}/{photo_id}.png*.
+- Các file ảnh sau khi tải sẽ được lưu dưới dạng _{album_id}/{photo_id}.png_.
 
 ## CHẠY CODE
 
@@ -76,18 +88,6 @@ Chỉ cần mở terminal tại folder chứa code và:
 - _node index.js_
 
 Kết quả sẽ xuất trong màn hình console.
-
-## BOOKMARK HỖ TRỢ
-
-Mình cũng sẵn tiện viết 1 vài đoạn bookmark script. Các bạn có thể vào [bookmarks.js](./scripts/bookmarks.js) để lấy.
-
-Có những bookmark sau:
-
-- Bookmark lấy **Access Token**
-- Bookmark lấy **Album ID** - khi đang xem 1 album
-- Bookmark lấy **Group ID** - trường hợp url của group hiển thị tên chứ ko hiển thị id
-- Bookmark lấy **User ID** - khi đang xem profile của 1 user
-- Bookmark lấy **Timeline Album ID** của Page FB - khi đang xem trang Home của 1 Page FB (script này ko ổn định, tùy page)
 
 ## LINK NGON
 
