@@ -2,10 +2,18 @@ import { FB_API_HOST, MEDIA_TYPE } from "./constants.js";
 import {
   ACCESS_TOKEN,
   FOLDER_TO_SAVE_GROUP_MEDIA,
+  FOLDER_TO_SAVE_LINKS,
+  ID_LINK_SEPERATOR,
   PHOTO_FILE_FORMAT,
   VIDEO_FILE_FORMAT,
 } from "../config.js";
-import { createIfNotExistDir, downloadFileSync, myFetch } from "./utils.js";
+import {
+  createIfNotExistDir,
+  deleteFile,
+  downloadFileSync,
+  myFetch,
+  saveToFile,
+} from "./utils.js";
 
 // Lấy ra các thông tin cần thiết (id, ảnh, video) từ dữ liệu attachment.
 const getMediaFromAttachment = (attachment) => {
@@ -147,13 +155,40 @@ const fetchGroupPostMedia = async ({
   return all_media;
 };
 
+// Tải và lưu tất cả id hình ảnh + link hình ảnh từ album, lưu vào file có tên trùng với albumId, lưu trong folder links
+export const saveGroupPostMediaLinks = ({
+  groupId,
+  includeVideo = true,
+  pageLimit = Infinity,
+}) => {
+  console.log(`STARTING FETCH POST_MEDIA_LINKS IN GROUP ${groupId}...`);
+
+  const fileName = `${FOLDER_TO_SAVE_LINKS}/${groupId}.txt`;
+  deleteFile(fileName); // delete if file exist
+
+  fetchGroupPostMedia({
+    groupId: groupId,
+    pageLimit: pageLimit,
+    pageFetchedCallback: (media) => {
+      if (!includeVideo)
+        media = media.filter((m) => m.type !== MEDIA_TYPE.VIDEO);
+
+      saveToFile(
+        fileName,
+        media.map((_) => _.id + ID_LINK_SEPERATOR + _.url).join("\n"),
+        false
+      );
+    },
+  });
+};
+
 // Hàm này fetch tất cả các bài post của 1 group, và tải về media (photo, video) có trong các bài post
-export const saveGroupPostMedia = async ({
+export const saveGroupPostMedia = ({
   groupId,
   downloadVideo = true,
   pageLimit = Infinity,
 }) => {
-  console.log(`FETCHING POST MEDIA IN GROUP ${groupId}...`);
+  console.log(`STARTING FETCH POST_MEDIA IN GROUP ${groupId}...`);
   fetchGroupPostMedia({
     groupId: groupId,
     pageLimit: pageLimit,
@@ -200,10 +235,14 @@ export const saveGroupPostMedia = async ({
   });
 };
 
-saveGroupPostMedia({
-  groupId: 2769931233237192, //697332711026460,
-  downloadVideo: true,
-  pageLimit: 2,
+// saveGroupPostMedia({
+//   groupId: 2769931233237192, //697332711026460,
+//   downloadVideo: true,
+//   pageLimit: 2,
+// });
+saveGroupPostMediaLinks({
+  groupId: 697332711026460,
+  pageLimit: 1,
 });
 // fetchGroupPostMedia({ groupId: 697332711026460, pageLimit: 1 });
 

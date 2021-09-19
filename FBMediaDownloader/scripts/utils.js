@@ -6,6 +6,10 @@ export const myFetch = async (_url) => {
   try {
     const response = await fetch(_url);
     const json = await response.json();
+    if (json.error) {
+      console.log("ERROR", JSON.stringify(json, null, 4));
+      return null;
+    }
     return json;
   } catch (e) {
     console.log("ERROR", e.toString());

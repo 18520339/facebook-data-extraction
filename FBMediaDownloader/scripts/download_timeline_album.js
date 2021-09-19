@@ -2,28 +2,24 @@
 // Thường thì chỉ có page mới có timeline album
 // album này sẽ không hiện trên trang web facebook (hoặc có mà mình ko biết cách tìm ở đâu), cần dùng tool để lấy
 
-import fetch from "node-fetch";
 import { FB_API_HOST } from "./constants.js";
 import { ACCESS_TOKEN } from "../config.js";
 import { saveAlbumPhoto, saveAlbumPhotoLinks } from "./download_album.js";
+import { myFetch } from "./utils.js";
 
 export const fetchTimeLineAlbumId = async (page_id) => {
   // create link to fetch all albums of page
   let url = `${FB_API_HOST}/${page_id}/albums?fields=type&limit=100&access_token=${ACCESS_TOKEN}`;
 
-  try {
-    // fetch data
-    const response = await fetch(url);
-    const json = await response.json();
+  // fetch data
+  const json = await myFetch(url);
+  if (!json) return null;
 
-    // find timeline album
-    const timeLineAlbum = json.data.find((_) => _.type === "wall");
+  // find timeline album
+  const timeLineAlbum = json.data.find((_) => _.type === "wall");
 
-    // return id (or null if not found timeline album)
-    return timeLineAlbum?.id;
-  } catch (e) {
-    console.error("ERROR", e.toString());
-  }
+  // return id (or null if not found timeline album)
+  return timeLineAlbum?.id;
 };
 
 export const saveTimeLineAlbumPhotoLinks_FBPage = async (page_id) => {
