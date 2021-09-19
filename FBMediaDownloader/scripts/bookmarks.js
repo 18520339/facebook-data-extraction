@@ -52,8 +52,6 @@ javascript: (function () {
   };
   if (found(/(?<=\/profile\.php\?id=)(.\d+?)($|(?=&))/.exec(location.href)))
     return;
-  if (found(/(?<=\"USER_ID\":\")(.\d+?)(?=\"\,)/.exec(document.body.innerHTML)))
-    return;
   const list_a = document.querySelectorAll("a");
   for (let a of Array.from(list_a)) {
     if (found(/(?<=set\=pb\.)(.\d+?)(?=\.)/.exec(a.href))) return;
