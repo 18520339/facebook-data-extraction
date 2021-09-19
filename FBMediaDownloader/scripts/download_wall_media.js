@@ -1,7 +1,7 @@
 import { FB_API_HOST, MEDIA_TYPE } from "./constants.js";
 import {
   ACCESS_TOKEN,
-  FOLDER_TO_SAVE_GROUP_MEDIA,
+  FOLDER_TO_SAVE_FEED_MEDIA,
   FOLDER_TO_SAVE_LINKS,
   ID_LINK_SEPERATOR,
   PHOTO_FILE_FORMAT,
@@ -19,8 +19,10 @@ import {
 const getMediaFromAttachment = (attachment) => {
   const filtered_media = [];
 
-  let id = attachment.target.id;
-  let type = attachment.type;
+  let id = attachment?.target?.id;
+  let type = attachment?.type;
+
+  if (!id || !type) return filtered_media;
 
   /*
     Attachment LOẠI PHOTO có cấu trúc như sau
@@ -112,16 +114,16 @@ const getMediaFromAttachment = (attachment) => {
   return filtered_media;
 };
 
-// fetch tất cả bài post (feed) trong 1 group, và lấy ra các media (ảnh, video, ..) trong các bài post đó (NẾU CÓ)
+// fetch tất cả bài post (feed) trong wall của 1 target (user, group, page), và lấy ra các media (ảnh, video, ..) trong các bài post đó (NẾU CÓ)
 // Trả về danh sách chứa {id, url} của từng media
-const fetchGroupPostMedia = async ({
-  groupId,
+const fetchWallMedia = async ({
+  targetId,
   pageLimit = Infinity, // Số lần fetch, mỗi lần fetch được khoảng 25 bài post (?)
   pageFetchedCallback = () => {},
 }) => {
   const all_media = []; // store all media {id, url, type}
   let page = 1;
-  let url = `${FB_API_HOST}/${groupId}/feed?fields=attachments{media,type,subattachments,target}&access_token=${ACCESS_TOKEN}`;
+  let url = `${FB_API_HOST}/${targetId}/feed?fields=attachments{media,type,subattachments,target}&access_token=${ACCESS_TOKEN}`;
 
   while (url && page <= pageLimit) {
     console.log(`FETCHING page ${page}...`);
@@ -156,18 +158,18 @@ const fetchGroupPostMedia = async ({
 };
 
 // Tải và lưu tất cả id hình ảnh + link hình ảnh từ album, lưu vào file có tên trùng với albumId, lưu trong folder links
-export const saveGroupPostMediaLinks = ({
-  groupId,
+export const downloadWallMediaLinks = ({
+  targetId,
   includeVideo = true,
   pageLimit = Infinity,
 }) => {
-  console.log(`STARTING FETCH POST_MEDIA_LINKS IN GROUP ${groupId}...`);
+  console.log(`STARTING FETCH WALL_MEDIA_LINKS IN TARGET ${targetId}...`);
 
-  const fileName = `${FOLDER_TO_SAVE_LINKS}/${groupId}.txt`;
+  const fileName = `${FOLDER_TO_SAVE_LINKS}/${targetId}.txt`;
   deleteFile(fileName); // delete if file exist
 
-  fetchGroupPostMedia({
-    groupId: groupId,
+  fetchWallMedia({
+    targetId: targetId,
     pageLimit: pageLimit,
     pageFetchedCallback: (media) => {
       if (!includeVideo)
@@ -182,19 +184,19 @@ export const saveGroupPostMediaLinks = ({
   });
 };
 
-// Hàm này fetch tất cả các bài post của 1 group, và tải về media (photo, video) có trong các bài post
-export const saveGroupPostMedia = ({
-  groupId,
-  downloadVideo = true,
+// Hàm này fetch tất cả các bài post của 1 target (user, group, page), và tải về media (photo, video) có trong các bài post
+export const downloadWallMedia = ({
+  targetId,
+  includeVideo = true,
   pageLimit = Infinity,
 }) => {
-  console.log(`STARTING FETCH POST_MEDIA IN GROUP ${groupId}...`);
-  fetchGroupPostMedia({
-    groupId: groupId,
+  console.log(`STARTING FETCH WALL_MEDIA IN TARGET ${targetId}...`);
+  fetchWallMedia({
+    targetId: targetId,
     pageLimit: pageLimit,
     pageFetchedCallback: async (media) => {
       // create dir if not exist
-      const dir = `${FOLDER_TO_SAVE_GROUP_MEDIA}/${groupId}`;
+      const dir = `${FOLDER_TO_SAVE_FEED_MEDIA}/${targetId}`;
       createIfNotExistDir(dir);
 
       // save all photo to directory
@@ -204,7 +206,7 @@ export const saveGroupPostMedia = ({
       for (let data of media) {
         const { id: media_id, url: media_url, type: media_type } = data;
 
-        if (!downloadVideo && media_type === MEDIA_TYPE.VIDEO) continue;
+        if (!includeVideo && media_type === MEDIA_TYPE.VIDEO) continue;
 
         const file_format =
           media_type === MEDIA_TYPE.PHOTO
@@ -234,25 +236,3 @@ export const saveGroupPostMedia = ({
     },
   });
 };
-
-// saveGroupPostMedia({
-//   groupId: 2769931233237192, //697332711026460,
-//   downloadVideo: true,
-//   pageLimit: 2,
-// });
-saveGroupPostMediaLinks({
-  groupId: 697332711026460,
-  pageLimit: 1,
-});
-// fetchGroupPostMedia({ groupId: 697332711026460, pageLimit: 1 });
-
-// downloadFileSync({
-//   uri: "https://video.fsgn2-2.fna.fbcdn.net/v/t42.1790-2/242040606_1052870295479615_1737332562906232233_n.mp4?_nc_cat=100&ccb=1-5&_nc_sid=985c63&efg=eyJybHIiOjM1NCwicmxhIjo1MTIsInZlbmNvZGVfdGFnIjoic3ZlX3NkIn0%3D&_nc_ohc=V8NFPv8kz40AX__P_dn&rl=354&vabr=197&_nc_ht=video.fsgn2-2.fna&oh=cf8a3a478db83801cdb58a470b450d23&oe=6147FC49",
-//   filename: "test.mp4",
-//   successCallback: () => {
-//     console.log("saved");
-//   },
-//   failedCallback: () => {
-//     console.log("failed");
-//   },
-// });

@@ -4,7 +4,7 @@ import {
   WAIT_BEFORE_NEXT_FETCH,
   ID_LINK_SEPERATOR,
   FOLDER_TO_SAVE_LINKS,
-  FOLDER_TO_SAVE_IMAGES,
+  FOLDER_TO_SAVE_ALBUM_MEDIA,
   PHOTO_FILE_FORMAT,
 } from "../config.js";
 import {
@@ -107,7 +107,7 @@ export const fetchAlbumInfo = async (albumId) => {
 };
 
 // Tải và lưu tất cả id hình ảnh + link hình ảnh từ album, lưu vào file có tên trùng với albumId, lưu trong folder links
-export const saveAlbumPhotoLinks = (albumId) => {
+export const downloadAlbumPhotoLinks = (albumId) => {
   console.log(`STARTING FETCH ALBUM ${albumId}...`);
 
   const fileName = `${FOLDER_TO_SAVE_LINKS}/${albumId}.txt`;
@@ -126,13 +126,13 @@ export const saveAlbumPhotoLinks = (albumId) => {
 };
 
 // Tải và lưu tất cả HÌNH ẢNH từ album, lưu từng file ảnh bằng id của ảnh và lưu hết vào folder images/albumId/
-export const saveAlbumPhoto = (albumId) => {
+export const downloadAlbumPhoto = (albumId) => {
   console.log(`STARTING FETCH ALBUM ${albumId}...`);
   fetchAlbumPhotos({
     albumId,
     pageFetchedCallback: async (pageImgsData) => {
       // create dir if not exist
-      const dir = `${FOLDER_TO_SAVE_IMAGES}/${albumId}`;
+      const dir = `${FOLDER_TO_SAVE_ALBUM_MEDIA}/${albumId}`;
       createIfNotExistDir(dir);
 
       // save all photo to directory

@@ -54,9 +54,8 @@ javascript: (function () {
     return;
   const list_a = document.querySelectorAll("a");
   for (let a of Array.from(list_a)) {
-    if (found(/(?<=set\=pb\.)(.\d+?)(?=\.)/.exec(a.href))) return;
-    if (found(/(?<=set\=picfp\.)(.\d+?)($|(?=\.))/.exec(a.href))) return;
-    if (found(/(?<=set\=ecnf\.)(.\d+?)$/.exec(a.href))) return;
+    if (found(/(?<=set\=(pb|picfp|ecnf|pob)\.)(.\d+?)($|(?=\.))/.exec(a.href)))
+      return;
   }
   window.prompt(
     "Không tìm thấy user id nào trong trang web!\nBạn có đang ở đúng trang profile chưa?\nTrang web Ví dụ: ",
