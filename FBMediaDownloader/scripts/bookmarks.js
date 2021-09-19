@@ -27,7 +27,7 @@ javascript: (function () {
   const page_name = document.title;
   const list_a = document.querySelectorAll("a");
   for (let a of Array.from(list_a)) {
-    const posts_screen = /(?<=set\=a\.)(.*?)(?=\&__cft__)/.exec(a.href);
+    const posts_screen = /(?<=set\=a\.)(.\d+?)(?=\&__cft__)/.exec(a.href);
     if (posts_screen && posts_screen[0]) {
       window.prompt(`Timeline Album ID của ${page_name}:`, posts_screen[0]) &&
         window.open("https://www.facebook.com/" + posts_screen[0]);
@@ -43,19 +43,22 @@ javascript: (function () {
 // Lấy user id (uid) - khi đang trong tường của người dùng muốn lấy user id. Ví dụ: https://www.facebook.com/callchoulnhe
 javascript: (function () {
   const user_name = document.title;
+  const found = (check) => {
+    if (check && check[0]) {
+      window.prompt(`USER ID của ${user_name}:`, check[0]);
+      return true;
+    }
+    return false;
+  };
+  if (found(/(?<=\/profile\.php\?id=)(.\d+?)($|(?=&))/.exec(location.href)))
+    return;
+  if (found(/(?<=\"USER_ID\":\")(.\d+?)(?=\"\,)/.exec(document.body.innerHTML)))
+    return;
   const list_a = document.querySelectorAll("a");
   for (let a of Array.from(list_a)) {
-    const posts_screen = /(?<=set\=pb\.)(.*?)(?=\.)/.exec(a.href);
-    if (posts_screen && posts_screen[0]) {
-      window.prompt(`User ID của ${user_name}:`, posts_screen[0]);
-      return;
-    }
-
-    const photos_screen = /(?<=set\=ecnf\.)(.*?)$/.exec(a.href);
-    if (photos_screen && photos_screen[0]) {
-      window.prompt(`User ID của ${user_name}:`, photos_screen[0]);
-      return;
-    }
+    if (found(/(?<=set\=pb\.)(.\d+?)(?=\.)/.exec(a.href))) return;
+    if (found(/(?<=set\=picfp\.)(.\d+?)($|(?=\.))/.exec(a.href))) return;
+    if (found(/(?<=set\=ecnf\.)(.\d+?)$/.exec(a.href))) return;
   }
   window.prompt(
     "Không tìm thấy user id nào trong trang web!\nBạn có đang ở đúng trang profile chưa?\nTrang web Ví dụ: ",
@@ -66,21 +69,19 @@ javascript: (function () {
 // Lấy group id - trường hợp url của group hiển thị tên chứ ko hiển thị id. Ví dụ: https://www.facebook.com/groups/j2team.community.girls
 javascript: (function () {
   const group_name = document.title;
+  const found = (check) => {
+    if (check && check[0]) {
+      window.prompt(`GROUP ID của ${group_name}:`, check[0]);
+      return true;
+    }
+    return false;
+  };
+  if (found(/(?<=\/groups\/)(.\d+?)($|(?=\/)|(?=&))/.exec(location.href)))
+    return;
   const list_a = document.querySelectorAll("a");
   for (let a of Array.from(list_a)) {
-    const found = /(?<=\/groups\/)(.*?)(?=\/user\/)/.exec(a.href);
-    if (found && found[0]) {
-      window.prompt(`GROUP ID của ${group_name}:`, found[0]);
-      return;
-    }
+    if (found(/(?<=\/groups\/)(.\d+?)(?=\/user\/)/.exec(a.href))) return;
   }
-
-  const location_check = /(?<=\/groups\/)(.*?)($|(?=&))/.exec(location.href);
-  if (location_check && location_check[0]) {
-    window.prompt(`GROUP ID của ${group_name}:`, location_check[0]);
-    return;
-  }
-
   window.prompt(
     "Không tìm thấy GROUP ID nào trong trang web!\nBạn có đang ở đúng trang group chưa?\nTrang web Ví dụ:",
     "https://www.facebook.com/groups/j2team.community.girls"
@@ -91,19 +92,17 @@ javascript: (function () {
 javascript: (function () {
   const list_a = document.querySelectorAll("a");
   for (let a of [location, ...Array.from(list_a)]) {
-    const page_album_id = /(?<=\/photos\/a\.)(.*?)(?=\/)/.exec(a.href);
+    const page_album_id = /(?<=\/photos\/a\.)(.\d+?)(?=\/)/.exec(a.href);
     if (page_album_id && page_album_id[0]) {
       window.prompt("PAGE ALBUM ID:", page_album_id[0]);
       return;
     }
-
-    const group_album_id = /(?<=set\=oa\.)(.*?)($|(?=&))/.exec(a.href);
+    const group_album_id = /(?<=set\=oa\.)(.\d+?)($|(?=&))/.exec(a.href);
     if (group_album_id && group_album_id[0]) {
       window.prompt("GROUP ALBUM ID:", group_album_id[0]);
       return;
     }
-
-    const user_album_id = /(?<=set\=a\.)(.*?)($|(?=&))/.exec(a.href);
+    const user_album_id = /(?<=set\=a\.)(.\d+?)($|(?=&))/.exec(a.href);
     if (user_album_id && user_album_id[0]) {
       window.prompt("USER ALBUM ID:", user_album_id[0]);
       return;
