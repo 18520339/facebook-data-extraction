@@ -35,7 +35,7 @@ javascript: (function () {
     }
   }
   window.prompt(
-    "Không tìm thấy timeline album trong trang web!\nBạn có đang ở đúng trang web của 1 Page fb chưa?\nThử kéo xuống tới bài post nào có kèm hình ảnh rồi ấn lại bookmark nhé\nTrang web Ví dụ: ",
+    "Không tìm thấy TIMELINE ALBUM trong trang web!\nBạn có đang ở đúng trang web của 1 Page fb chưa?\nThử kéo xuống tới bài post nào có kèm hình ảnh rồi ấn lại bookmark nhé\nTrang web Ví dụ: ",
     "https://www.facebook.com/profile.php?id=100057998562930"
   );
 })();
@@ -58,7 +58,7 @@ javascript: (function () {
       return;
   }
   window.prompt(
-    "Không tìm thấy user id nào trong trang web!\nBạn có đang ở đúng trang profile chưa?\nTrang web Ví dụ: ",
+    "Không tìm thấy USER ID nào trong trang web!\nBạn có đang ở đúng trang profile chưa?\nTrang web Ví dụ: ",
     "https://www.facebook.com/callchoulnhe"
   );
 })();
@@ -106,8 +106,26 @@ javascript: (function () {
     }
   }
   window.prompt(
-    "Không tìm thấy Album id nào trong trang web!\nBạn có đang ở đúng trang album chưa?\nTrang web Ví dụ:",
+    "Không tìm thấy ALBUM ID nào trong trang web!\nBạn có đang ở đúng trang album chưa?\nTrang web Ví dụ:",
     "https://www.facebook.com/media/set/?vanity=ColourfulSpace&set=a.945632905514659"
+  );
+})();
+
+// Lấy page id - khi đang trong trang của page fb. Ví dụ: https://www.facebook.com/ColourfulSpace
+javascript: (function () {
+  const page_name = document.title;
+  const found = (check) => {
+    if (check && check[0]) {
+      window.prompt(`PAGE ID của ${page_name}:`, check[0]);
+      return true;
+    }
+    return false;
+  };
+  if (found(/(?<=facebook\.com\/)(.*?)($|(?=\/)|(?=&))/.exec(location.href)))
+    return;
+  window.prompt(
+    "Không tìm thấy PAGE ID nào trong url!\nBạn có đang ở đúng trang page fb chưa?\nTrang web Ví dụ:",
+    "https://www.facebook.com/ColourfulSpace"
   );
 })();
 
