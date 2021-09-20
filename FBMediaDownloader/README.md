@@ -13,7 +13,7 @@
 ### CÓ 4 CHỨC NĂNG CHÍNH
 
 1. Xem **thông tin album** (tên, số lượng ảnh, link, ...)
-2. **Tải timeline album** của 1 **page** fb: _đây là album ẩn, chứa tất cả ảnh từ trước tới giờ trong page fb đó. Ví dụ như hình trên [link](https://www.facebook.com/groups/j2team.community/posts/1377217242610392/)_.
+2. **Tải timeline album** của 1 **page** fb: _đây là album ẩn, chứa tất cả ảnh từ trước tới giờ trong page fb đó. Ví dụ như hình phía trên ([link](https://www.facebook.com/groups/j2team.community/posts/1377217242610392/))_.
 3. **Tải album bất kì**: _album của user, của group, hay của page đều chơi được tất_.
 4. **Tải tất cả ảnh/video** trên **tường** (wall) của 1 đối tượng **(user/group/page)**.
 
