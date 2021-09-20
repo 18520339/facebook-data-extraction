@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "node-fetch": "^3.0.0",
+    "p-limit": "^4.0.0",
     "request": "^2.88.2"
   }
 }

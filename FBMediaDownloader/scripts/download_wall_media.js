@@ -11,6 +11,7 @@ import {
   createIfNotExistDir,
   deleteFile,
   downloadFileSync,
+  limit,
   myFetch,
   saveToFile,
 } from "./utils.js";
@@ -216,23 +217,23 @@ export const downloadWallMedia = async ({
         const savePath = `${dir}/${media_id}.${file_format}`;
 
         promises.push(
-          downloadFileSync({
-            uri: media_url,
-            filename: savePath,
-            successCallback: () => {
-              console.log(`> Saved ${savePath}`);
-            },
-            failedCallback: (e) => {
-              console.log(`ERROR while save media ${savePath}`, e.toString());
-            },
-          })
+          limit(() =>
+            downloadFileSync({
+              uri: media_url,
+              filename: savePath,
+              successCallback: () => {
+                console.log(`> Saved ${savePath}`);
+              },
+              failedCallback: (e) => {
+                console.log(`ERROR while save media ${savePath}`, e.toString());
+              },
+            })
+          )
         );
       }
 
-      try {
-        await Promise.allSettled(promises);
-        console.log(`> Saved ${promises.length} media.`);
-      } catch (e) {}
+      await Promise.allSettled(promises);
+      console.log(`> Saved ${promises.length} media.`);
     },
   });
 };

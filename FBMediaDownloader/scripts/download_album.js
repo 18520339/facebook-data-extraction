@@ -11,6 +11,7 @@ import {
   createIfNotExistDir,
   deleteFile,
   downloadFileSync,
+  limit,
   myFetch,
   saveToFile,
   sleep,
@@ -25,6 +26,7 @@ const fetchAlbumPhotosFromCursor = async ({ albumId, cursor }) => {
   if (cursor) url += `&after=${cursor}`;
 
   const json = await myFetch(url);
+  if (!json) return null;
 
   // return imgData + next cursor
   return {
@@ -47,9 +49,7 @@ const fetchAlbumPhotos = async ({
   let allImgsData = [];
 
   while (hasNextCursor && currentPage <= pageLimit) {
-    console.log(
-      `Fetching page: ${currentPage}, pageSize: 100...`
-    );
+    console.log(`Fetching page: ${currentPage}, pageSize: 100...`);
 
     const data = await fetchAlbumPhotosFromCursor({
       albumId,
@@ -144,23 +144,23 @@ export const downloadAlbumPhoto = async (albumId) => {
 
         const savePath = `${dir}/${photo_id}.${PHOTO_FILE_FORMAT}`;
         promises.push(
-          downloadFileSync({
-            uri: photo_url,
-            filename: savePath,
-            successCallback: () => {
-              console.log(`> Saved ${savePath}`);
-            },
-            failedCallback: (e) => {
-              console.log(`ERROR while save image ${savePath}`, e.toString());
-            },
-          })
+          limit(() =>
+            downloadFileSync({
+              uri: photo_url,
+              filename: savePath,
+              successCallback: () => {
+                console.log(`> Saved ${savePath}`);
+              },
+              failedCallback: (e) => {
+                console.log(`ERROR while save image ${savePath}`, e.toString());
+              },
+            })
+          )
         );
       }
 
-      try {
-        await Promise.allSettled(promises);
-        console.log(`> Saved ${promises.length} images.`);
-      } catch (e) {}
+      await Promise.allSettled(promises);
+      console.log(`> Saved ${promises.length} images.`);
     },
   });
 };

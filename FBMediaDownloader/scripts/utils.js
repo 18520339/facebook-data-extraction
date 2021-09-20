@@ -1,6 +1,10 @@
 import fs from "fs";
 import fetch from "node-fetch";
 import request from "request";
+import pLimit from "p-limit";
+import { NUMBER_OF_DOWNLOAD_THREADS } from "../config.js";
+
+export const limit = pLimit(NUMBER_OF_DOWNLOAD_THREADS);
 
 export const myFetch = async (_url) => {
   try {
@@ -73,23 +77,25 @@ export const downloadFileSync = async function ({
   failedCallback = () => {},
 }) {
   await new Promise((resolve, reject) => {
-    try {
-      request.head(uri, function (err, res, body) {
-        if (err) {
-          failedCallback(err);
-          reject(err);
-        } else {
-          request({ uri, gzip: true })
-            .pipe(fs.createWriteStream(filename, { flags: "w+" }))
-            .on("close", () => {
-              successCallback();
-              resolve();
-            });
-        }
-      });
-    } catch (e) {
-      reject(e);
-    }
+    request.head(uri, function (err, res, body) {
+      if (err) {
+        failedCallback(err);
+        reject(err);
+      } else {
+        // https://github.com/request/request/issues/636#issuecomment-23030577
+        request
+          .get({ uri, gzip: true, timeout: 5000 })
+          .on("error", function (e) {
+            console.log("ERROR", e.toString());
+            reject(e);
+          })
+          .on("close", () => {
+            successCallback();
+            resolve();
+          })
+          .pipe(fs.createWriteStream(filename, { flags: "w+" }));
+      }
+    });
   });
 };
 
