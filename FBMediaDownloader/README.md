@@ -6,6 +6,8 @@
 
 - **Update**(19/09/2021): Tool có thêm chức năng tải tất cả ảnh/video trên tường của 1 đối tượng (user/group/page)
 
+[Video hướng dẫn](https://youtu.be/g4zh9p-QfAQ)
+
 ![Album with 30k photos](./screenshots/1.png)
 
 ## Ưu Điểm
