@@ -1,6 +1,7 @@
 // you can modify all the variables below
 export const ACCESS_TOKEN = "YOUR_ACCESS_TOKEN";
-export const WAIT_BEFORE_NEXT_FETCH = 0;
+export const ALBUM_PAGE_SIZE = 50; // số lượng ảnh mỗi lần fetch album. nhiều nhất là 100 ảnh/lần fetch
+export const WAIT_BEFORE_NEXT_FETCH = 0; // thời gian chờ (ms) trước mỗi lần fetch mới liên tiếp
 export const ID_LINK_SEPERATOR = ";";
 export const PHOTO_FILE_FORMAT = "png"; // OR jpg
 export const VIDEO_FILE_FORMAT = "mp4"; // OR wav ?

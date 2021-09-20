@@ -6,6 +6,7 @@ import {
   FOLDER_TO_SAVE_LINKS,
   FOLDER_TO_SAVE_ALBUM_MEDIA,
   PHOTO_FILE_FORMAT,
+  ALBUM_PAGE_SIZE,
 } from "../config.js";
 import {
   createIfNotExistDir,
@@ -19,9 +20,9 @@ import {
 // Hàm này fetch và trả về 2 thứ:
 // 1. Toàn bộ link ảnh (max 100) từ 1 vị trí (cursor) nhất định trong album ảnh. Định dạng: [[{id: .., url: ...}, ...]
 // 2. Vị trí của ảnh tiếp theo (next cursor) (nếu có)
-const fetchAlbumPhotosFromCursor = async ({ albumId, cursor, limit = 100 }) => {
+const fetchAlbumPhotosFromCursor = async ({ albumId, cursor }) => {
   // create link to fetch
-  let url = `${FB_API_HOST}/${albumId}/photos?fields=largest_image&limit=${limit}&access_token=${ACCESS_TOKEN}`;
+  let url = `${FB_API_HOST}/${albumId}/photos?fields=largest_image&limit=${ALBUM_PAGE_SIZE}&access_token=${ACCESS_TOKEN}`;
   if (cursor) url += `&after=${cursor}`;
 
   const json = await myFetch(url);
@@ -38,7 +39,6 @@ const fetchAlbumPhotosFromCursor = async ({ albumId, cursor, limit = 100 }) => {
 // Dữ liệu trả về là 1 mảng chứa dữ liệu {id, url} của từng ảnh. Có dạng [{id: .., url: ...}, {id: .., url: ...}, ...]
 const fetchAlbumPhotos = async ({
   albumId,
-  pageSize = 100, // max is 100
   pageLimit = Infinity,
   pageFetchedCallback = async () => {},
 }) => {
@@ -48,12 +48,13 @@ const fetchAlbumPhotos = async ({
   let allImgsData = [];
 
   while (hasNextCursor && currentPage <= pageLimit) {
-    console.log(`Fetching page: ${currentPage}, pageSize: ${pageSize}...`);
+    console.log(
+      `Fetching page: ${currentPage}, pageSize: ${ALBUM_PAGE_SIZE}...`
+    );
 
     const data = await fetchAlbumPhotosFromCursor({
       albumId,
       cursor: nextCursor,
-      limit: pageSize,
     });
 
     if (data.imgData) {
