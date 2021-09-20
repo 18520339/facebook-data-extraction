@@ -73,19 +73,23 @@ export const downloadFileSync = async function ({
   failedCallback = () => {},
 }) {
   await new Promise((resolve, reject) => {
-    request.head(uri, function (err, res, body) {
-      if (err) {
-        failedCallback(err);
-        reject(err);
-      } else {
-        request({ uri, gzip: true })
-          .pipe(fs.createWriteStream(filename, { flags: "w+" }))
-          .on("close", () => {
-            successCallback();
-            resolve();
-          });
-      }
-    });
+    try {
+      request.head(uri, function (err, res, body) {
+        if (err) {
+          failedCallback(err);
+          reject(err);
+        } else {
+          request({ uri, gzip: true })
+            .pipe(fs.createWriteStream(filename, { flags: "w+" }))
+            .on("close", () => {
+              successCallback();
+              resolve();
+            });
+        }
+      });
+    } catch (e) {
+      reject(e);
+    }
   });
 };
 

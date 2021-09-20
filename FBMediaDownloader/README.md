@@ -95,3 +95,15 @@ Mình viết sẵn những bookmark sau (trong file [bookmarks.js](./scripts/boo
 - [facebook-scripts-dom-manipulation](https://github.com/jayremnt/facebook-scripts-dom-manipulation)
 
 - Tham khảo cách làm việc với Facebook API từ [Hoàng Minh Dùng MMO](https://www.youtube.com/watch?v=auTBuwZOrBo&list=PL4BMIU_JnQBRSVZcc_ey0LDZdARdeuCh2&index=1)
+
+
+## LỖI ĐÃ BIẾT
+
+- LỖI dừng tải ảnh do đường truyền bị ngắt
+
+  - ![error 1](./screenshots/7.jpg)
+  - ![error 2](./screenshots/8.png)
+
+  - => **LÝ DO**: Do tool tải quá nhanh và nhiều ảnh cùng lúc, nên sẽ ngốn hết băng thông. Do đó nếu bạn vừa tải vừa mở trình duyệt hay ứng dụng nào sử dụng internet, thì sẽ gây ra hiện tượng nghẽn băng thông, gây lỗi.
+
+  - => **XỬ LÝ**: Trước khi dùng chức năng tải album về thì bạn tạm thời tắt hết những ứng dụng khác đi, đợi nó tải xong rồi hẵng mở lại nhé.
