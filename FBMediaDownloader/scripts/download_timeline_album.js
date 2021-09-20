@@ -4,7 +4,10 @@
 
 import { FB_API_HOST } from "./constants.js";
 import { ACCESS_TOKEN } from "../config.js";
-import { downloadAlbumPhoto, downloadAlbumPhotoLinks } from "./download_album.js";
+import {
+  downloadAlbumPhoto,
+  downloadAlbumPhotoLinks,
+} from "./download_album.js";
 import { myFetch } from "./utils.js";
 
 export const fetchTimeLineAlbumId_FBPage = async (page_id) => {
@@ -26,7 +29,7 @@ export const downloadTimeLineAlbumPhotoLinks_FBPage = async (page_id) => {
   const album_id = await fetchTimeLineAlbumId_FBPage(page_id);
   if (album_id) {
     console.log("Tìm thấy timeline album: ", album_id);
-    downloadAlbumPhotoLinks(album_id);
+    await downloadAlbumPhotoLinks(album_id);
   } else {
     console.error("! Page facebook này không có timeline album.");
   }
@@ -36,7 +39,7 @@ export const downloadTimeLineAlbum_FBPage = async (page_id) => {
   const album_id = await fetchTimeLineAlbumId_FBPage(page_id);
   if (album_id) {
     console.log("Tìm thấy timeline album: ", album_id);
-    downloadAlbumPhoto(album_id);
+    await downloadAlbumPhoto(album_id);
   } else {
     console.error("! Page facebook này không có timeline album.");
   }

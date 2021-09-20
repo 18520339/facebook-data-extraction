@@ -1,4 +1,4 @@
-# FB Album Downloader
+# FB Media Downloader
 
 1 Tool nhỏ viết bằng Nodejs. Giúp tải nhanh 1 album ảnh bất kì trên facebook, bạn chỉ cần có id của album ảnh đó là được.
 

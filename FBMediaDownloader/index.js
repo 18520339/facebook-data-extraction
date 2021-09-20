@@ -13,12 +13,13 @@ import {
   downloadTimeLineAlbumPhotoLinks_FBPage,
 } from "./scripts/download_timeline_album.js";
 
-// import { menu } from "./scripts/menu.js";
-// menu();
+import { menu } from "./scripts/menu.js";
+
+menu();
 
 // ============ Lấy thông tin album timeline từ page id trên fb ============
 // (async () => {
-//   const album_id = await fetchTimeLineAlbumId("ColourfulSpace");
+//   const album_id = await fetchTimeLineAlbumId_FBPage("ColourfulSpace");
 //   console.log(album_id);
 
 //   if (album_id) {
@@ -29,12 +30,12 @@ import {
 
 // ============ Lưu tất cả wall media (ảnh, video trên tường) của 1 target (user, group, page) ============
 // downloadWallMedia({
-//   targetId: 100004582772398, // user_id / group_id / page_id
+//   targetId: 697332711026460, // user_id / group_id / page_id
 //   includeVideo: false,
 //   pageLimit: 5,
 // });
 // downloadWallMediaLinks({
-//   targetId: 100032089595573, // user_id / group_id / page_id
+//   targetId: 697332711026460, // user_id / group_id / page_id
 //   pageLimit: 1,
 // });
 

@@ -91,7 +91,7 @@ const fetchAlbumPhotos = async ({
 // Bạn có thể thêm những trường khác vào url để lấy được nhiều thông tin hơn, tìm hiểu các trường trong https://developers.facebook.com/tools/explorer/
 export const fetchAlbumInfo = async (albumId) => {
   // create link to fetch
-  let url = `${FB_API_HOST}/${albumId}?fields=count,link,name&access_token=${ACCESS_TOKEN}`;
+  let url = `${FB_API_HOST}/${albumId}?fields=id,from,name,type,count,link&access_token=${ACCESS_TOKEN}`;
 
   // fetch data
   const json = await myFetch(url);
@@ -107,13 +107,13 @@ export const fetchAlbumInfo = async (albumId) => {
 };
 
 // Tải và lưu tất cả id hình ảnh + link hình ảnh từ album, lưu vào file có tên trùng với albumId, lưu trong folder links
-export const downloadAlbumPhotoLinks = (albumId) => {
+export const downloadAlbumPhotoLinks = async (albumId) => {
   console.log(`STARTING FETCH ALBUM ${albumId}...`);
 
   const fileName = `${FOLDER_TO_SAVE_LINKS}/${albumId}.txt`;
   deleteFile(fileName); // delete if file exist
 
-  fetchAlbumPhotos({
+  await fetchAlbumPhotos({
     albumId,
     pageFetchedCallback: (pageImgsData) => {
       saveToFile(
@@ -126,9 +126,9 @@ export const downloadAlbumPhotoLinks = (albumId) => {
 };
 
 // Tải và lưu tất cả HÌNH ẢNH từ album, lưu từng file ảnh bằng id của ảnh và lưu hết vào folder images/albumId/
-export const downloadAlbumPhoto = (albumId) => {
+export const downloadAlbumPhoto = async (albumId) => {
   console.log(`STARTING FETCH ALBUM ${albumId}...`);
-  fetchAlbumPhotos({
+  await fetchAlbumPhotos({
     albumId,
     pageFetchedCallback: async (pageImgsData) => {
       // create dir if not exist

@@ -158,7 +158,7 @@ const fetchWallMedia = async ({
 };
 
 // Tải và lưu tất cả id hình ảnh + link hình ảnh từ album, lưu vào file có tên trùng với albumId, lưu trong folder links
-export const downloadWallMediaLinks = ({
+export const downloadWallMediaLinks = async ({
   targetId,
   includeVideo = true,
   pageLimit = Infinity,
@@ -168,7 +168,7 @@ export const downloadWallMediaLinks = ({
   const fileName = `${FOLDER_TO_SAVE_LINKS}/${targetId}.txt`;
   deleteFile(fileName); // delete if file exist
 
-  fetchWallMedia({
+  await fetchWallMedia({
     targetId: targetId,
     pageLimit: pageLimit,
     pageFetchedCallback: (media) => {
@@ -185,13 +185,13 @@ export const downloadWallMediaLinks = ({
 };
 
 // Hàm này fetch tất cả các bài post của 1 target (user, group, page), và tải về media (photo, video) có trong các bài post
-export const downloadWallMedia = ({
+export const downloadWallMedia = async ({
   targetId,
   includeVideo = true,
   pageLimit = Infinity,
 }) => {
   console.log(`STARTING FETCH WALL_MEDIA IN TARGET ${targetId}...`);
-  fetchWallMedia({
+  await fetchWallMedia({
     targetId: targetId,
     pageLimit: pageLimit,
     pageFetchedCallback: async (media) => {
