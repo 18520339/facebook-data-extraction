@@ -121,6 +121,8 @@ javascript: (function () {
     }
     return false;
   };
+  if (found(/(?<=\"pageID\"\:\")(.*?)(?=\")/.exec(document.body.innerHTML)))
+    return;
   if (found(/(?<=facebook\.com\/)(.*?)($|(?=\/)|(?=&))/.exec(location.href)))
     return;
   window.prompt(
