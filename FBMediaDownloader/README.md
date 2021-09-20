@@ -10,7 +10,7 @@
 
 ## Ưu Điểm
 
-### **CÓ 4 CHỨC NĂNG CHÍNH**
+### CÓ 4 CHỨC NĂNG CHÍNH
 
 1. Xem **thông tin album** (tên, số lượng ảnh, link, ...)
 2. **Tải timeline album** của 1 **page** fb: _đây là album ẩn, chứa tất cả ảnh từ trước tới giờ trong page fb đó. Ví dụ như hình trên [link](https://www.facebook.com/groups/j2team.community/posts/1377217242610392/)_.
@@ -21,7 +21,7 @@
 
 - ![bookmarks](./screenshots/2.png)
 
-### **CÓ 2 CHẾ ĐỘ**
+### CÓ 2 CHẾ ĐỘ
 
 - Bạn có thể tải **FILE**:
   - Tất cả **FILE ẢNH** trong album
@@ -30,18 +30,18 @@
   - Tất cả **ĐƯỜNG DẪN URL** của những ảnh/video trong album/trên tường.
   - Tool sẽ lưu danh sách url đó vào **1 file**. (Rồi sau này muốn làm gì đống link đó thì tùy bạn).
 
-### **TẢI CỰC NHANH**
+### TẢI CỰC NHANH
 
 - Tại sao viết tool bằng **NodeJs** chứ không phải **chrome extension**, vì theo mình thấy những việc liên quan tới tải file vậy thì dùng NodeJs sẽ nhanh hơn rất nhiều so với extension (phải thông qua trình duyệt để tải file).
 - Tốc độ tải file sẽ phụ thuộc vào đường truyền mạng của bạn. Có khi ngốn hết băng thông luôn đấy, MAX NHANH NHÉ.
 - VÍ DỤ Tải [album 30 NGHÌN ảnh](https://www.facebook.com/media/set?vanity=ColourfulSpace&set=a.945632905514659) trong chưa đầy 15p (intel core i5, gen 8, 12GB RAM)
 
-### **TẢI CỰC NHIỀU**
+### TẢI CỰC NHIỀU
 
 - Tool có thể tải và lưu cả **Timeline Album** - 1 dạng album ẨN, chứa TẤT CẢ các hình ảnh có trong 1 PAGE FACEBOOK. Ví dụ: [Post này](https://www.facebook.com/groups/j2team.community/posts/1377217242610392/) (Mình tải thử thì được 7GB ảnh)
 - Tool có thể tải **TẤT CẢ ảnh/video trên wall** 1 đối tượng (user/group/page). Chẳng hạn bạn muốn tải hết ảnh/video từng được đăng lên [J2team Girl](https://www.facebook.com/groups/j2team.community.girls)? Chuyện đó giờ dễ như trở bàn tay!!
 
-### **KHÔNG BỊ CHECKPOINT**
+### KHÔNG BỊ CHECKPOINT
 
 - Tool dùng acccess token của bạn để fetch dữ liệu từ Facebook (Các API mình tham khảo từ [Đây](https://developers.facebook.com/tools/explorer)).
 - Việc Fetch dữ liệu thì không ảnh hưởng tới checkpoint nhé. Fetch sẽ trả về link ảnh/video.
