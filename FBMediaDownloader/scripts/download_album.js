@@ -6,7 +6,6 @@ import {
   FOLDER_TO_SAVE_LINKS,
   FOLDER_TO_SAVE_ALBUM_MEDIA,
   PHOTO_FILE_FORMAT,
-  ALBUM_PAGE_SIZE,
 } from "../config.js";
 import {
   createIfNotExistDir,
@@ -22,7 +21,7 @@ import {
 // 2. Vị trí của ảnh tiếp theo (next cursor) (nếu có)
 const fetchAlbumPhotosFromCursor = async ({ albumId, cursor }) => {
   // create link to fetch
-  let url = `${FB_API_HOST}/${albumId}/photos?fields=largest_image&limit=${ALBUM_PAGE_SIZE}&access_token=${ACCESS_TOKEN}`;
+  let url = `${FB_API_HOST}/${albumId}/photos?fields=largest_image&limit=100&access_token=${ACCESS_TOKEN}`;
   if (cursor) url += `&after=${cursor}`;
 
   const json = await myFetch(url);
@@ -49,7 +48,7 @@ const fetchAlbumPhotos = async ({
 
   while (hasNextCursor && currentPage <= pageLimit) {
     console.log(
-      `Fetching page: ${currentPage}, pageSize: ${ALBUM_PAGE_SIZE}...`
+      `Fetching page: ${currentPage}, pageSize: 100...`
     );
 
     const data = await fetchAlbumPhotosFromCursor({
@@ -159,7 +158,7 @@ export const downloadAlbumPhoto = async (albumId) => {
       }
 
       try {
-        await Promise.all(promises);
+        await Promise.allSettled(promises);
         console.log(`> Saved ${promises.length} images.`);
       } catch (e) {}
     },

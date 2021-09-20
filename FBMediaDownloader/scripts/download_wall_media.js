@@ -230,7 +230,7 @@ export const downloadWallMedia = async ({
       }
 
       try {
-        await Promise.all(promises);
+        await Promise.allSettled(promises);
         console.log(`> Saved ${promises.length} media.`);
       } catch (e) {}
     },
