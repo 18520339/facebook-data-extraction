@@ -66,6 +66,11 @@ Mình viết sẵn những bookmark sau (trong file [bookmarks.js](./scripts/boo
 - Bookmark lấy **User ID** - khi đang xem profile của 1 user
 - Bookmark lấy **Page ID** - khi đang xem trang chủ của 1 page fb
 - Bookmark lấy **Timeline Album ID** của Page FB - khi đang xem trang Home của 1 Page FB (script này ko ổn định, tùy page)
+- Bonus:
+  - Bookmark lấy **Tất cả album id** có trong trang web - khi đang xem danh sách album của user/group/page
+  - Bookmark lấy **Tất cả video id** có trong trang web - khi đang trong tab xem video của youtube
+  - Bookmark **Tải video** bằng *video id* - nhập vào id của video là tool sẽ mở trang tải video đó
+  - Bookmark **Tải video đang xem** - trường hợp đang trong trang xem video - tool sẽ tự tìm video id ở trên url và mở trang tải video cho bạn
 
 ## CÀI ĐẶT VÀ SỬ DỤNG
 

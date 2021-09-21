@@ -138,7 +138,7 @@ javascript: (function () {
   if (list_id.length)
     window.prompt(
       `Tìm thấy ${list_id.length} album id trong trang web và trên url.`,
-      list_id.join(",")
+      list_id.join(", ")
     );
   else
     window.prompt(
@@ -167,7 +167,7 @@ javascript: (function () {
   );
 })();
 
-// Lấy video id có trong trang
+// Lấy tất cả video id có trong trang
 javascript: (function () {
   const list_a = document.querySelectorAll("a");
   const list_id = [];
@@ -178,7 +178,7 @@ javascript: (function () {
     }
   }
   if (list_id.length)
-    window.prompt(`Tìm thấy ${list_id.length} video id: `, list_id.join(","));
+    window.prompt(`Tìm thấy ${list_id.length} video id: `, list_id.join(", "));
   else
     window.prompt(
       "Không tìm thấy video id nào trong trang web!\nBạn có ở đúng trang video chưa?\nTrang web ví dụ:",
@@ -192,6 +192,20 @@ javascript: (function () {
   if (video_url) {
     window.open("https://mbasic.facebook.com/watch/?v=" + video_url);
   }
+})();
+
+// Tải video đang xem - khi đang trong trang web video, dạng: https://www.facebook.com/watch?v=254222479732213
+javascript: (function () {
+  const check = /(?<=facebook\.com\/watch\?v\=)(.\d+?)($|(?=\/))/.exec(
+    location.href
+  );
+  if (check && check[0])
+    window.open("https://mbasic.facebook.com/watch/?v=" + check[0]);
+  else
+    window.prompt(
+      "Không tìm thấy id của video trên url!\nBạn có ở đúng trang xem video chưa?\nTrang web ví dụ:",
+      "https://www.facebook.com/watch?v=254222479732213"
+    );
 })();
 
 // Lấy access token Dùng cho www.facebook.com - script chưa được kiểm định an toàn
