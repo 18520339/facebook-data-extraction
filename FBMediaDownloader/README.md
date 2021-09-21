@@ -9,6 +9,7 @@
 - **Update**(21/09/2021):
   - Có thêm chức năng **tải album tại vị trí bất kỳ** (không nhất thiết là từ đầu album tới cuối album). Dành cho trường hợp bạn tải được 1 nửa album rồi mà bị rớt mạng hoặc lỗi. Thì chỉ cần mở lại rồi tải từ vị trí ảnh tải được gần nhất là xong.
   - Giao diện tiếng việt (không dấu)
+  - ![UI](./screenshots/11.png)
 
 [Video hướng dẫn](https://youtu.be/g4zh9p-QfAQ)
 
