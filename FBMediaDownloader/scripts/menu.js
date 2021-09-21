@@ -141,7 +141,8 @@ export const menu = async () => {
           console.log("< TIM THAY Timeline Album ID: ", timeline_album_id);
           console.log("< Dang tai thong tin album....");
           console.log(await fetchAlbumInfo(timeline_album_id));
-        } else console.log("< KHONG TIM THAY timeline album.");
+        } else
+          console.log(S.BgRed + "< KHONG TIM THAY timeline album." + S.Reset);
         await wait_for_key_pressed();
       }
     }

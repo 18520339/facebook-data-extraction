@@ -6,6 +6,10 @@
 
 - **Update**(19/09/2021): Tool có thêm chức năng tải tất cả ảnh/video trên tường của 1 đối tượng (user/group/page)
 
+- **Update**(21/09/2021):
+  - Có thêm chức năng **tải album tại vị trí bất kỳ** (không nhất thiết là từ đầu album tới cuối album). Dành cho trường hợp bạn tải được 1 nửa album rồi mà bị rớt mạng hoặc lỗi. Thì chỉ cần mở lại rồi tải từ vị trí ảnh tải được gần nhất là xong.
+  - Giao diện tiếng việt (không dấu)
+
 [Video hướng dẫn](https://youtu.be/g4zh9p-QfAQ)
 
 ![Album with 30k photos](./screenshots/1.png)
@@ -95,7 +99,6 @@ Mình viết sẵn những bookmark sau (trong file [bookmarks.js](./scripts/boo
 - [facebook-scripts-dom-manipulation](https://github.com/jayremnt/facebook-scripts-dom-manipulation)
 
 - Tham khảo cách làm việc với Facebook API từ [Hoàng Minh Dùng MMO](https://www.youtube.com/watch?v=auTBuwZOrBo&list=PL4BMIU_JnQBRSVZcc_ey0LDZdARdeuCh2&index=1)
-
 
 ## LỖI ĐÃ BIẾT
 
