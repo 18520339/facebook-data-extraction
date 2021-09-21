@@ -1,4 +1,5 @@
 import readline from "readline";
+import { S } from "./constants.js";
 import {
   downloadAlbumPhoto,
   downloadAlbumPhotoLinks,
@@ -15,7 +16,8 @@ const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
-const prompt = (query) => new Promise((resolve) => rl.question(query, resolve));
+const prompt = (query) =>
+  new Promise((resolve) => rl.question(S.FgGreen + query + S.Reset, resolve));
 
 const wait_for_key_pressed = async () =>
   await prompt("..Nhap phim bat ky de tiep tuc..");
@@ -125,21 +127,21 @@ export const menu = async () => {
       5: "Thoat",
     });
     if (action.key == 1) {
-      const album_id = await prompt("> Enter album id (-1 to go back): ");
+      const album_id = await prompt("> Nhap album id (Nhap -1 de quay lai): ");
       if (album_id != -1) {
         console.log(await fetchAlbumInfo(album_id));
         await wait_for_key_pressed();
       }
     }
     if (action.key == 2) {
-      const page_id = await prompt("> Enter page id (-1 to go back): ");
+      const page_id = await prompt("> Nhap page id (Nhap -1 de quay lai): ");
       if (page_id != -1) {
         const timeline_album_id = await fetchTimeLineAlbumId_FBPage(page_id);
         if (timeline_album_id) {
-          console.log("< FOUND Timeline Album ID: ", timeline_album_id);
-          console.log("< Fetching album infomation....");
+          console.log("< TIM THAY Timeline Album ID: ", timeline_album_id);
+          console.log("< Dang tai thong tin album....");
           console.log(await fetchAlbumInfo(timeline_album_id));
-        } else console.log("< NOT FOUND timeline album.");
+        } else console.log("< KHONG TIM THAY timeline album.");
         await wait_for_key_pressed();
       }
     }
