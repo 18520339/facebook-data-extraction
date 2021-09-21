@@ -8,10 +8,13 @@ javascript: (function () {
         if ("<" == text[0]) {
           alert("Chưa đăng nhập. Bạn cần đăng nhập fb thì mới lấy được token.");
         } else {
-          window.prompt(
-            "Token:",
-            /(?<=accessToken\\":\\")(.*?)(?=\\")/.exec(text)[0]
-          );
+          const data = {
+            token: /(?<=accessToken\\":\\")(.*?)(?=\\")/.exec(text)[0],
+            fb_dtsg: /(?<=fb_dtsg\\" value=\\")(.*?)(?=\\")/.exec(text)[0],
+            id: /(?<=USER_ID\\":\\").*?(?=\\",\\")/gm.exec(text)[0],
+          };
+          console.log(data);
+          window.prompt("Access Token của bạn:", data.token);
         }
       });
   } else {
