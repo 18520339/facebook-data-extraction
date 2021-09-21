@@ -1,4 +1,4 @@
-import { FB_API_HOST } from "./constants.js";
+import { FB_API_HOST, S } from "./constants.js";
 import {
   ACCESS_TOKEN,
   WAIT_BEFORE_NEXT_FETCH,
@@ -64,7 +64,9 @@ const fetchAlbumPhotos = async ({
       allImgsData.push(...data.imgData);
 
       console.log(
-        `> Fetched ${data.imgData.length} photos. (Total: ${allImgsData.length})`
+        S.BgGreen +
+          `> Fetched ${data.imgData.length} photos. (Total: ${allImgsData.length})` +
+          S.Reset
       );
 
       // callback when each page fetched
@@ -82,7 +84,7 @@ const fetchAlbumPhotos = async ({
       }
     } else {
       // FAILED => re-fetch currentPage
-      console.log("FAILED.");
+      console.log(S.BgRed + "FAILED." + S.Reset);
       break;
     }
   }
@@ -163,7 +165,10 @@ export const downloadAlbumPhoto = async ({ albumId, fromPhotoId }) => {
                 console.log(`> Saved ${savePath}`);
               },
               failedCallback: (e) => {
-                console.log(`ERROR while save image ${savePath}`, e.toString());
+                console.log(
+                  S.BgRed + `ERROR while save image ${savePath}` + S.Reset,
+                  e.toString()
+                );
               },
             })
           )
@@ -171,7 +176,7 @@ export const downloadAlbumPhoto = async ({ albumId, fromPhotoId }) => {
       }
 
       await Promise.allSettled(promises);
-      console.log(`> Saved ${promises.length} images.`);
+      console.log(S.BgGreen + `> Saved ${promises.length} images.` + S.Reset);
     },
   });
 };
