@@ -196,16 +196,23 @@ javascript: (function () {
 
 // Tải video đang xem - khi đang trong trang web video, dạng: https://www.facebook.com/watch?v=254222479732213
 javascript: (function () {
-  const check = /(?<=facebook\.com\/watch\?v\=)(.\d+?)($|(?=\/))/.exec(
-    location.href
+  const found = (check) => {
+    if (check && check[0]) {
+      const url = window.location.href.replace(
+        "www.facebook.com",
+        "mbasic.facebook.com"
+      );
+      window.open(url);
+      return true;
+    }
+    return false;
+  };
+  if (found(/(?<=\/watch\?v\=)(.\d+?)($|(?=\/))/.exec(location.href))) return;
+  if (found(/(?<=videos\/)(.\d+?)($|(?=\/))/.exec(location.href))) return;
+  window.prompt(
+    "Không tìm thấy id của video trên url!\nBạn có ở đúng trang xem video chưa?\nTrang web ví dụ:",
+    "https://www.facebook.com/watch?v=254222479732213"
   );
-  if (check && check[0])
-    window.open("https://mbasic.facebook.com/watch/?v=" + check[0]);
-  else
-    window.prompt(
-      "Không tìm thấy id của video trên url!\nBạn có ở đúng trang xem video chưa?\nTrang web ví dụ:",
-      "https://www.facebook.com/watch?v=254222479732213"
-    );
 })();
 
 // Lấy access token Dùng cho www.facebook.com - script chưa được kiểm định an toàn
