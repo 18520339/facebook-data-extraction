@@ -41,11 +41,14 @@ const fetchAlbumPhotosFromCursor = async ({ albumId, cursor }) => {
 const fetchAlbumPhotos = async ({
   albumId,
   pageLimit = Infinity,
+  fromPhotoId = null, // tải từ vị trí ảnh nào đó thay vì tải từ đầu
   pageFetchedCallback = async () => {},
 }) => {
   let currentPage = 1;
   let hasNextCursor = true;
-  let nextCursor = null;
+  let nextCursor = fromPhotoId
+    ? Buffer.from(fromPhotoId).toString("base64")
+    : null;
   let allImgsData = [];
 
   while (hasNextCursor && currentPage <= pageLimit) {
@@ -107,14 +110,18 @@ export const fetchAlbumInfo = async (albumId) => {
 };
 
 // Tải và lưu tất cả id hình ảnh + link hình ảnh từ album, lưu vào file có tên trùng với albumId, lưu trong folder links
-export const downloadAlbumPhotoLinks = async (albumId) => {
-  console.log(`STARTING FETCH ALBUM ${albumId}...`);
+export const downloadAlbumPhotoLinks = async ({ albumId, fromPhotoId }) => {
+  const from_text = fromPhotoId
+    ? "photo_id=" + fromPhotoId
+    : " beginning of album";
+  console.log(`STARTING FETCH ALBUM ${albumId} from ${from_text}...`);
 
   const fileName = `${FOLDER_TO_SAVE_LINKS}/${albumId}.txt`;
   deleteFile(fileName); // delete if file exist
 
   await fetchAlbumPhotos({
     albumId,
+    fromPhotoId,
     pageFetchedCallback: (pageImgsData) => {
       saveToFile(
         fileName,
@@ -126,10 +133,14 @@ export const downloadAlbumPhotoLinks = async (albumId) => {
 };
 
 // Tải và lưu tất cả HÌNH ẢNH từ album, lưu từng file ảnh bằng id của ảnh và lưu hết vào folder images/albumId/
-export const downloadAlbumPhoto = async (albumId) => {
-  console.log(`STARTING FETCH ALBUM ${albumId}...`);
+export const downloadAlbumPhoto = async ({ albumId, fromPhotoId }) => {
+  const from_text = fromPhotoId
+    ? "photo_id=" + fromPhotoId
+    : " beginning of album";
+  console.log(`STARTING FETCH ALBUM ${albumId} from ${from_text}...`);
   await fetchAlbumPhotos({
     albumId,
+    fromPhotoId,
     pageFetchedCallback: async (pageImgsData) => {
       // create dir if not exist
       const dir = `${FOLDER_TO_SAVE_ALBUM_MEDIA}/${albumId}`;

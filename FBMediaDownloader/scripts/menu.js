@@ -56,10 +56,19 @@ const menuDownloadAlbum = async () => {
     if (action.key == 0) break;
     if (action.key == 1 || action.key == 2) {
       const album_id = await prompt("> Enter album id (-1 to go back): ");
+      const from_photo_id = await prompt(
+        "> From photo id (0 to fetch from beginning  of album): "
+      );
       if (album_id != -1) {
         action.key == 1
-          ? await downloadAlbumPhoto(album_id)
-          : await downloadAlbumPhotoLinks(album_id);
+          ? await downloadAlbumPhoto({
+              albumId: album_id,
+              fromPhotoId: from_photo_id,
+            })
+          : await downloadAlbumPhotoLinks({
+              albumId: album_id,
+              fromPhotoId: from_photo_id,
+            });
       }
     }
   }
