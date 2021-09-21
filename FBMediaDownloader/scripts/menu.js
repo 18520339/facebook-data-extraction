@@ -100,7 +100,6 @@ const menuDownloadWallMedia = async () => {
           "> Gioi han bao nhieu trang (Nhap 0 de tai het moi thu tren tuong): "
         );
         if (page_limit >= 0) {
-          console.log("in");
           action.key == 1
             ? await downloadWallMedia({
                 targetId: target_id,
