@@ -99,11 +99,21 @@ Mình viết sẵn những bookmark sau (trong file [bookmarks.js](./scripts/boo
 
 ## LỖI ĐÃ BIẾT
 
-- LỖI dừng tải ảnh do đường truyền bị ngắt
+### LỖI dừng tải ảnh do đường truyền bị ngắt
 
-  - ![error 1](./screenshots/7.jpg)
-  - ![error 2](./screenshots/8.png)
+- ![error 1](./screenshots/7.jpg)
+- ![error 2](./screenshots/8.png)
 
-  - => **LÝ DO**: Do tool tải quá nhanh và nhiều ảnh cùng lúc, nên sẽ ngốn hết băng thông. Do đó nếu bạn vừa tải vừa mở trình duyệt hay ứng dụng nào sử dụng internet, thì sẽ gây ra hiện tượng nghẽn băng thông, gây lỗi.
+- => **LÝ DO**: Do tool tải quá nhanh và nhiều ảnh cùng lúc, nên sẽ ngốn hết băng thông. Do đó nếu bạn vừa tải vừa mở trình duyệt hay ứng dụng nào sử dụng internet, thì sẽ gây ra hiện tượng nghẽn băng thông, gây lỗi.
 
-  - => **XỬ LÝ**: Trước khi dùng chức năng tải album về thì bạn tạm thời tắt hết những ứng dụng khác đi, đợi nó tải xong rồi hẵng mở lại nhé.
+- => **XỬ LÝ**: Trước khi dùng chức năng tải album về thì bạn tạm thời tắt hết những ứng dụng khác đi, đợi nó tải xong rồi hẵng mở lại nhé.
+
+### NẾU đang tải album mà BỊ LỖI như trên thì **tôi phải TẢI LẠI TỪ ĐẦU à**?
+
+- Vào bản **cập nhật sáng ngày 21/09/2021** (ai cài tool từ trước thời gian này thì bạn vui lòng tải và cài lại tool nhé)
+- Mình đã thêm chức năng **tải album ảnh từ vị trí photo_id bất kì**, không nhất thiết phải tải từ đầu album lại nữa
+- Nếu đang tải mà bị lỗi, bạn chỉ cần **lấy id của ảnh gần nhất đã lưu được**, rồi mở lại chức năng Download album, truyền id đó vào **"from photo id"**, là tool sẽ tải từ vị trí đó cho bạn.
+- Ví dụ bạn gặp lỗi dừng tải như hình bên dưới:
+- ![from photo id](./screenshots/9.png)
+- Copy id trên và tải lại tại vị trí id đó:
+- ![from photo id](./screenshots/10.png)
