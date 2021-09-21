@@ -117,6 +117,36 @@ javascript: (function () {
   );
 })();
 
+// Lấy tất cả album id có trong trang web - Khi đang xem 1 danh sách album của user/group/page
+javascript: (function () {
+  const list_a = document.querySelectorAll("a");
+  const list_id = [];
+  for (let a of [location, ...Array.from(list_a)]) {
+    const page_album_id = /(?<=\/photos\/a\.)(.\d+?)(?=\/)/.exec(a.href);
+    if (page_album_id && page_album_id[0]) {
+      list_id.push(page_album_id[0]);
+    }
+    const group_album_id = /(?<=set\=oa\.)(.\d+?)($|(?=&))/.exec(a.href);
+    if (group_album_id && group_album_id[0]) {
+      list_id.push(group_album_id[0]);
+    }
+    const user_album_id = /(?<=set\=a\.)(.\d+?)($|(?=&))/.exec(a.href);
+    if (user_album_id && user_album_id[0]) {
+      list_id.push(user_album_id[0]);
+    }
+  }
+  if (list_id.length)
+    window.prompt(
+      `Tìm thấy ${list_id.length} album id trong trang web và trên url.`,
+      list_id.join(",")
+    );
+  else
+    window.prompt(
+      "Không tìm thấy ALBUM ID nào trong trang web!\nBạn có đang ở đúng trang album chưa?\nTrang web Ví dụ:",
+      "https://www.facebook.com/media/set/?vanity=ColourfulSpace&set=a.945632905514659"
+    );
+})();
+
 // Lấy page id - khi đang trong trang của page fb. Ví dụ: https://www.facebook.com/ColourfulSpace
 javascript: (function () {
   const page_name = document.title;
@@ -135,6 +165,33 @@ javascript: (function () {
     "Không tìm thấy PAGE ID nào trong url!\nBạn có đang ở đúng trang page fb chưa?\nTrang web Ví dụ:",
     "https://www.facebook.com/ColourfulSpace"
   );
+})();
+
+// Lấy video id có trong trang
+javascript: (function () {
+  const list_a = document.querySelectorAll("a");
+  const list_id = [];
+  for (let a of Array.from(list_a)) {
+    const check = /(?<=\/videos\/)(.\d+?)($|(?=\/))/.exec(a.href);
+    if (check && check[0]) {
+      list_id.push(check[0]);
+    }
+  }
+  if (list_id.length)
+    window.prompt(`Tìm thấy ${list_id.length} video id: `, list_id.join(","));
+  else
+    window.prompt(
+      "Không tìm thấy video id nào trong trang web!\nBạn có ở đúng trang video chưa?\nTrang web ví dụ:",
+      "https://www.facebook.com/watch/?ref=tab"
+    );
+})();
+
+// Tải video bằng video id
+javascript: (function () {
+  const video_url = window.prompt("Nhập video id:");
+  if (video_url) {
+    window.open("https://mbasic.facebook.com/watch/?v=" + video_url);
+  }
 })();
 
 // Lấy access token Dùng cho www.facebook.com - script chưa được kiểm định an toàn
