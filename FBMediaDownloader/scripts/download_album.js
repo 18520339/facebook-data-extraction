@@ -56,7 +56,7 @@ const fetchAlbumPhotos = async ({
       cursor: nextCursor,
     });
 
-    if (data.imgData) {
+    if (data?.imgData) {
       // concat data to result array
       allImgsData.push(...data.imgData);
 
