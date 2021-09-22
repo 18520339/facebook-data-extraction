@@ -78,7 +78,7 @@ Mình viết sẵn những bookmark sau (trong file [bookmarks.js](./scripts/boo
 
 Để có thể chạy tool thì bạn làm các bước sau:
 
-0. Cài [NodeJS](https://nodejs.org/en/).
+0. Cài [NodeJS](https://nodejs.org/en/) (version 14 trở lên).
 
 1. Tải source code về (nhấn nút Clone > Download zip) và Giải Nén.
 
@@ -128,3 +128,11 @@ Mình viết sẵn những bookmark sau (trong file [bookmarks.js](./scripts/boo
 - ![from photo id](./screenshots/9.png)
 - Copy id trên và tải lại tại vị trí id đó:
 - ![from photo id](./screenshots/10.png)
+
+### LỖI *Unexpected token '.'* khi chạy câu lệnh *node index.js*
+
+  - ![unexpected token .](./screenshots/12.jpg)
+  - => LÝ DO: phiên bản nodejs của bạn quá thấp, tool cần phiên bản nodejs 14 trở lên để có thể chạy được.
+  - => XỬ LÝ: 
+    - Cách 1: Cập nhật nodejs lên phiên bản cao hơn (>=14).
+    - Cách 2: Nếu bạn dùng win 7 (hoặc thấp hơn) và cài không được nodejs 14 trở lên thì bạn tải và cài bản **.zip** thay vì bản .msi nhé. Chi tiết xem trong [Đây](https://github.com/nodejs/node/issues/33000#issuecomment-644530517)
