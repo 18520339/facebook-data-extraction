@@ -219,6 +219,19 @@ javascript: (function () {
   );
 })();
 
+// Chia sẻ trang web đang xem lên facebook
+javascript: !(function () {
+  var title = document.title;
+  window.open(
+    "https://www.facebook.com/sharer/sharer.php?u=" +
+      document.URL +
+      "&t=" +
+      title,
+    title,
+    "menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600"
+  );
+})();
+
 // Lấy access token Dùng cho www.facebook.com - script chưa được kiểm định an toàn
 javascript: (function () {
   var uid = document.cookie.match(/c_user=(d+)/)[1],
