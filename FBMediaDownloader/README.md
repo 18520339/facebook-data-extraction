@@ -1,5 +1,9 @@
 # FB Media Downloader
 
+[Post FB](https://www.facebook.com/groups/j2team.community/posts/1665799000418880/) giới thiệu tool
+
+[Video hướng dẫn](https://youtu.be/g4zh9p-QfAQ)
+
 1 Tool nhỏ viết bằng Nodejs. Giúp:
 
 - Tải nhanh 1 album ảnh bất kì trên facebook, bạn chỉ cần có id của album ảnh đó là được.
@@ -10,8 +14,6 @@
   - Có thêm chức năng **tải album tại vị trí bất kỳ** (không nhất thiết là từ đầu album tới cuối album). Dành cho trường hợp bạn tải được 1 nửa album rồi mà bị rớt mạng hoặc lỗi. Thì chỉ cần mở lại rồi tải từ vị trí ảnh tải được gần nhất là xong.
   - Giao diện tiếng việt (không dấu)
   - ![UI](./screenshots/11.png)
-
-[Video hướng dẫn](https://youtu.be/g4zh9p-QfAQ)
 
 ![Album with 30k photos](./screenshots/1.png)
 
