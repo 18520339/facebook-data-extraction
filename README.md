@@ -1,6 +1,41 @@
-# Facebook crawling using IP hiding techniques
+# Summary of Facebook Crawling methods
 
-Crawling id, user info, content, date, comments and replies of posts in a Facebook page
+| Method                                            | Not required sign in | No Token needed | Speed rating | Personal evaluation   |
+| ------------------------------------------------- | :------------------: | :--------------------: | :----------: | :-------------------: |
+| 1️⃣ [Use Access Token by Personal Account](#1)     | ❌                  | ❌                     | 2            | Most Effective        |
+| 2️⃣ [Automatic loading + IP hiding](#2)            | ✅                  | ✅                     | 3            | Slowest               |
+| 3️⃣ [Directly run JS code in DevTools Console](#3) | Depend on tasks      | ✅                     | 1            | Checkpoint if abused  |
+
+### DISCLAIMER
+
+All the information provided in this repo and related articles are for educational purposes only. I do not guarantee whether Facebook will prevent you from repeatedly performing repeated actions. I will not responsible for problems that may occur or for any abuse of the information and the code provided
+
+<div id="1"></div>
+
+# 1️⃣ Use Access Token by Personal Account
+    
+Use your own Token with **full permission** for fetching data
+
+**Note:** This method I refer from a blog written in Vietnamese that titled is [Hướng dẫn cách lấy Token Facebook tuyệt đối AN TOÀN](https://ahachat.com/help/blog/cach-lay-token-facebook) 
+
+> Demo: Updating...
+
+## Knowledge
+### I. Facebook Token by App
+
+Updating...
+
+### II. Facebook Token by Personal Account
+
+Updating...
+
+<div id="2"></div>
+
+# 2️⃣ Automatic loading + IP hiding
+
+Use Automation tool to crawl id, user info, content, date, comments, and replies of posts
+
+**Note:** I just write example scripts with the following features to use for **a Facebook page**, not group or any object
 
 > Demo: https://www.youtube.com/watch?v=Fx0UWOzYsig
 
@@ -10,11 +45,11 @@ Crawling id, user info, content, date, comments and replies of posts in a Facebo
 
 1.  Getting information of posts.
 2.  Filtering comments.
-3.  Not required sign in.
-4.  Checking redirect
-5.  Running with Incognito window.
-6.  Simplifying browser to minimize time complexity.
-7.  Hiding IP address to prevent from banning by:
+3.  Checking redirect
+4.  Can be run with Incognito window.
+5.  Simplifying browser to minimize time complexity.
+6.  Not required sign in to **prevent account locked by Facebook**
+7.  Hiding IP address to **prevent from banning** by:
     -   Collecting proxies and filtering the slowest ones from:
         -   http://proxyfor.eu/geo.php
         -   http://free-proxy-list.net
@@ -173,3 +208,9 @@ setup_tor_proxy(page_url, tor_path, browser_options)
 ```
 
 ![](https://github.com/18520339/facebook-crawling/blob/master/img/proxy.png?raw=true)
+
+<div id="3"></div>
+
+# 3️⃣ Directly run JS code in DevTools Console
+
+Updating...
