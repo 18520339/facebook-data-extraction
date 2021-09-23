@@ -55,9 +55,7 @@ javascript: (function () {
 javascript: (async function () {
   const getAllImgTag = () =>
     Array.from(document.querySelectorAll("img[sizes*=px]")) || [];
-  const sleep = (milliseconds) => {
-    return new Promise((resolve) => setTimeout(resolve, milliseconds));
-  };
+  const sleep = (m) => new Promise((r) => setTimeout(r, m));
 
   const img_srcs = [];
   const done = [];
@@ -101,9 +99,7 @@ javascript: (async function () {
   const getMediaInViewport = () =>
     document.querySelector("article[role='presentation'] div.KL4Bh>img") ||
     document.querySelector("article[role='presentation'] div.E-66r>video");
-  const sleep = (milliseconds) => {
-    return new Promise((resolve) => setTimeout(resolve, milliseconds));
-  };
+  const sleep = (m) => new Promise((r) => setTimeout(r, m));
   window.onblur = function () {
     has_focus = false;
   };
@@ -163,4 +159,16 @@ const download = (path, filename) => {
   document.body.appendChild(anchor);
   anchor.click();
   document.body.removeChild(anchor);
+};
+
+// https://github.com/theus/instantgram/blob/gh-pages/src/helpers/isElementInViewport.ts
+const isElementInViewport = (el) => {
+  const viewport = window;
+  const rect = el.getBoundingClientRect();
+  return (
+    rect.bottom > 0 &&
+    rect.right > 0 &&
+    rect.left < viewport.innerWidth &&
+    rect.top < viewport.innerHeight
+  );
 };
