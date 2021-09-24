@@ -1,3 +1,5 @@
+<div id="top"></div>
+
 ---
 # Summary of Facebook data extraction methods
 ---
@@ -20,7 +22,7 @@ All the information provided in this repo and related articles are for education
 
 <div id="1"></div>
 
-# 1️⃣ &nbsp;Access Token by Personal Account + Graph API
+# 1️⃣ &nbsp;[Access Token by Personal Account + Graph API](#top)
     
 Use your own Token with **full permission** for fetching data
 
@@ -38,7 +40,7 @@ Updating...
 
 <div id="2"></div>
 
-# 2️⃣ &nbsp;Automation tools + IP hiding techniques
+# 2️⃣ &nbsp;[Automation tools + IP hiding techniques](#top)
 
 In this method, I will write example scripts to extract id, user info, content, date, comments, and replies of posts
 
@@ -227,7 +229,7 @@ setup_tor_proxy(page_url, tor_path, browser_options)
 
 <div id="3"></div>
 
-# 3️⃣ &nbsp;Run JS code directly at the DevTools Console
+# 3️⃣ &nbsp;[Run JS code directly at the DevTools Console](#top)
 
 Simply to say, this method is just another automation one, same as the [2nd method](#2) but without using any IP hiding techniques and maybe run faster
 
