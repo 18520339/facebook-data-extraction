@@ -1,23 +1,30 @@
-# Summary of Facebook Crawling methods
+---
+# Summary of Facebook data extraction methods
+---
 
-| Method                                            | Not required sign in | No Token needed | Speed rating | Personal evaluation   |
-| ------------------------------------------------- | :------------------: | :--------------------: | :----------: | :-------------------: |
-| 1️⃣ [Use Access Token by Personal Account](#1)     | ❌                  | ❌                     | 2            | Most Effective        |
-| 2️⃣ [Automatic loading + IP hiding](#2)            | ✅                  | ✅                     | 3            | Slowest               |
-| 3️⃣ [Directly run JS code in DevTools Console](#3) | Depend on tasks      | ✅                     | 1            | Checkpoint if abused  |
+### General Comparison 
 
+| Method                                                      | No sign-in required | Risk when sign-in    | Speed            | Difficulty | Personal Evaluation     |
+| ----------------------------------------------------------- | :-----------------: | :------------------: | :--------------: | :--------: | :---------------------: |
+| 1️⃣ &nbsp;[Access Token by Personal Account + Graph API](#1) | ❌                  | Access Token leaked  | Fastest          | Easy       | Most effective method   |  
+| 2️⃣ &nbsp;[Automation tools + IP hiding techniques](#2)      | Depend **(\*)**     | Checkpoint           | Slowest          | Hard       | Safest if not sign-in   |
+| 3️⃣ &nbsp;[Run JS code directly at the DevTools Console](#3) | Depend **(\*)**     | Checkpoint           | Depend **(\**)** | Medium     | Can be banned if abused |
+
+**(\*)** Depend on the tasks that you need to sign in to perform. Example: Tasks that need to access private groups or private posts, ... 
+  
+**(\**)** Depend on how much data you want to extract, the more the number, the more times for scrolling down to load the contents
+  
 ### DISCLAIMER
 
-All the information provided in this repo and related articles are for educational purposes only. I do not guarantee whether Facebook will prevent you from repeatedly performing repeated actions. I will not responsible for problems that may occur or for any abuse of the information and the code provided
+All the information provided in this repo and related articles are for educational purposes only. I do not guarantee whether your Facebook account may get Checkpoint due to rapid actions. I will not responsible for problems that may occur or for any abuse of the information and the code provided
 
 <div id="1"></div>
 
-# 1️⃣ Use Access Token by Personal Account
+# 1️⃣ &nbsp;Access Token by Personal Account + Graph API
     
 Use your own Token with **full permission** for fetching data
 
-**Note:** This method I refer from a blog written in Vietnamese that titled is [Hướng dẫn cách lấy Token Facebook tuyệt đối AN TOÀN](https://ahachat.com/help/blog/cach-lay-token-facebook) 
-
+**Note**: This method I refer from this [blog](https://ahachat.com/help/blog/cach-lay-token-facebook) that written in Vietnamese
 > Demo: Updating...
 
 ## Knowledge
@@ -31,24 +38,33 @@ Updating...
 
 <div id="2"></div>
 
-# 2️⃣ Automatic loading + IP hiding
+# 2️⃣ &nbsp;Automation tools + IP hiding techniques
 
-Use Automation tool to crawl id, user info, content, date, comments, and replies of posts
+In this method, I will write example scripts to extract id, user info, content, date, comments, and replies of posts
 
-**Note:** I just write example scripts with the following features to use for **a Facebook page**, not group or any object
+**Note**: These scripts just working for **a Facebook page**, not group or any other object
 
 > Demo: https://www.youtube.com/watch?v=Fx0UWOzYsig
 
-## Overview
+## Knowledge
+### I. Automation tools
+
+Updating...
+
+### II. IP hiding techniques
+
+Updating...
+
+## Overview the scripts
 
 ### I. Features
 
 1.  Getting information of posts.
 2.  Filtering comments.
-3.  Checking redirect
+3.  Checking redirect.
 4.  Can be run with Incognito window.
 5.  Simplifying browser to minimize time complexity.
-6.  Not required sign in to **prevent account locked by Facebook**
+6.  Not required sign-in to **prevent account locked by Facebook**.
 7.  Hiding IP address to **prevent from banning** by:
     -   Collecting proxies and filtering the slowest ones from:
         -   http://proxyfor.eu/geo.php
@@ -211,6 +227,8 @@ setup_tor_proxy(page_url, tor_path, browser_options)
 
 <div id="3"></div>
 
-# 3️⃣ Directly run JS code in DevTools Console
+# 3️⃣ &nbsp;Run JS code directly at the DevTools Console
+
+Simply to say, this method is just another automation one, same as the [2nd method](#2) but without using any IP hiding techniques and maybe run faster
 
 Updating...
