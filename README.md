@@ -18,15 +18,17 @@
   
 ### DISCLAIMER
 
-All the information provided in this repo and related articles are for educational purposes only. I do not guarantee whether your Facebook account may get Checkpoint due to rapid actions. I will not responsible for problems that may occur or for any abuse of the information and the code provided
+All information provided in this repo and related articles are for educational purposes only. So use at your own risk, I will not guarantee & not be responsible for any situations including:
+- Whether your Facebook account may get Checkpoint due to rapid actions. 
+- Problems that may occur or for any abuse of the information or the code provided
+- Problems about your privacy while using IP hiding techniques
 
 <div id="1"></div>
 
 # 1️⃣ &nbsp;[Access Token by Personal Account + Graph API](#top)
     
-Use your own Token with **full permission** for fetching data
+Use your Token with **full permission** for fetching data. This method I refer from this [Vietnamese blog](https://ahachat.com/help/blog/cach-lay-token-facebook)
 
-**Note**: This method I refer from this [blog](https://ahachat.com/help/blog/cach-lay-token-facebook) that written in Vietnamese
 > Demo: Updating...
 
 ## Knowledge
@@ -55,7 +57,16 @@ Updating...
 
 ### II. IP hiding techniques
 
-Updating...
+| Method       | Speed rating | Cost         | General Evaluation |
+| ------------ | :----------: | ------------ | ------------------ |
+| VPN service  | `2`          | Usually paid | Best way           |
+| Tor browser  | `4`          | Free         | Slowest choice     |
+| Proxy server | `3`          | Usually free | Riskiest method    |
+| Public WiFi  | `1`          | Free         | Long distance way  |
+
+&#10153; Learn more about general information of above methods from this [site](https://whatismyipaddress.com/hide-ip)
+
+**IMPORTANT**: Nothing above is absolutely safe and secure. *Carefulness is never excessive*. You will need to do further research about them if you want more secure to your data & your privacy
 
 ## Overview the scripts
 
@@ -78,14 +89,14 @@ Updating...
 
 ### II. Weaknesses
 
--   Unable to handle a few failed responses. Example: **RATE LIMIT EXCEEDED** response (Facebook prevents from loading more) => have to run without **HEADLESS** to detect
+-   Unable to handle a few failed responses. Example: **RATE LIMIT EXCEEDED** response (Facebook prevents from loading more) &#10153; have to run without **HEADLESS** to detect
 -   Quite slow when running with a large number of _loading more_.
 
 ### III. Result
 
--   Each post will be seperated [line by line](https://raw.githubusercontent.com/18520339/facebook-crawling/master/data/KTXDHQGConfessions-inline.json)
+-   Each post will be separated [line by line](https://raw.githubusercontent.com/18520339/facebook-crawling/master/data/KTXDHQGConfessions-inline.json)
 -   Most of my successful tests were on **Firefox** with [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer) proxy server
--   Lastest run on **Firefox** with **Incognito** windows using [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer):
+-   My latest run on **Firefox** with **Incognito** windows using [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer):
 
     ![](https://github.com/18520339/facebook-crawling/blob/master/img/result.png?raw=true)
 
@@ -143,14 +154,14 @@ Updating...
     -   **PAGE_URL**: url of Facebook page.
     -   **TOR_PATH**: use proxy with Tor for `WINDOWS` / `MAC` / `LINUX` / `NONE`:
     -   **BROWSER_OPTIONS**: run scripts using `CHROME` / `FIREFOX`.
-    -   **PRIVATE**: run with private mode:
+    -   **PRIVATE**: run with private mode or not:
         -   Prevent from **Selenium** detection &#10153; **navigator.driver** must be _undefined_ (check in Dev Tools).
         -   Start browser with **Incognito** / **Private Window**.
     -   **USE_PROXY**: run with proxy or not. If **True** &#10153; check:
         -   IF **TOR_PATH** &ne; `NONE` &#10153; Use **Tor's SOCKS** proxy server.
         -   ELSE &#10153; Randomize proxies with [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer).
     -   **HEADLESS**: run with headless browser or not.
-    -   **SPEED_UP**: simplify browser for minizing loading time:
+    -   **SPEED_UP**: simplify browser for minimizing loading time or not. If **True** &#10153; use following settings:
 
         -   With **Chrome** :
 
@@ -189,11 +200,10 @@ Updating...
     python crawler.py
 
 -   Run at sign out state, cause some CSS Selectors will be different as sign in.
--   With some proxies, it might be quite slow or required to sign in.
+-   With some proxies, it might be quite slow or required to sign in (redirected).
 -   **To achieve higher speed**:
     -   If this is first time using these scripts, you can **run without tor & proxies** until Facebook requires to sign in
-    -   Or using some popular **VPN** sevices (also **run without tor & proxies**): [Touch VPN](https://touchvpn.net/platform) (free), [Hotspot Shield VPN](https://www.hotspotshield.com/vpn) (free, Premium available), ...
-    -   Learn more about [4 ways to hide your IP address & compare their speed](https://whatismyipaddress.com/hide-ip)
+    -   Use some popular **VPN services** (also **run without tor & proxies**): [Touch VPN](https://touchvpn.net/platform) (free), [Hotspot Shield VPN](https://www.hotspotshield.com/vpn) (free, Premium available), ...
 -   **To archive large number of comments**:
     -   Load more posts to collect more comments in case failed to view more comments / replies.
     -   Should use browser without headless to detect failed responses (comments / replies not load anymore).
