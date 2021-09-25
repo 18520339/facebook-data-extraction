@@ -44,7 +44,7 @@ Updating...
 
 In this method, I will write example scripts to extract id, user info, content, date, comments, and replies of posts
 
-**Note**: These scripts just working for **a Facebook page**, not group or any other object
+**Note**: These scripts just working for **a Facebook page when not sign-in**, not group or any other object
 
 > Demo: https://www.youtube.com/watch?v=Fx0UWOzYsig
 
@@ -66,8 +66,8 @@ Updating...
 3.  Checking redirect.
 4.  Can be run with Incognito window.
 5.  Simplifying browser to minimize time complexity.
-6.  Not required sign-in to **prevent account locked by Facebook**.
-7.  Hiding IP address to **prevent from banning** by:
+6.  Not required sign-in to **prevent Checkpoint**.
+7.  Hiding IP address to **limit redirect & prevent from banning** by:
     -   Collecting proxies and filtering the slowest ones from:
         -   http://proxyfor.eu/geo.php
         -   http://free-proxy-list.net
@@ -84,7 +84,6 @@ Updating...
 ### III. Result
 
 -   Each post will be seperated [line by line](https://raw.githubusercontent.com/18520339/facebook-crawling/master/data/KTXDHQGConfessions-inline.json)
-
 -   Most of my successful tests were on **Firefox** with [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer) proxy server
 -   Lastest run on **Firefox** with **Incognito** windows using [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer):
 
@@ -93,7 +92,7 @@ Updating...
 <details>
     <summary>
         <b>Example data fields for a post</b>
-    </summary>
+    </summary><br/>
     
 ```json
 {
@@ -231,6 +230,46 @@ setup_tor_proxy(page_url, tor_path, browser_options)
 
 # 3️⃣ &nbsp;[Run JS code directly at the DevTools Console](#top)
 
-Simply to say, this method is just another automation one, same as the [2nd method](#2) but without using any IP hiding techniques and maybe run faster
+Simply to say, this method is just another automation one, the same as the 2nd method but without using any IP hiding techniques. You just directly write & run JS code in the [DevTools Console](https://developer.chrome.com/docs/devtools/open) of your Browser
 
-Updating...
+- You can take a look at this [extremely useful project](https://github.com/jayremnt/facebook-scripts-dom-manipulation) which includes many automation scripts (not just about data extraction) with no Access Token needed for Facebook users by directly manipulating the DOM
+  
+- Here's my example script to collect comments on **a Facebook page when not sign-in**:
+   
+```js
+// Go to the page you want to collect, wait until it finishes loading.
+// Open the DevTools Console on the Browser and run the following code
+let csvContents = [['UserId', 'Name', 'Comment']];
+let cmtsSelector = '.userContentWrapper .commentable_item';
+
+// 1. Click see more comments
+// If you want more, just wait until the loading finishes and run this again
+moreCmts = document.querySelectorAll(cmtsSelector + ' ._4sxc._42ft');
+moreCmts.forEach(btnMore => btnMore.click());
+
+// 2. Collect all comments
+comments = document.querySelectorAll(cmtsSelector + ' ._72vr');
+comments.forEach(cmt => {
+    let info = cmt.querySelector('._6qw4');
+    let userId = info.getAttribute('href')?.substring(1);
+    let content = cmt.querySelector('._3l3x>span')?.innerText;
+    csvContents.push([userId, info.innerText, content]);
+});
+csvContents.map(cmt => cmt.join('\t')).join('\n');
+```
+
+<details>
+    <summary>
+        <b>Example result for the script above</b>
+    </summary><br/>
+
+| UserId          | Name           | Comment                            |
+| --------------  | -------------- | ---------------------------------- |
+| freedomabcxyz   | Freedom        | Sau khi dùng                       |
+| baodendepzai123 | Bảo Huy Nguyễn | nhưng mà thua                      |
+| tukieu.2001     | Tú Kiều        | đang xem hài ai rãnh xem quãng cáo |
+| ABCDE2k4        | Maa Vănn Kenn  | Lê Minh Nhất                       |
+| buikhanhtoanpro | Bùi Khánh Toàn | Haha                               |
+
+</details>
+
