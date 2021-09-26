@@ -12,33 +12,40 @@
 | 2️⃣ &nbsp;[Mbasic or Automation tools + IP hiding techniques](#2) | Depend **(\*)**     | Checkpoint           | Safest                  | Hard       | Slowest          |
 | 3️⃣ &nbsp;[Run JS directly at the DevTools Console](#3)           | Depend **(\*)**     | Checkpoint           | Can be banned if abused | Medium     | Depend **(\**)** |
 
-**Note**: When not sign-in Facebook will usually redirect you to the login page or prevent you from loading more comments / replies  
+**Note**: When not sign-in Facebook will usually redirect you to the login page or prevent you from loading more comments / replies.  
 
 **(\*)** Depend on the tasks that you need to sign in to perform. Example: Tasks that need to access private groups or private posts, ... 
   
-**(\**)** Depend on how much data you want to extract, the more the number, the more times for scrolling down to load the contents
+**(\**)** Depend on how much data you want to extract, the more the number, the more times for scrolling down to load the contents.
   
 ### DISCLAIMER
 
 All information provided in this repo and related articles are for educational purposes only. So use at your own risk, I will not guarantee & not be responsible for any situations including:
 - Whether your Facebook account may get Checkpoint due to rapid actions. 
-- Problems that may occur or for any abuse of the information or the code provided
-- Problems about your privacy while using IP hiding techniques or malicious scripts
+- Problems that may occur or for any abuse of the information or the code provided.
+- Problems about your privacy while using IP hiding techniques or malicious scripts.
 
 <div id="1"></div>
 
 # 1️⃣ &nbsp;[Access Token by Personal Account + Graph API](#top)
     
-Use your own Token with **full permission** for fetching data. The information of this method I refer from this [Vietnamese blog](https://ahachat.com/help/blog/cach-lay-token-facebook). In my opinion, this is the **MOST EFFECTIVE** method.
+Use your own Token with **almost full permission** for fetching data. In my opinion, this is the **MOST EFFECTIVE** method.
 
 > Demo: Updating...
 
 ## Knowledge
-### I. Facebook Token by App
+
+The knowledge of this method I refer from this [Vietnamese blog](https://ahachat.com/help/blog/cach-lay-token-facebook).
+
+### I. Facebook Token types
+
+There are 2 types of Facebook Tokens: Token by App and by Personal Account. The Facebook Token by App is the safest one, as it will have a limited lifetime and only has some basic permissions to manipulate on pages and groups. So our main focus will on the Facebook Token by Personal Account.
+
+### II. Facebook Token by Personal Account
 
 Updating...
 
-### II. Facebook Token by Personal Account
+## Implement data extraction with Graph API
 
 Updating...
 
@@ -46,9 +53,9 @@ Updating...
 
 # 2️⃣ &nbsp;[Mbasic or Automation tools + IP hiding techniques](#top)
 
-In this method, I will write example scripts to extract id, user info, content, date, comments, and replies of posts
+In this method, I will write example scripts to extract id, user info, content, date, comments, and replies of posts.
 
-**Note**: These scripts just working for **a Facebook page when not sign-in**, not group or any other object
+**Note**: These scripts just working for **a Facebook page when not sign-in**, not group or any other object.
 
 > Demo: https://www.youtube.com/watch?v=Fx0UWOzYsig
 
@@ -71,9 +78,9 @@ Updating...
 | Proxy server | `3`          | Usually free | Riskiest method    |
 | Public WiFi  | `1`          | Free         | Long distance way  |
 
-&#10153; Learn more about general information of above methods from this [site](https://whatismyipaddress.com/hide-ip)
+&#10153; Learn more about general information of above methods from this [site](https://whatismyipaddress.com/hide-ip).
 
-**IMPORTANT**: Nothing above is absolutely safe and secure. *Carefulness is never excessive*. You will need to do further research about them if you want more secure to your data & privacy
+**IMPORTANT**: Nothing above is absolutely safe and secure. *Carefulness is never excessive*. You will need to do further research about them if you want more secure to your data & privacy.
 
 ## Overview the scripts
 
@@ -96,13 +103,13 @@ Updating...
 
 ### II. Weaknesses
 
--   Unable to detect some failed responses. Example: **RATE LIMIT EXCEEDED** response (Facebook prevents from loading more) &#10153; have to run without **HEADLESS** to detect manually
+-   Unable to detect some failed responses. Example: **RATE LIMIT EXCEEDED** response (Facebook prevents from loading more) &#10153; have to run without **HEADLESS** to detect manually.
 -   Quite slow when running with a large number of _loading more_.
 
 ### III. Result
 
--   Each post will be separated [line by line](https://raw.githubusercontent.com/18520339/facebook-crawling/master/data/KTXDHQGConfessions-inline.json)
--   Most of my successful tests were on **Firefox** with [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer) proxy server
+-   Each post will be separated [line by line](https://raw.githubusercontent.com/18520339/facebook-crawling/master/data/KTXDHQGConfessions-inline.json).
+-   Most of my successful tests were on **Firefox** with [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer) proxy server.
 -   My latest run on **Firefox** with **Incognito** windows using [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer):
 
     ![](https://github.com/18520339/facebook-crawling/blob/master/img/result.png?raw=true)
@@ -209,7 +216,7 @@ Updating...
 -   Run at sign out state, cause some CSS Selectors will be different as sign in.
 -   With some proxies, it might be quite slow or required to sign in (redirected).
 -   **To achieve higher speed**:
-    -   If this is first time using these scripts, you can **run without tor & proxies** until Facebook requires to sign in
+    -   If this is first time using these scripts, you can **run without tor & proxies** until Facebook requires to sign in.
     -   Use some popular **VPN services** (also **run without tor & proxies**): [Touch VPN](https://touchvpn.net/platform) (free), [Hotspot Shield VPN](https://www.hotspotshield.com/vpn) (free, Premium available), ...
 -   **To archive large number of comments**:
     -   Load more posts to collect more comments in case failed to view more comments / replies.
@@ -245,11 +252,11 @@ setup_tor_proxy(page_url, tor_path, browser_options)
 
 <div id="3"></div>
 
-# 3️⃣ &nbsp;[Run JS code directly at the DevTools Console](#top)
+# 3️⃣ &nbsp;[Run JS directly at the DevTools Console](#top)
 
-Simply to say, this method is just another automation one, the same as the [2nd method](#2) but without using any IP hiding techniques. You just directly write & run JS code in the [DevTools Console](https://developer.chrome.com/docs/devtools/open) of your browser, so it's quite convenient, not required to setup anything
+Simply to say, this method is just another automation one, the same as the [2nd method](#2) but without using any IP hiding techniques. You just directly write & run JS code in the [DevTools Console](https://developer.chrome.com/docs/devtools/open) of your browser, so it's quite convenient, not required to setup anything.
 
-- You can take a look at this [extremely useful project](https://github.com/jayremnt/facebook-scripts-dom-manipulation) which includes many automation scripts (not just about data extraction) with no Access Token needed for Facebook users by directly manipulating the DOM
+- You can take a look at this [extremely useful project](https://github.com/jayremnt/facebook-scripts-dom-manipulation) which includes many automation scripts (not just about data extraction) with no Access Token needed for Facebook users by directly manipulating the DOM.
   
 - Here's my example script to collect comments on **a Facebook page when not sign-in**:
    
