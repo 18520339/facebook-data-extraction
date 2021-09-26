@@ -6,11 +6,13 @@
 
 ### General Comparison 
 
-| Method                                                      | No sign-in required | Risk when sign-in    | Speed            | Difficulty | Personal Evaluation     |
-| ----------------------------------------------------------- | :-----------------: | :------------------: | :--------------: | :--------: | :---------------------: |
-| 1️⃣ &nbsp;[Access Token by Personal Account + Graph API](#1) | ❌                  | Access Token leaked  | Fastest          | Easy       | Most effective method   |  
-| 2️⃣ &nbsp;[Automation tools + IP hiding techniques](#2)      | Depend **(\*)**     | Checkpoint           | Slowest          | Hard       | Safest if not sign-in   |
-| 3️⃣ &nbsp;[Run JS code directly at the DevTools Console](#3) | Depend **(\*)**     | Checkpoint           | Depend **(\**)** | Medium     | Can be banned if abused |
+| Method                                                           | No sign-in required | Risk when sign-in    | Speed            | Difficulty | Personal Evaluation     |
+| ---------------------------------------------------------------- | :-----------------: | :------------------: | :--------------: | :--------: | :---------------------: |
+| 1️⃣ &nbsp;[Access Token by Personal Account + Graph API](#1)      | ❌                  | Access Token leaked  | Fastest          | Easy       | Most effective method   |  
+| 2️⃣ &nbsp;[Mbasic or Automation tools + IP hiding techniques](#2) | Depend **(\*)**     | Checkpoint           | Slowest          | Hard       | Safest if not sign-in   |
+| 3️⃣ &nbsp;[Run JS directly at the DevTools Console](#3)           | Depend **(\*)**     | Checkpoint           | Depend **(\**)** | Medium     | Can be banned if abused |
+
+**Note**: When not sign-in Facebook will usually redirect you to the login page or prevent you from loading more comments / replies  
 
 **(\*)** Depend on the tasks that you need to sign in to perform. Example: Tasks that need to access private groups or private posts, ... 
   
@@ -42,7 +44,7 @@ Updating...
 
 <div id="2"></div>
 
-# 2️⃣ &nbsp;[Automation tools + IP hiding techniques](#top)
+# 2️⃣ &nbsp;[Mbasic or Automation tools + IP hiding techniques](#top)
 
 In this method, I will write example scripts to extract id, user info, content, date, comments, and replies of posts
 
@@ -51,11 +53,16 @@ In this method, I will write example scripts to extract id, user info, content, 
 > Demo: https://www.youtube.com/watch?v=Fx0UWOzYsig
 
 ## Knowledge
-### I. Automation tools
+
+### I. Mbasic Facebook
 
 Updating...
 
-### II. IP hiding techniques
+### II. Automation tools
+
+Updating...
+
+### III. IP hiding techniques
 
 | Method       | Speed rating | Cost         | General Evaluation |
 | ------------ | :----------: | ------------ | ------------------ |
@@ -66,7 +73,7 @@ Updating...
 
 &#10153; Learn more about general information of above methods from this [site](https://whatismyipaddress.com/hide-ip)
 
-**IMPORTANT**: Nothing above is absolutely safe and secure. *Carefulness is never excessive*. You will need to do further research about them if you want more secure to your data & your privacy
+**IMPORTANT**: Nothing above is absolutely safe and secure. *Carefulness is never excessive*. You will need to do further research about them if you want more secure to your data & privacy
 
 ## Overview the scripts
 
@@ -78,7 +85,7 @@ Updating...
 4.  Can be run with Incognito window.
 5.  Simplifying browser to minimize time complexity.
 6.  Not required sign-in to **prevent Checkpoint**.
-7.  Hiding IP address to **limit redirect & prevent from banning** by:
+7.  Hiding IP address to **prevent from banning** by:
     -   Collecting proxies and filtering the slowest ones from:
         -   http://proxyfor.eu/geo.php
         -   http://free-proxy-list.net
@@ -89,7 +96,7 @@ Updating...
 
 ### II. Weaknesses
 
--   Unable to handle a few failed responses. Example: **RATE LIMIT EXCEEDED** response (Facebook prevents from loading more) &#10153; have to run without **HEADLESS** to detect
+-   Unable to detect some failed responses. Example: **RATE LIMIT EXCEEDED** response (Facebook prevents from loading more) &#10153; have to run without **HEADLESS** to detect manually
 -   Quite slow when running with a large number of _loading more_.
 
 ### III. Result
@@ -240,7 +247,7 @@ setup_tor_proxy(page_url, tor_path, browser_options)
 
 # 3️⃣ &nbsp;[Run JS code directly at the DevTools Console](#top)
 
-Simply to say, this method is just another automation one, the same as the 2nd method but without using any IP hiding techniques. You just directly write & run JS code in the [DevTools Console](https://developer.chrome.com/docs/devtools/open) of your Browser
+Simply to say, this method is just another automation one, the same as the [2nd method](#2) but without using any IP hiding techniques. You just directly write & run JS code in the [DevTools Console](https://developer.chrome.com/docs/devtools/open) of your browser, so it's quite convenient, not required to setup anything
 
 - You can take a look at this [extremely useful project](https://github.com/jayremnt/facebook-scripts-dom-manipulation) which includes many automation scripts (not just about data extraction) with no Access Token needed for Facebook users by directly manipulating the DOM
   
