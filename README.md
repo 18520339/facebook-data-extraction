@@ -23,7 +23,7 @@
 All information provided in this repo and related articles are for educational purposes only. So use at your own risk, I will not guarantee & not be responsible for any situations including:
 - Whether your Facebook account may get Checkpoint due to rapid actions. 
 - Problems that may occur or for any abuse of the information or the code provided.
-- Problems about your privacy while using IP hiding techniques or malicious scripts.
+- Problems about your privacy while using IP hiding techniques or any malicious scripts.
 
 <div id="1"></div>
 
@@ -71,12 +71,12 @@ Updating...
 
 ### III. IP hiding techniques
 
-| Method       | Speed rating | Cost         | General Evaluation |
-| ------------ | :----------: | ------------ | ------------------ |
-| VPN service  | `2`          | Usually paid | Best way           |
-| Tor browser  | `4`          | Free         | Slowest choice     |
-| Proxy server | `3`          | Usually free | Riskiest method    |
-| Public WiFi  | `1`          | Free         | Long distance way  |
+| Method       | Speed rating | Cost         | Common risk                             | General Evaluation |
+| ------------ | :----------: | ------------ | --------------------------------------- | ------------------ |
+| VPN service  | `2`          | Usually paid | Some free providers might not be secure | Best way           |
+| Tor browser  | `4`          | Free         | Can be tracked by some rogue nodes      | Slowest choice     |
+| Proxy server | `3`          | Usually free | Data routing not private as VPNs        | Riskiest method    |
+| Public WiFi  | `1`          | Free         | Some might not be safe                  | Long distance way  |
 
 &#10153; Learn more about general information of above methods from this [site](https://whatismyipaddress.com/hide-ip).
 
