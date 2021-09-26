@@ -6,11 +6,11 @@
 
 ### General Comparison 
 
-| Method                                                           | No sign-in required | Risk when sign-in    | Speed            | Difficulty | Personal Evaluation     |
-| ---------------------------------------------------------------- | :-----------------: | :------------------: | :--------------: | :--------: | :---------------------: |
-| 1️⃣ &nbsp;[Access Token by Personal Account + Graph API](#1)      | ❌                  | Access Token leaked  | Fastest          | Easy       | Most effective method   |  
-| 2️⃣ &nbsp;[Mbasic or Automation tools + IP hiding techniques](#2) | Depend **(\*)**     | Checkpoint           | Slowest          | Hard       | Safest if not sign-in   |
-| 3️⃣ &nbsp;[Run JS directly at the DevTools Console](#3)           | Depend **(\*)**     | Checkpoint           | Depend **(\**)** | Medium     | Can be banned if abused |
+| Method                                                           | No sign-in required | Risk when sign-in    | Risk when not sign-in   | Difficulty | Speed            |
+| ---------------------------------------------------------------- | :-----------------: | :------------------: | :---------------------: | :--------: | :--------------: |
+| 1️⃣ &nbsp;[Access Token by Personal Account + Graph API](#1)      | ❌                  | Access Token leaked  | Not working             | Easy       | Fastest          | 
+| 2️⃣ &nbsp;[Mbasic or Automation tools + IP hiding techniques](#2) | Depend **(\*)**     | Checkpoint           | Safest                  | Hard       | Slowest          |
+| 3️⃣ &nbsp;[Run JS directly at the DevTools Console](#3)           | Depend **(\*)**     | Checkpoint           | Can be banned if abused | Medium     | Depend **(\**)** |
 
 **Note**: When not sign-in Facebook will usually redirect you to the login page or prevent you from loading more comments / replies  
 
@@ -23,13 +23,13 @@
 All information provided in this repo and related articles are for educational purposes only. So use at your own risk, I will not guarantee & not be responsible for any situations including:
 - Whether your Facebook account may get Checkpoint due to rapid actions. 
 - Problems that may occur or for any abuse of the information or the code provided
-- Problems about your privacy while using IP hiding techniques
+- Problems about your privacy while using IP hiding techniques or malicious scripts
 
 <div id="1"></div>
 
 # 1️⃣ &nbsp;[Access Token by Personal Account + Graph API](#top)
     
-Use your Token with **full permission** for fetching data. This method I refer from this [Vietnamese blog](https://ahachat.com/help/blog/cach-lay-token-facebook)
+Use your own Token with **full permission** for fetching data. The information of this method I refer from this [Vietnamese blog](https://ahachat.com/help/blog/cach-lay-token-facebook). In my opinion, this is the **MOST EFFECTIVE** method.
 
 > Demo: Updating...
 
