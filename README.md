@@ -6,18 +6,19 @@
 
 ### General Comparison 
 
-| Method                                                           | No sign-in required | Risk when sign-in    | Risk when not sign-in   | Difficulty | Speed            |
-| ---------------------------------------------------------------- | :-----------------: | :------------------: | :---------------------: | :--------: | :--------------: |
-| 1️⃣ &nbsp;[Access Token by Personal Account + Graph API](#1)      | ❌                  | Access Token leaked  | Not working             | Easy       | Fastest          | 
-| 2️⃣ &nbsp;[Mbasic or Automation tools + IP hiding techniques](#2) | Depend **(\*)**     | Checkpoint           | Safest                  | Hard       | Slowest          |
-| 3️⃣ &nbsp;[Run JS directly at the DevTools Console](#3)           | Depend **(\*)**     | Checkpoint           | Can be banned if abused | Medium     | Depend **(\**)** |
-
-**Note**: When not sign-in Facebook will usually redirect you to the login page or prevent you from loading more comments / replies.  
+| Method                                                       | No sign-in required | Risk when sign-in    | Risk when not sign-in   | Difficulty | Speed            |
+| ------------------------------------------------------------ | :-----------------: | :------------------: | :---------------------: | :--------: | :--------------: |
+| 1️⃣ &nbsp;[Access Token by Personal Account + Graph API](#1) | ❌                  | Access Token leaked  | Not working             | Easy       | Fastest          | 
+| 2️⃣ &nbsp;[Automation tools + IP hiding techniques](#2)      | Depend **(\*)**     | Checkpoint           | Safest                  | Hard       | Slowest          |
+| 3️⃣ &nbsp;[Run JS code directly at the DevTools Console](#3) | Depend **(\*)**     | Checkpoint           | Can be banned if abused | Medium     | Depend **(\**)** |
+| 4️⃣ &nbsp;[Mbasic Facebook + IP hiding techniques](#4)       | -                   | -                    | -                       | -          | -                |
 
 **(\*)** Depend on the tasks that you need to sign in to perform. Example: Tasks that need to access private groups or private posts, ... 
   
 **(\**)** Depend on how much data you want to extract, the more the number, the more times for scrolling down to load the contents.
-  
+
+**Note**: When not sign-in Facebook will usually redirect you to the login page or prevent you from loading more comments / replies.  
+
 ### DISCLAIMER
 
 All information provided in this repo and related articles are for educational purposes only. So use at your own risk, I will not guarantee & not be responsible for any situations including:
@@ -51,7 +52,7 @@ Updating...
 
 <div id="2"></div>
 
-# 2️⃣ &nbsp;[Mbasic or Automation tools + IP hiding techniques](#top)
+# 2️⃣ &nbsp;[Automation tools + IP hiding techniques](#top)
 
 In this method, I will write example scripts to extract id, user info, content, date, comments, and replies of posts.
 
@@ -61,15 +62,11 @@ In this method, I will write example scripts to extract id, user info, content, 
 
 ## Knowledge
 
-### I. Mbasic Facebook
+### I. Automation tools
 
 Updating...
 
-### II. Automation tools
-
-Updating...
-
-### III. IP hiding techniques
+### II. IP hiding techniques
 
 | Method       | Speed rating | Cost         | Common risk                             | General Evaluation |
 | ------------ | :----------: | ------------ | --------------------------------------- | ------------------ |
@@ -252,7 +249,7 @@ setup_tor_proxy(page_url, tor_path, browser_options)
 
 <div id="3"></div>
 
-# 3️⃣ &nbsp;[Run JS directly at the DevTools Console](#top)
+# 3️⃣ &nbsp;[Run JS code directly at the DevTools Console](#top)
 
 Simply to say, this method is just another automation one, the same as the [2nd method](#2) but without using any IP hiding techniques. You just directly write & run JS code in the [DevTools Console](https://developer.chrome.com/docs/devtools/open) of your browser, so it's quite convenient, not required to setup anything.
 
@@ -297,3 +294,12 @@ csvContents.map(cmt => cmt.join('\t')).join('\n');
 
 </details>
 
+<div id="4"></div>
+
+# 4️⃣ &nbsp;[Mbasic Facebook + IP hiding techniques](#top) 
+
+There is also another way quite similar to the [2nd method](#2) is to use the [Mbasic Facebook](https://mbasic.facebook.com):
+- This version of Facebook is made for mobile browsers on slow internet connections. You can access it without a modern smartphone.
+- With modern devices, it will improves the page loading time & the contents will be rendered with raw HTML, not JS. Due to that, you can leverage the power of many web scraping tools ([scrapy](https://scrapy.org), [bs4](https://pypi.org/project/beautifulsoup4), ...) not just automation tools like the [2nd method](#2) and it will become even more powerful when used with [IP hiding techniques](#ii-ip-hiding-techniques). 
+
+**Note**: I haven't tried the extraction with this method yet, so I won't go into details about it.
