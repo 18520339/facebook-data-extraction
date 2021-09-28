@@ -4,31 +4,36 @@
 # Summary of Facebook data extraction methods
 ---
 
-### General Comparison 
+### I. General Comparison 
 
-| Method                                                       | No sign-in required | Risk when sign-in    | Risk when not sign-in   | Difficulty | Speed            |
-| ------------------------------------------------------------ | :-----------------: | :------------------: | :---------------------: | :--------: | :--------------: |
-| 1️⃣ &nbsp;[Access Token by Personal Account + Graph API](#1) | ❌                  | Access Token leaked  | Not working             | Easy       | Fast             | 
-| 2️⃣ &nbsp;[Automation tools + IP hiding techniques](#2)      | Depend **(\*)**     | Checkpoint           | Safest                  | Hard       | Slow **(\**)**   |
-| 3️⃣ &nbsp;[Run JS code directly at the DevTools Console](#3) | Depend **(\*)**     | Checkpoint           | Can be banned if abused | Medium     | Slow **(\**)**   |
-| 4️⃣ &nbsp;[Mbasic Facebook + IP hiding techniques](#4)       | -                   | -                    | -                       | -          | -                |
+| Method                                                       | Sign-in required | Risk when sign-in                          | Risk when not sign-in   | Difficulty | Speed            |
+| ------------------------------------------------------------ | :--------------: | :----------------------------------------: | :---------------------: | :--------: | :--------------: |
+| 1️⃣ &nbsp;[Personal account Access Token + Graph API](#1)    | ✅               | Access Token leaked, Checkpoint but rarely | Not working             | Easy       | Fast             | 
+| 2️⃣ &nbsp;[Automation tools + IP hiding techniques](#2)      | Depend **(\*)**  | Checkpoint but less *loading more* failure | Safest                  | Hard       | Slow **(\**)**   |
+| 3️⃣ &nbsp;[Run JS code directly at the DevTools Console](#3) | Depend **(\*)**  | Checkpoint but less *loading more* failure | Can be banned if abused | Medium     | Slow **(\**)**   |
+| 4️⃣ &nbsp;[Mbasic Facebook + IP hiding techniques](#4)       | Depend **(\*)**  | -                                          | -                       | -          | -                |
 
 **(\*)** Depend on the tasks that you need to sign in to perform. Example: Tasks that need to access private groups or private posts, ... 
   
 **(\**)** Depend on how much data you want to extract, the more the number, the more times for scrolling down to load the contents.
 
-**Note**: When not sign-in Facebook will usually redirect you to the login page or prevent you from loading more comments / replies.  
+### II. My general conclusion after many tries with different methods
 
-### DISCLAIMER
+- When run at **not sign-in** state, Facebook usually redirects to the login page or prevent you from loading more comments / replies.
+- No matter which method you use, any fast or irregular activity continuously in **sign-in** state for a long time can be likely to get checkpoint at any time. 
+- If you want to use at **sign-in** state, for safety, I recommend create a fake account and use it for the extraction.
+- With the **sign-in** state, there's also another technique to limit the Checkpoint is to sign in with different **Cookies**.
+
+### III. DISCLAIMER
 
 All information provided in this repo and related articles are for educational purposes only. So use at your own risk, I will not guarantee & not be responsible for any situations including:
-- Whether your Facebook account may get Checkpoint due to rapid actions. 
+- Whether your Facebook account may get Checkpoint due to repeatedly or rapid actions. 
 - Problems that may occur or for any abuse of the information or the code provided.
-- Problems about your privacy while using IP hiding techniques or any malicious scripts.
+- Problems about your privacy while using [IP hiding techniques](#ii-ip-hiding-techniques) or any malicious scripts.
 
 <div id="1"></div>
 
-# 1️⃣ &nbsp;[Access Token by Personal Account + Graph API](#top)
+# 1️⃣ &nbsp;[Personal account Access Token + Graph API](#top)
     
 Use your own Token with **almost full permission** for fetching data. In my opinion, this is the **MOST EFFECTIVE** method.
 
@@ -88,8 +93,9 @@ Updating...
 3.  Checking redirect.
 4.  Can be run with Incognito window.
 5.  Simplifying browser to minimize time complexity.
-6.  Not required sign-in to **prevent Checkpoint**.
-7.  Hiding IP address to **prevent from banning** by:
+6.  Delay with random intervals every *loading more* times to simulate human behavior.
+7.  Not required sign-in to **prevent Checkpoint**.
+8.  Hiding IP address to **prevent from banning** by:
     -   Collecting proxies and filtering the slowest ones from:
         -   http://proxyfor.eu/geo.php
         -   http://free-proxy-list.net
@@ -100,8 +106,13 @@ Updating...
 
 ### II. Weaknesses
 
--   Unable to detect some failed responses. Example: **RATE LIMIT EXCEEDED** response (Facebook prevents from loading more) ➔ Have to run without **HEADLESS** to detect manually.
--   Quite slow when running with a large number of _loading more_.
+-   Unable to detect some failed responses. Example: **Rate limit exceeded** (Facebook prevents from loading more).
+     
+    ![](https://github.com/18520339/facebook-crawling/blob/master/img/rate_limit_exceeded.png?raw=true)
+
+    ➔ Have to run with `HEADLESS = False` to detect manually.
+
+-   Quite slow when running with a large number of _loading more_ or when using [IP hiding techniques](#ii-ip-hiding-techniques).
 
 ### III. Result
 
@@ -215,9 +226,6 @@ Updating...
 -   **To achieve higher speed**:
     -   If this is first time using these scripts, you can **run without tor & proxies** until Facebook requires to sign in.
     -   Use some popular **VPN services** (also **run without tor & proxies**): [Touch VPN](https://touchvpn.net/platform) (free), [Hotspot Shield VPN](https://www.hotspotshield.com/vpn) (free, Premium available), ...
--   **To archive large number of comments**:
-    -   Load more posts to collect more comments in case failed to view more comments / replies.
-    -   Should use browser without headless to detect failed responses (comments / replies not load anymore).
 
 ## Test proxy server
 
