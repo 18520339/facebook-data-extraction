@@ -8,9 +8,9 @@
 
 | Method                                                       | No sign-in required | Risk when sign-in    | Risk when not sign-in   | Difficulty | Speed            |
 | ------------------------------------------------------------ | :-----------------: | :------------------: | :---------------------: | :--------: | :--------------: |
-| 1️⃣ &nbsp;[Access Token by Personal Account + Graph API](#1) | ❌                  | Access Token leaked  | Not working             | Easy       | Fastest          | 
-| 2️⃣ &nbsp;[Automation tools + IP hiding techniques](#2)      | Depend **(\*)**     | Checkpoint           | Safest                  | Hard       | Slowest          |
-| 3️⃣ &nbsp;[Run JS code directly at the DevTools Console](#3) | Depend **(\*)**     | Checkpoint           | Can be banned if abused | Medium     | Depend **(\**)** |
+| 1️⃣ &nbsp;[Access Token by Personal Account + Graph API](#1) | ❌                  | Access Token leaked  | Not working             | Easy       | Fast             | 
+| 2️⃣ &nbsp;[Automation tools + IP hiding techniques](#2)      | Depend **(\*)**     | Checkpoint           | Safest                  | Hard       | Slow **(\**)**   |
+| 3️⃣ &nbsp;[Run JS code directly at the DevTools Console](#3) | Depend **(\*)**     | Checkpoint           | Can be banned if abused | Medium     | Slow **(\**)**   |
 | 4️⃣ &nbsp;[Mbasic Facebook + IP hiding techniques](#4)       | -                   | -                    | -                       | -          | -                |
 
 **(\*)** Depend on the tasks that you need to sign in to perform. Example: Tasks that need to access private groups or private posts, ... 
@@ -75,7 +75,7 @@ Updating...
 | Proxy server | `3`          | Usually free | Data routing not private as VPNs        | Riskiest method    |
 | Public WiFi  | `1`          | Free         | Some might not be safe                  | Long distance way  |
 
-&#10153; Learn more about general information of above methods from this [site](https://whatismyipaddress.com/hide-ip).
+➔ Learn more about general information of above methods from this [site](https://whatismyipaddress.com/hide-ip).
 
 **IMPORTANT**: Nothing above is absolutely safe and secure. *Carefulness is never excessive*. You will need to do further research about them if you want more secure to your data & privacy.
 
@@ -100,7 +100,7 @@ Updating...
 
 ### II. Weaknesses
 
--   Unable to detect some failed responses. Example: **RATE LIMIT EXCEEDED** response (Facebook prevents from loading more) &#10153; have to run without **HEADLESS** to detect manually.
+-   Unable to detect some failed responses. Example: **RATE LIMIT EXCEEDED** response (Facebook prevents from loading more) ➔ Have to run without **HEADLESS** to detect manually.
 -   Quite slow when running with a large number of _loading more_.
 
 ### III. Result
@@ -166,13 +166,13 @@ Updating...
     -   **TOR_PATH**: use proxy with Tor for `WINDOWS` / `MAC` / `LINUX` / `NONE`:
     -   **BROWSER_OPTIONS**: run scripts using `CHROME` / `FIREFOX`.
     -   **PRIVATE**: run with private mode or not:
-        -   Prevent from **Selenium** detection &#10153; **navigator.driver** must be _undefined_ (check in Dev Tools).
+        -   Prevent from **Selenium** detection ➔ **navigator.driver** must be _undefined_ (check in Dev Tools).
         -   Start browser with **Incognito** / **Private Window**.
-    -   **USE_PROXY**: run with proxy or not. If **True** &#10153; check:
-        -   IF **TOR_PATH** &ne; `NONE` &#10153; Use **Tor's SOCKS** proxy server.
-        -   ELSE &#10153; Randomize proxies with [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer).
+    -   **USE_PROXY**: run with proxy or not. If **True** ➔ check:
+        -   IF **TOR_PATH** &ne; `NONE` ➔ Use **Tor's SOCKS** proxy server.
+        -   ELSE ➔ Randomize proxies with [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer).
     -   **HEADLESS**: run with headless browser or not.
-    -   **SPEED_UP**: simplify browser for minimizing loading time or not. If **True** &#10153; use following settings:
+    -   **SPEED_UP**: simplify browser for minimizing loading time or not. If **True** ➔ use following settings:
 
         -   With **Chrome** :
 
@@ -300,6 +300,7 @@ csvContents.map(cmt => cmt.join('\t')).join('\n');
 
 There is also another way quite similar to the [2nd method](#2) is to use the [Mbasic Facebook](https://mbasic.facebook.com):
 - This version of Facebook is made for mobile browsers on slow internet connections. You can access it without a modern smartphone.
-- With modern devices, it will improves the page loading time & the contents will be rendered with raw HTML, not JS. Due to that, you can leverage the power of many web scraping tools ([scrapy](https://scrapy.org), [bs4](https://pypi.org/project/beautifulsoup4), ...) not just automation tools like the [2nd method](#2) and it will become even more powerful when used with [IP hiding techniques](#ii-ip-hiding-techniques). 
+- With modern devices, it will improves the page loading time & the contents will be rendered with raw HTML, not JS ➔ You can leverage the power of many web scraping tools ([scrapy](https://scrapy.org), [bs4](https://pypi.org/project/beautifulsoup4), ...) not just automation tools like the [2nd method](#2) and it will become even more powerful when used with [IP hiding techniques](#ii-ip-hiding-techniques). 
+- You can get each part of the contents through different URLs, not only through page scrolling like the [2nd method](#2) ➔ You can do something like using proxy for each request or [AutoThrottle](https://doc.scrapy.org/en/latest/topics/autothrottle.html) (a built-in [scrapy](https://scrapy.org) extension), ...
 
 **Note**: I haven't tried the extraction with this method yet, so I won't go into details about it.
