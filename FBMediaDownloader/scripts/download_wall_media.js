@@ -6,6 +6,7 @@ import {
   ID_LINK_SEPERATOR,
   PHOTO_FILE_FORMAT,
   VIDEO_FILE_FORMAT,
+  WAIT_BEFORE_NEXT_FETCH,
 } from "../config.js";
 import {
   createIfNotExistDir,
@@ -14,6 +15,7 @@ import {
   limit,
   myFetch,
   saveToFile,
+  sleep,
 } from "./utils.js";
 
 // Lấy ra các thông tin cần thiết (id, ảnh, video) từ dữ liệu attachment.
@@ -150,6 +152,12 @@ const fetchWallMedia = async ({
 
       // get next paging
       url = fetchData?.paging?.next;
+
+      // wait for next fetch - if needed
+      if (WAIT_BEFORE_NEXT_FETCH) {
+        console.log(`Sleeping ${WAIT_BEFORE_NEXT_FETCH}ms...`);
+        await sleep(WAIT_BEFORE_NEXT_FETCH);
+      }
     } else {
       break;
     }
