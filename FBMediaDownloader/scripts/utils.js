@@ -1,11 +1,6 @@
-import { get } from "https";
-import fs, { createWriteStream } from "fs";
 import fetch from "node-fetch";
-import request from "request";
-import pLimit from "p-limit";
-import { NUMBER_OF_DOWNLOAD_THREADS } from "../config.js";
-
-export const limit = pLimit(NUMBER_OF_DOWNLOAD_THREADS);
+import https from "https";
+import fs from "fs";
 
 export const myFetch = async (_url) => {
   try {
@@ -51,79 +46,16 @@ export const saveToFile = (fileName, data, override = false) => {
 
 export const download = (url, destination) =>
   new Promise((resolve, reject) => {
-    const file = createWriteStream(destination);
-    get(url, (response) => {
-      response.pipe(file);
-      file.on("finish", () => {
-        file.close(resolve(true));
+    const file = fs.createWriteStream(destination);
+    https
+      .get(url, (response) => {
+        response.pipe(file);
+        file.on("finish", () => {
+          file.close(resolve(true));
+        });
+      })
+      .on("error", (error) => {
+        unlink(destination);
+        reject(error.message);
       });
-    }).on("error", (error) => {
-      unlink(destination);
-      reject(error.message);
-    });
   });
-
-// https://stackoverflow.com/a/12751657
-export const downloadFile = function ({
-  uri,
-  filename,
-  successCallback = () => {},
-  failedCallback = () => {},
-}) {
-  try {
-    request.head(uri, function (err, res, body) {
-      if (err) {
-        failedCallback(err);
-      } else {
-        request(uri)
-          .pipe(fs.createWriteStream(filename, { flags: "w+" }))
-          .on("close", successCallback);
-      }
-    });
-  } catch (e) {
-    console.error("[!] ERROR: ", e);
-  }
-};
-
-export const downloadFileSync = async function ({
-  uri,
-  filename,
-  successCallback = () => {},
-  failedCallback = () => {},
-}) {
-  await new Promise((resolve, reject) => {
-    request.head(uri, function (err, res, body) {
-      if (err) {
-        failedCallback(err);
-        reject(err);
-      } else {
-        // https://github.com/request/request/issues/636#issuecomment-23030577
-        request
-          .get({ uri, gzip: true, timeout: 5000 })
-          .on("error", function (e) {
-            console.log("[!] ERROR: ", e.toString());
-            reject(e);
-          })
-          .on("close", () => {
-            successCallback();
-            resolve();
-          })
-          .pipe(fs.createWriteStream(filename, { flags: "w+" }));
-      }
-    });
-  });
-};
-
-// for browser ONLY: https://dev.to/sbodi10/download-images-using-javascript-51a9
-export const _downloadImage = async (imageSrc) => {
-  const image = await fetch(imageSrc);
-  const imageBlog = await image.blob();
-  const imageURL = URL.createObjectURL(imageBlog);
-
-  const link = document.createElement("a");
-  link.href = imageURL;
-  link.download = "image file name here";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-};

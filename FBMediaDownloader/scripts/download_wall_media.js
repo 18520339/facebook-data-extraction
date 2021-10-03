@@ -234,9 +234,6 @@ export const downloadWallMedia = async ({
           );
         }
       }
-      console.log(
-        S.BgGreen + `KẾT QUẢ: Lưu được ${saved} hình ảnh/video.` + S.Reset
-      );
     },
   });
 };

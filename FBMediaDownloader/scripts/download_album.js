@@ -164,7 +164,6 @@ export const downloadAlbumPhoto = async ({ albumId, fromPhotoId }) => {
           );
         }
       }
-      console.log(S.BgGreen + `KẾT QUẢ: Lưu được ${saved} hình ảnh.` + S.Reset);
     },
   });
 };
