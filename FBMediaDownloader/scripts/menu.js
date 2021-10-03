@@ -58,10 +58,10 @@ const menuDownloadAlbum = async () => {
     if (action.key == 0) break;
     if (action.key == 1 || action.key == 2) {
       const album_id = await prompt("> Nhập album id (Nhập -1 để quay lại): ");
-      const from_photo_id_text = await prompt(
-        "> Tải từ vị trí id ảnh nào? (Nhập 0 để tải từ đầu album): "
-      );
       if (album_id != -1) {
+        const from_photo_id_text = await prompt(
+          "> Tải từ vị trí id ảnh nào? (Nhập 0 để tải từ đầu album): "
+        );
         const from_photo_id =
           from_photo_id_text == "0" ? null : from_photo_id_text;
 
