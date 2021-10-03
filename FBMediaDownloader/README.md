@@ -15,7 +15,8 @@
 <details>
 <summary>LỊCH SỬ CẬP NHẬT</summary>
 
-- **Update**(19/09/2021): Tool có thêm chức năng tải tất cả ảnh/video trên tường của 1 đối tượng (user/group/page)
+- **Update**(19/09/2021): 
+  - Tool có thêm chức năng tải tất cả ảnh/video trên tường của 1 đối tượng (user/group/page)
 
 - **Update**(21/09/2021):
 
@@ -25,10 +26,12 @@
 
 - **Update**(03/10/2021):
   - Giao diện tiếng việt có dấu.
-  - Tải từng hình/video. Tải liên tiếp chứ ko tải song song như cũ => ít lỗi hơn, nhưng vẫn giữ được tốc độ nhanh.
+  - Tải từng hình/video. Tải liên tiếp chứ ko tải song song như cũ
+    - Tốc độ tải chậm hơn (do chỉ tải bằng 1 luồng) 
+    - Nhưng tỉ lệ lỗi sẽ thấp hơn đáng kể, tải file nào xong file đó.
   - Thu gọn README
 
-</details>
+</details> <br/>
 
 ## Ưu Điểm
 
@@ -103,7 +106,7 @@ Mình viết sẵn những bookmark sau (trong file [bookmarks.js](./scripts/boo
   - Bookmark **Tải video** bằng _video id_ - nhập vào id của video là tool sẽ mở trang tải video đó (chất lượng SD)
   - Bookmark **Tải video đang xem** - trường hợp đang trong trang xem video - tool sẽ tự tìm video id ở trên url và mở trang tải video cho bạn (chất lượng SD)
 
-</details>
+</details> <br/>
 
 ## CÀI ĐẶT VÀ SỬ DỤNG
 
