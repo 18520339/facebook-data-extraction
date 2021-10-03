@@ -1,4 +1,4 @@
-import { FB_API_HOST, MEDIA_TYPE } from "./constants.js";
+import { FB_API_HOST, MEDIA_TYPE, S } from "./constants.js";
 import {
   ACCESS_TOKEN,
   FOLDER_TO_SAVE_FEED_MEDIA,
@@ -129,7 +129,7 @@ const fetchWallMedia = async ({
   let url = `${FB_API_HOST}/${targetId}/feed?fields=attachments{media,type,subattachments,target}&access_token=${ACCESS_TOKEN}`;
 
   while (url && page <= pageLimit) {
-    console.log(`FETCHING page ${page}...`);
+    console.log(`ĐANG TẢI TRANG ${page}...`);
     const fetchData = await myFetch(url);
     page++;
 
@@ -144,7 +144,7 @@ const fetchWallMedia = async ({
 
       all_media.push(...media);
       console.log(
-        `> Found ${media.length} media. (Total: ${all_media.length})`
+        `> TÌM THẤY ${media.length} file ảnh/video. (TỔNG: ${all_media.length})`
       );
 
       // callback when each page fetched
@@ -155,7 +155,7 @@ const fetchWallMedia = async ({
 
       // wait for next fetch - if needed
       if (WAIT_BEFORE_NEXT_FETCH) {
-        console.log(`Sleeping ${WAIT_BEFORE_NEXT_FETCH}ms...`);
+        console.log(`ĐANG TẠM DỪNG ${WAIT_BEFORE_NEXT_FETCH}ms...`);
         await sleep(WAIT_BEFORE_NEXT_FETCH);
       }
     } else {
@@ -172,7 +172,7 @@ export const downloadWallMediaLinks = async ({
   includeVideo = true,
   pageLimit = Infinity,
 }) => {
-  console.log(`STARTING FETCH WALL_MEDIA_LINKS IN TARGET ${targetId}...`);
+  console.log(`ĐANG TẢI DỮ LIỆU TRÊN TƯỜNG CỦA ${targetId}...`);
 
   const fileName = `${FOLDER_TO_SAVE_LINKS}/${targetId}.txt`;
   deleteFile(fileName); // delete if file exist
@@ -199,7 +199,7 @@ export const downloadWallMedia = async ({
   includeVideo = true,
   pageLimit = Infinity,
 }) => {
-  console.log(`STARTING FETCH WALL_MEDIA IN TARGET ${targetId}...`);
+  console.log(`ĐANG TẢI DỮ LIỆU TRÊN TƯỜNG CỦA ${targetId}...`);
   await fetchWallMedia({
     targetId: targetId,
     pageLimit: pageLimit,

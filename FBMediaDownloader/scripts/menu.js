@@ -20,7 +20,7 @@ const prompt = (query) =>
   new Promise((resolve) => rl.question(S.FgGreen + query + S.Reset, resolve));
 
 const wait_for_key_pressed = async () =>
-  await prompt("..Nhap phim bat ky de tiep tuc..");
+  await prompt("..Nhấn phím bất kỳ để tiếp tục..");
 
 const choose = async (title, menu_items) => {
   let title_ui = `======== ${title} ========`;
@@ -34,14 +34,14 @@ const choose = async (title, menu_items) => {
   console.log(ui);
 
   while (true) {
-    const input = await prompt("\n> Chon chuc nang: ");
+    const input = await prompt("\n> Chọn chức năng: ");
     if (input in menu_items) {
       return {
         key: input,
         value: menu_items[input],
       };
     } else {
-      console.log("[!] Khong hop le. Vui long chon lai.");
+      console.log("[!] Không hợp lệ. Vui lòng chọn lại.");
     }
   }
 };
@@ -49,17 +49,17 @@ const choose = async (title, menu_items) => {
 // ========================================== MENU =========================================
 const menuDownloadAlbum = async () => {
   while (true) {
-    const action = await choose("FB Media Downloader Tool > Tai Album", {
-      0: "<- Quay lai",
-      1: "Tai tat ca ANH trong album",
-      2: "Tai tat ca LINK cua anh trong album",
+    const action = await choose("FB Media Downloader Tool > Tải Album", {
+      0: "<- Quay lại",
+      1: "Tải tất cả ẢNH trong album",
+      2: "Tải tất cả LINK của ảnh trong album",
     });
 
     if (action.key == 0) break;
     if (action.key == 1 || action.key == 2) {
-      const album_id = await prompt("> Nhap album id (Nhap -1 de quay lai): ");
+      const album_id = await prompt("> Nhập album id (Nhập -1 để quay lại): ");
       const from_photo_id_text = await prompt(
-        "> Tai tu vi tri id anh nao? (Nhap 0 de tai tu dau album): "
+        "> Tải từ vị trí id ảnh nào? (Nhập 0 để tải từ đầu album): "
       );
       if (album_id != -1) {
         const from_photo_id =
@@ -82,32 +82,36 @@ const menuDownloadAlbum = async () => {
 const menuDownloadWallMedia = async () => {
   while (true) {
     const action = await choose(
-      "FB Media Downloader Tool > Tai anh/video tren tuong (wall)",
+      "FB Media Downloader Tool > Tải ảnh/video trên tường",
       {
-        0: "<- Quay lai",
-        1: "Tai tat ca ANH/VIDEO tren wall cua (user/group/page)",
-        2: "Tai tat ca LINKS anh/video tren wall cua (user/group/page)",
+        0: "<- Quay lại",
+        1: "Tải tất cả ẢNH/VIDEO trên tường của đối tượng (user/gorup/page)",
+        2: "Tải tất cả LINK ảnh/video trên tường của đối tượng (user/group/page)",
       }
     );
 
     if (action.key == 0) break;
     if (action.key == 1 || action.key == 2) {
       const target_id = await prompt(
-        "> Nhap id cua doi tuong (user_id/group_id/page_id) (Nhap -1 de quay lai): "
+        "> Nhập id của đối tượng (user_id/group_id/page_id) (Nhập -1 để quay lại): "
       );
       if (target_id != -1) {
         const page_limit = await prompt(
-          "> Gioi han bao nhieu trang (Nhap 0 de tai het moi thu tren tuong): "
+          "> Tải bao nhiêu trang (Nhập 0 để tải mọi thứ trên tường): "
+        );
+        const include_video = await prompt(
+          "> Có tải cả video không (0-Không, 1-Có): "
         );
         if (page_limit >= 0) {
           action.key == 1
             ? await downloadWallMedia({
                 targetId: target_id,
-                includeVideo: true,
+                includeVideo: include_video == 1 ? true : false,
                 pageLimit: page_limit == 0 ? Infinity : page_limit,
               })
             : await downloadWallMediaLinks({
                 targetId: target_id,
+                includeVideo: include_video == 1 ? true : false,
                 pageLimit: page_limit == 0 ? Infinity : page_limit,
               });
         }
@@ -119,29 +123,30 @@ const menuDownloadWallMedia = async () => {
 export const menu = async () => {
   while (true) {
     const action = await choose("FB Media Downloader Tool", {
-      1: "Xem thong tin album",
-      2: "Tim timeline album cua page",
-      3: "Tai album (cua user/page/group)",
-      4: "Tai anh/video tren tuong (wall)",
-      5: "Thoat",
+      1: "Xem thông tin album",
+      2: "Tìm timeline album id của page",
+      3: "Tải album (của user/page/group)",
+      4: "Tải ảnh/video trên tường của đối tượng (user/group/page)",
+      5: "Hỗ trợ",
+      6: "Thoát",
     });
     if (action.key == 1) {
-      const album_id = await prompt("> Nhap album id (Nhap -1 de quay lai): ");
+      const album_id = await prompt("> Nhập album id (Nhập -1 để quay lại): ");
       if (album_id != -1) {
         console.log(await fetchAlbumInfo(album_id));
         await wait_for_key_pressed();
       }
     }
     if (action.key == 2) {
-      const page_id = await prompt("> Nhap page id (Nhap -1 de quay lai): ");
+      const page_id = await prompt("> Nhập page id (Nhập -1 để quay lại): ");
       if (page_id != -1) {
         const timeline_album_id = await fetchTimeLineAlbumId_FBPage(page_id);
         if (timeline_album_id) {
-          console.log("< TIM THAY Timeline Album ID: ", timeline_album_id);
-          console.log("< Dang tai thong tin album....");
+          console.log("< TÌM THẤY Timeline Album ID: ", timeline_album_id);
+          console.log("< Đang tải thông tin album....");
           console.log(await fetchAlbumInfo(timeline_album_id));
         } else
-          console.log(S.BgRed + "< KHONG TIM THAY timeline album." + S.Reset);
+          console.log(S.BgRed + "< KHÔNG TÌM THẤY timeline album." + S.Reset);
         await wait_for_key_pressed();
       }
     }
@@ -151,7 +156,13 @@ export const menu = async () => {
     if (action.key == 4) {
       await menuDownloadWallMedia();
     }
-    if (action.key == 5) break;
+    if (action.key == 5) {
+      console.log(
+        "---- Liên hệ mình để được hỗ trợ: https://www.facebook.com/99.hoangtran/ ----"
+      );
+      await wait_for_key_pressed();
+    }
+    if (action.key == 6) break;
   }
 
   rl.close();

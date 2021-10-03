@@ -52,7 +52,7 @@ const fetchAlbumPhotos = async ({
   let allImgsData = [];
 
   while (hasNextCursor && currentPage <= pageLimit) {
-    console.log(`Fetching page: ${currentPage}, pageSize: 100...`);
+    console.log(`ĐANG TẢI TRANG: ${currentPage}, Kích thước trang: 100 ảnh...`);
 
     const data = await fetchAlbumPhotosFromCursor({
       albumId,
@@ -65,7 +65,7 @@ const fetchAlbumPhotos = async ({
 
       console.log(
         S.BgGreen +
-          `> Fetched ${data.imgData.length} photos. (Total: ${allImgsData.length})` +
+          `> TÌM THẤY ${data.imgData.length} ẢNH. (TỔNG: ${allImgsData.length})` +
           S.Reset
       );
 
@@ -79,12 +79,12 @@ const fetchAlbumPhotos = async ({
 
       // wait for next fetch - if needed
       if (WAIT_BEFORE_NEXT_FETCH) {
-        console.log(`Sleeping ${WAIT_BEFORE_NEXT_FETCH}ms...`);
+        console.log(`ĐANG TẠM DỪNG ${WAIT_BEFORE_NEXT_FETCH}ms...`);
         await sleep(WAIT_BEFORE_NEXT_FETCH);
       }
     } else {
       // FAILED => re-fetch currentPage
-      console.log(S.BgRed + "FAILED." + S.Reset);
+      console.log(S.BgRed + "[!] ERROR." + S.Reset);
       break;
     }
   }
@@ -114,9 +114,9 @@ export const fetchAlbumInfo = async (albumId) => {
 // Tải và lưu tất cả id hình ảnh + link hình ảnh từ album, lưu vào file có tên trùng với albumId, lưu trong folder links
 export const downloadAlbumPhotoLinks = async ({ albumId, fromPhotoId }) => {
   const from_text = fromPhotoId
-    ? "photo_id=" + fromPhotoId
-    : " beginning of album";
-  console.log(`STARTING FETCH ALBUM ${albumId} from ${from_text}...`);
+    ? "vị trí photo_id=" + fromPhotoId
+    : "đầu album";
+  console.log(`ĐANG TẢI DỮ LIỆU ALBUM ${albumId} TỪ ${from_text}...`);
 
   const fileName = `${FOLDER_TO_SAVE_LINKS}/${albumId}.txt`;
   deleteFile(fileName); // delete if file exist
@@ -125,6 +125,7 @@ export const downloadAlbumPhotoLinks = async ({ albumId, fromPhotoId }) => {
     albumId,
     fromPhotoId,
     pageFetchedCallback: (pageImgsData) => {
+      console.log(`Đang lưu link vào file ${fileName}`);
       saveToFile(
         fileName,
         pageImgsData.map((_) => _.id + ID_LINK_SEPERATOR + _.url).join("\n"),
@@ -137,9 +138,10 @@ export const downloadAlbumPhotoLinks = async ({ albumId, fromPhotoId }) => {
 // Tải và lưu tất cả HÌNH ẢNH từ album, lưu từng file ảnh bằng id của ảnh và lưu hết vào folder images/albumId/
 export const downloadAlbumPhoto = async ({ albumId, fromPhotoId }) => {
   const from_text = fromPhotoId
-    ? "photo_id=" + fromPhotoId
-    : " beginning of album";
-  console.log(`STARTING FETCH ALBUM ${albumId} from ${from_text}...`);
+    ? "vị trí photo_id=" + fromPhotoId
+    : "đầu album";
+  console.log(`ĐANG TẢI DỮ LIỆU ALBUM ${albumId} TỪ ${from_text}...`);
+  let saved = 0;
   await fetchAlbumPhotos({
     albumId,
     fromPhotoId,
