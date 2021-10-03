@@ -15,8 +15,13 @@
 <details>
 <summary>LỊCH SỬ CẬP NHẬT</summary>
 
-- **Update**(19/09/2021): 
-  - Tool có thêm chức năng tải tất cả ảnh/video trên tường của 1 đối tượng (user/group/page)
+- **Update**(03/10/2021):
+
+  - Giao diện tiếng việt có dấu.
+  - Tải từng hình/video. Tải liên tiếp chứ ko tải song song như cũ
+    - Tốc độ tải chậm hơn (do chỉ tải bằng 1 luồng)
+    - Nhưng tỉ lệ lỗi sẽ thấp hơn đáng kể, tải file nào xong file đó.
+  - Thu gọn README
 
 - **Update**(21/09/2021):
 
@@ -24,12 +29,8 @@
   - Giao diện tiếng việt (không dấu)
   - ![UI](./screenshots/11.png)
 
-- **Update**(03/10/2021):
-  - Giao diện tiếng việt có dấu.
-  - Tải từng hình/video. Tải liên tiếp chứ ko tải song song như cũ
-    - Tốc độ tải chậm hơn (do chỉ tải bằng 1 luồng) 
-    - Nhưng tỉ lệ lỗi sẽ thấp hơn đáng kể, tải file nào xong file đó.
-  - Thu gọn README
+- **Update**(19/09/2021):
+  - Tool có thêm chức năng tải tất cả ảnh/video trên tường của 1 đối tượng (user/group/page)
 
 </details> <br/>
 
