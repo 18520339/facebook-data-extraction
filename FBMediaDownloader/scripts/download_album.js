@@ -10,8 +10,7 @@ import {
 import {
   createIfNotExistDir,
   deleteFile,
-  downloadFileSync,
-  limit,
+  download,
   myFetch,
   saveToFile,
   sleep,
@@ -151,34 +150,21 @@ export const downloadAlbumPhoto = async ({ albumId, fromPhotoId }) => {
       createIfNotExistDir(dir);
 
       // save all photo to directory
-      console.log(`Saving images ...`);
-      const promises = [];
-
       for (let data of pageImgsData) {
         const { id: photo_id, url: photo_url } = data;
-
         const savePath = `${dir}/${photo_id}.${PHOTO_FILE_FORMAT}`;
-        promises.push(
-          limit(() =>
-            downloadFileSync({
-              uri: photo_url,
-              filename: savePath,
-              successCallback: () => {
-                console.log(`> Saved ${savePath}`);
-              },
-              failedCallback: (e) => {
-                console.log(
-                  S.BgRed + `ERROR while save image ${savePath}` + S.Reset,
-                  e.toString()
-                );
-              },
-            })
-          )
-        );
+        try {
+          console.log(`Đang lưu ${saved}: ${savePath}...`);
+          await download(photo_url, savePath);
+          saved++;
+        } catch (e) {
+          console.log(
+            S.BgRed + `[!] LỖI khi tải ảnh ${savePath}` + S.Reset,
+            e.toString()
+          );
+        }
       }
-
-      await Promise.allSettled(promises);
-      console.log(S.BgGreen + `> Saved ${promises.length} images.` + S.Reset);
+      console.log(S.BgGreen + `KẾT QUẢ: Lưu được ${saved} hình ảnh.` + S.Reset);
     },
   });
 };

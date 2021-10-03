@@ -11,8 +11,7 @@ import {
 import {
   createIfNotExistDir,
   deleteFile,
-  downloadFileSync,
-  limit,
+  download,
   myFetch,
   saveToFile,
   sleep,
@@ -200,6 +199,7 @@ export const downloadWallMedia = async ({
   pageLimit = Infinity,
 }) => {
   console.log(`ĐANG TẢI DỮ LIỆU TRÊN TƯỜNG CỦA ${targetId}...`);
+  let saved = 0;
   await fetchWallMedia({
     targetId: targetId,
     pageLimit: pageLimit,
@@ -209,13 +209,13 @@ export const downloadWallMedia = async ({
       createIfNotExistDir(dir);
 
       // save all photo to directory
-      console.log(`Saving media ...`);
-      const promises = [];
-
       for (let data of media) {
         const { id: media_id, url: media_url, type: media_type } = data;
 
-        if (!includeVideo && media_type === MEDIA_TYPE.VIDEO) continue;
+        if (!includeVideo && media_type === MEDIA_TYPE.VIDEO) {
+          console.log(`Bỏ qua video: ${media_url}`);
+          continue;
+        }
 
         const file_format =
           media_type === MEDIA_TYPE.PHOTO
@@ -223,25 +223,20 @@ export const downloadWallMedia = async ({
             : VIDEO_FILE_FORMAT;
 
         const savePath = `${dir}/${media_id}.${file_format}`;
-
-        promises.push(
-          limit(() =>
-            downloadFileSync({
-              uri: media_url,
-              filename: savePath,
-              successCallback: () => {
-                console.log(`> Saved ${savePath}`);
-              },
-              failedCallback: (e) => {
-                console.log(`ERROR while save media ${savePath}`, e.toString());
-              },
-            })
-          )
-        );
+        try {
+          console.log(`Đang lưu ${saved}: ${savePath}...`);
+          await download(media_url, savePath);
+          saved++;
+        } catch (e) {
+          console.log(
+            S.BgRed + `[!] LỖI khi tải ${savePath}` + S.Reset,
+            e.toString()
+          );
+        }
       }
-
-      await Promise.allSettled(promises);
-      console.log(`> Saved ${promises.length} media.`);
+      console.log(
+        S.BgGreen + `KẾT QUẢ: Lưu được ${saved} hình ảnh/video.` + S.Reset
+      );
     },
   });
 };
