@@ -10,6 +10,7 @@ import {
   downloadWallMedia,
   downloadWallMediaLinks,
 } from "./download_wall_media.js";
+import { downloadWallPostComment } from "./download_wall_post.js";
 
 // https://stackoverflow.com/a/68504470
 const rl = readline.createInterface({
@@ -120,6 +121,33 @@ const menuDownloadWallMedia = async () => {
   }
 };
 
+const menuDownloadPostComment = async () => {
+  while (true) {
+    let title_ui = `======== FB Media Downloader Tool > Tải post/comment trên tường ========`;
+    let ui = "";
+    ui += "\n" + new Array(title_ui.length).fill("=").join("") + "\n";
+    ui += title_ui + "\n";
+    ui += new Array(title_ui.length).fill("=").join("");
+    console.log(ui);
+
+    const target_id = await prompt(
+      "Nhập id của đối tượng (user_id/group_id/page_id) (Nhập -1 để quay lại): "
+    );
+    if (target_id == -1) break;
+    if (target_id != -1) {
+      const set_limit = await prompt(
+        "> Tải bao nhiêu bộ post, mỗi bộ gồm 5 post (Nhập 0 để tải mọi post trên tường): "
+      );
+      if (set_limit >= 0) {
+        await downloadWallPostComment({
+          targetId: target_id,
+          setLimit: set_limit == 0 ? Infinity : set_limit,
+        });
+      }
+    }
+  }
+};
+
 export const menu = async () => {
   while (true) {
     const action = await choose("FB Media Downloader Tool", {
@@ -127,8 +155,9 @@ export const menu = async () => {
       2: "Tìm timeline album id của page",
       3: "Tải album (của user/page/group)",
       4: "Tải ảnh/video trên tường của đối tượng (user/group/page)",
-      5: "Hỗ trợ",
-      6: "Thoát",
+      5: "Tải thông tin post và comment (của page)",
+      6: "Hỗ trợ",
+      7: "Thoát",
     });
     if (action.key == 1) {
       const album_id = await prompt("> Nhập album id (Nhập -1 để quay lại): ");
@@ -157,12 +186,15 @@ export const menu = async () => {
       await menuDownloadWallMedia();
     }
     if (action.key == 5) {
+      await menuDownloadPostComment();
+    }
+    if (action.key == 6) {
       console.log(
         "---- Liên hệ mình để được hỗ trợ: https://www.facebook.com/99.hoangtran/ ----"
       );
       await wait_for_key_pressed();
     }
-    if (action.key == 6) break;
+    if (action.key == 7) break;
   }
 
   rl.close();

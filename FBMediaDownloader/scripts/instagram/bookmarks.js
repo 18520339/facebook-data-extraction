@@ -129,6 +129,7 @@ javascript: (async function () {
       limit--;
       await sleep(FIND_IMG_IN_MODAL_INTERVAL);
     }
+    console.log(media);
 
     if (media) {
       console.log(media.tagName);
