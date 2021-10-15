@@ -1,8 +1,4 @@
-<div id="top"></div>
-
----
 # Summary of Facebook data extraction methods
----
 
 ### I. General Comparison 
 

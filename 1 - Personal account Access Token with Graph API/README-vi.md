@@ -158,7 +158,7 @@ Mình viết sẵn những bookmark sau (trong file [bookmarks.js](./scripts/boo
 </details>
 
 <details>
-<summary> NẾU đang tải album mà BỊ LỖI như trên thì **tôi phải TẢI LẠI TỪ ĐẦU à**? </summary>
+<summary> NẾU đang tải album mà BỊ LỖI như trên thì <b>tôi phải TẢI LẠI TỪ ĐẦU à</b>? </summary>
 
 - Vào bản **cập nhật sáng ngày 21/09/2021** (ai cài tool từ trước thời gian này thì bạn vui lòng tải và cài lại tool nhé)
 - Mình đã thêm chức năng **tải album ảnh từ vị trí photo_id bất kì**, không nhất thiết phải tải từ đầu album lại nữa
@@ -171,7 +171,7 @@ Mình viết sẵn những bookmark sau (trong file [bookmarks.js](./scripts/boo
 </details>
 
 <details>
-<summary>LỖI *Unexpected token '.'* khi chạy câu lệnh *node index.js*</summary>
+<summary>LỖI <b>Unexpected token</b> khi chạy câu lệnh <code>node index.js</code></summary>
 
 - ![unexpected token .](./screenshots/12.jpg)
 - => LÝ DO: phiên bản nodejs của bạn quá thấp, tool cần phiên bản nodejs 14 trở lên để có thể chạy được.

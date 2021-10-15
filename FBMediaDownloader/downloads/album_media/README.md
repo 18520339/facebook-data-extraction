@@ -1,1 +1,0 @@
-Tất cả hình ảnh/video từ những album bạn tải sẽ được lưu tại đây
