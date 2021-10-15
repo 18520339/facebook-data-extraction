@@ -30,7 +30,9 @@ csvContents.map(cmt => cmt.join('\t')).join('\n');
 
 <details>
     <summary>
-        <b>Example result for the script above</b>
+        <b>
+            <a href="https://github.com/18520339/facebook-data-extraction/blob/master/3%20-%20Run%20JS%20code%20directly%20at%20the%20DevTools%20Console/example.xlsx">Example</a> result for the script above
+        </b>
     </summary><br/>
 
 | UserId          | Name           | Comment                            |
