@@ -43,13 +43,13 @@ Updating...
         -   http://rebro.weebly.com/proxy-list.html
         -   http://www.samair.ru/proxy/time-01.htm
         -   https://www.sslproxies.org
-    -   [Tor Relays](https://github.com/18520339/facebook-crawling/tree/master/tor) which used in [Tor Browser](https://www.torproject.org/), a network is comprised of thousands of volunteer-run servers.
+    -   [Tor Relays](https://github.com/18520339/facebook-crawling/tree/master/2%20-%20Automation%20tools%20with%20IP%20hiding%20techniques/tor) which used in [Tor Browser](https://www.torproject.org/), a network is comprised of thousands of volunteer-run servers.
 
 ### II. Weaknesses
 
 -   Unable to detect some failed responses. Example: **Rate limit exceeded** (Facebook prevents from loading more).
      
-    ![](https://github.com/18520339/facebook-crawling/blob/master/img/rate_limit_exceeded.png?raw=true)
+    ![](https://github.com/18520339/facebook-crawling/blob/master/2%20-%20Automation%20tools%20with%20IP%20hiding%20techniques/img/rate_limit_exceeded.png?raw=true)
 
     ➔ Have to run with `HEADLESS = False` to detect manually.
 
@@ -57,11 +57,11 @@ Updating...
 
 ### III. Result
 
--   Each post will be separated [line by line](https://raw.githubusercontent.com/18520339/facebook-crawling/master/data/KTXDHQGConfessions-inline.json).
+-   Each post will be separated [line by line](https://raw.githubusercontent.com/18520339/facebook-crawling/master/2%20-%20Automation%20tools%20with%20IP%20hiding%20techniques/data/KTXDHQGConfessions-inline.json).
 -   Most of my successful tests were on **Firefox** with [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer) proxy server.
 -   My latest run on **Firefox** with **Incognito** windows using [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer):
 
-    ![](https://github.com/18520339/facebook-crawling/blob/master/img/result.png?raw=true)
+    ![](https://github.com/18520339/facebook-crawling/blob/master/2%20-%20Automation%20tools%20with%20IP%20hiding%20techniques/img/result.png?raw=true)
 
 <details>
     <summary>
@@ -110,7 +110,7 @@ Updating...
 -   [Helium](https://github.com/mherrmann/selenium-python-helium): a wrapper around [Selenium](https://selenium-python.readthedocs.io/) with more high-level API for web automation.
 -   [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer): used for collecting free proxies.
 
-### II. Customize parameters in [crawler.py](https://github.com/18520339/facebook-crawling/blob/master/crawler.py)
+### II. Customize parameters in [crawler.py](https://github.com/18520339/facebook-crawling/blob/master/2%20-%20Automation%20tools%20with%20IP%20hiding%20techniques/crawler.py)
 
 1.  **Running browser**:
 
@@ -154,7 +154,7 @@ Updating...
 
     -   **SCROLL_DOWN**: number of times to scroll for **view more posts**.
     -   **FILTER_CMTS_BY**: filter comments by `MOST_RELEVANT` / `NEWEST` / `ALL_COMMENTS`.
-        ![](https://github.com/18520339/facebook-crawling/blob/master/img/filter.png?raw=true)
+        ![](https://github.com/18520339/facebook-crawling/blob/master/2%20-%20Automation%20tools%20with%20IP%20hiding%20techniques/img/filter.png?raw=true)
     -   **VIEW_MORE_CMTS**: number of times to click **view more comments**.
     -   **VIEW_MORE_REPLIES**: number of times to click **view more replies**.
 
@@ -182,7 +182,7 @@ setup_free_proxy(page_url, proxy_server, browser_options)
 # kill_browser()
 ```
 
-2. With [Tor Relays](https://github.com/18520339/facebook-crawling/tree/master/tor):
+2. With [Tor Relays](https://github.com/18520339/facebook-crawling/tree/master/2%20-%20Automation%20tools%20with%20IP%20hiding%20techniques/tor):
 
 ```python
 from browser import *
@@ -194,4 +194,4 @@ setup_tor_proxy(page_url, tor_path, browser_options)
 # kill_browser()
 ```
 
-![](https://github.com/18520339/facebook-crawling/blob/master/img/proxy.png?raw=true)
+![](https://github.com/18520339/facebook-crawling/blob/master/2%20-%20Automation%20tools%20with%20IP%20hiding%20techniques/img/proxy.png?raw=true)
