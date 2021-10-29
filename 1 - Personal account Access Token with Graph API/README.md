@@ -18,4 +18,6 @@ Updating...
 
 ## Implement data extraction with Graph API
 
+The source of this method is reused from [FBMediaDownloader](https://github.com/HoangTran0410/FBMediaDownloader) with a few more features added
+
 Updating...
