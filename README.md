@@ -1,46 +1,72 @@
-# Facebook crawling using IP hiding techniques
+# Automation tools + IP hiding techniques
 
-Crawling id, user info, content, date, comments and replies of posts in a Facebook page
+In this method, I will write example scripts to extract id, user info, content, date, comments, and replies of posts.
+
+**Note**: These scripts just working for **a Facebook page when not sign-in**, not group or any other object.
 
 > Demo: https://www.youtube.com/watch?v=Fx0UWOzYsig
 
-## Overview
+## Knowledge
+
+### I. Automation tools
+
+Updating...
+
+### II. IP hiding techniques
+
+| Method       | Speed rating | Cost         | Common risk                             | General Evaluation |
+| ------------ | :----------: | ------------ | --------------------------------------- | ------------------ |
+| VPN service  | `2`          | Usually paid | Some free providers might not be secure | Best way           |
+| Tor browser  | `4`          | Free         | Can be tracked by some rogue nodes      | Slowest choice     |
+| Proxy server | `3`          | Usually free | Data routing not private as VPNs        | Riskiest method    |
+| Public WiFi  | `1`          | Free         | Some might not be safe                  | Long distance way  |
+
+➔ Learn more about general information of above methods from this [site](https://whatismyipaddress.com/hide-ip).
+
+**IMPORTANT**: Nothing above is absolutely safe and secure. *Carefulness is never excessive*. You will need to do further research about them if you want more secure to your data & privacy.
+
+## Overview the scripts
 
 ### I. Features
 
 1.  Getting information of posts.
 2.  Filtering comments.
-3.  Not required sign in.
-4.  Checking redirect
-5.  Running with Incognito window.
-6.  Simplifying browser to minimize time complexity.
-7.  Hiding IP address to prevent from banning by:
+3.  Checking redirect.
+4.  Can be run with Incognito window.
+5.  Simplifying browser to minimize time complexity.
+6.  Delay with random intervals every *loading more* times to simulate human behavior.
+7.  Not required sign-in to **prevent Checkpoint**.
+8.  Hiding IP address to **prevent from banning** by:
     -   Collecting proxies and filtering the slowest ones from:
         -   http://proxyfor.eu/geo.php
         -   http://free-proxy-list.net
         -   http://rebro.weebly.com/proxy-list.html
         -   http://www.samair.ru/proxy/time-01.htm
         -   https://www.sslproxies.org
-    -   [Tor Relays](https://github.com/18520339/facebook-crawling/tree/master/tor) which used in [Tor Browser](https://www.torproject.org/), a network is comprised of thousands of volunteer-run servers.
+    -   [Tor Relays](https://github.com/18520339/facebook-crawling/tree/master/2%20-%20Automation%20tools%20with%20IP%20hiding%20techniques/tor) which used in [Tor Browser](https://www.torproject.org/), a network is comprised of thousands of volunteer-run servers.
 
 ### II. Weaknesses
 
--   Unable to handle a few failed responses. Example: **RATE LIMIT EXCEEDED** response (Facebook prevents from loading more) => have to run without **HEADLESS** to detect
--   Quite slow when running with a large number of _loading more_.
+-   Unable to detect some failed responses. Example: **Rate limit exceeded** (Facebook prevents from loading more).
+     
+    ![](https://github.com/18520339/facebook-crawling/blob/master/2%20-%20Automation%20tools%20with%20IP%20hiding%20techniques/img/rate_limit_exceeded.png?raw=true)
+
+    ➔ Have to run with `HEADLESS = False` to detect manually.
+
+-   Quite slow when running with a large number of _loading more_ or when using [IP hiding techniques](#ii-ip-hiding-techniques).
 
 ### III. Result
 
--   Each post will be seperated [line by line](https://raw.githubusercontent.com/18520339/facebook-crawling/master/data/KTXDHQGConfessions-inline.json)
+-   Each post will be separated [line by line](https://raw.githubusercontent.com/18520339/facebook-crawling/master/2%20-%20Automation%20tools%20with%20IP%20hiding%20techniques/data/KTXDHQGConfessions-inline.json).
+-   Most of my successful tests were on **Firefox** with [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer) proxy server.
+-   My latest run on **Firefox** with **Incognito** windows using [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer):
 
--   Most of my successful tests were on **Firefox** with [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer) proxy server
--   Lastest run on **Firefox** with **Incognito** windows using [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer):
-
-    ![](https://github.com/18520339/facebook-crawling/blob/master/img/result.png?raw=true)
+    ![](https://github.com/18520339/facebook-crawling/blob/master/2%20-%20Automation%20tools%20with%20IP%20hiding%20techniques/img/result.png?raw=true)
 
 <details>
     <summary>
         <b>Example data fields for a post</b>
-    </summary>
+    </summary><br/>
     
 ```json
 {
@@ -84,21 +110,21 @@ Crawling id, user info, content, date, comments and replies of posts in a Facebo
 -   [Helium](https://github.com/mherrmann/selenium-python-helium): a wrapper around [Selenium](https://selenium-python.readthedocs.io/) with more high-level API for web automation.
 -   [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer): used for collecting free proxies.
 
-### II. Customize parameters in [crawler.py](https://github.com/18520339/facebook-crawling/blob/master/crawler.py)
+### II. Customize parameters in [crawler.py](https://github.com/18520339/facebook-crawling/blob/master/2%20-%20Automation%20tools%20with%20IP%20hiding%20techniques/crawler.py)
 
 1.  **Running browser**:
 
     -   **PAGE_URL**: url of Facebook page.
     -   **TOR_PATH**: use proxy with Tor for `WINDOWS` / `MAC` / `LINUX` / `NONE`:
     -   **BROWSER_OPTIONS**: run scripts using `CHROME` / `FIREFOX`.
-    -   **PRIVATE**: run with private mode:
-        -   Prevent from **Selenium** detection &#10153; **navigator.driver** must be _undefined_ (check in Dev Tools).
+    -   **PRIVATE**: run with private mode or not:
+        -   Prevent from **Selenium** detection ➔ **navigator.driver** must be _undefined_ (check in Dev Tools).
         -   Start browser with **Incognito** / **Private Window**.
-    -   **USE_PROXY**: run with proxy or not. If **True** &#10153; check:
-        -   IF **TOR_PATH** &ne; `NONE` &#10153; Use **Tor's SOCKS** proxy server.
-        -   ELSE &#10153; Randomize proxies with [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer).
+    -   **USE_PROXY**: run with proxy or not. If **True** ➔ check:
+        -   IF **TOR_PATH** &ne; `NONE` ➔ Use **Tor's SOCKS** proxy server.
+        -   ELSE ➔ Randomize proxies with [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer).
     -   **HEADLESS**: run with headless browser or not.
-    -   **SPEED_UP**: simplify browser for minizing loading time:
+    -   **SPEED_UP**: simplify browser for minimizing loading time or not. If **True** ➔ use following settings:
 
         -   With **Chrome** :
 
@@ -128,7 +154,7 @@ Crawling id, user info, content, date, comments and replies of posts in a Facebo
 
     -   **SCROLL_DOWN**: number of times to scroll for **view more posts**.
     -   **FILTER_CMTS_BY**: filter comments by `MOST_RELEVANT` / `NEWEST` / `ALL_COMMENTS`.
-        ![](https://github.com/18520339/facebook-crawling/blob/master/img/filter.png?raw=true)
+        ![](https://github.com/18520339/facebook-crawling/blob/master/2%20-%20Automation%20tools%20with%20IP%20hiding%20techniques/img/filter.png?raw=true)
     -   **VIEW_MORE_CMTS**: number of times to click **view more comments**.
     -   **VIEW_MORE_REPLIES**: number of times to click **view more replies**.
 
@@ -137,14 +163,10 @@ Crawling id, user info, content, date, comments and replies of posts in a Facebo
     python crawler.py
 
 -   Run at sign out state, cause some CSS Selectors will be different as sign in.
--   With some proxies, it might be quite slow or required to sign in.
+-   With some proxies, it might be quite slow or required to sign in (redirected).
 -   **To achieve higher speed**:
-    -   If this is first time using these scripts, you can **run without tor & proxies** until Facebook requires to sign in
-    -   Or using some popular **VPN** sevices (also **run without tor & proxies**): [Touch VPN](https://touchvpn.net/platform) (free), [Hotspot Shield VPN](https://www.hotspotshield.com/vpn) (free, Premium available), ...
-    -   Learn more about [4 ways to hide your IP address & compare their speed](https://whatismyipaddress.com/hide-ip)
--   **To archive large number of comments**:
-    -   Load more posts to collect more comments in case failed to view more comments / replies.
-    -   Should use browser without headless to detect failed responses (comments / replies not load anymore).
+    -   If this is first time using these scripts, you can **run without tor & proxies** until Facebook requires to sign in.
+    -   Use some popular **VPN services** (also **run without tor & proxies**): [NordVPN](https://nordvpn.com), [ExpressVPN](https://www.expressvpn.com), ...
 
 ## Test proxy server
 
@@ -160,7 +182,7 @@ setup_free_proxy(page_url, proxy_server, browser_options)
 # kill_browser()
 ```
 
-2. With [Tor Relays](https://github.com/18520339/facebook-crawling/tree/master/tor):
+2. With [Tor Relays](https://github.com/18520339/facebook-crawling/tree/master/2%20-%20Automation%20tools%20with%20IP%20hiding%20techniques/tor):
 
 ```python
 from browser import *
@@ -172,4 +194,4 @@ setup_tor_proxy(page_url, tor_path, browser_options)
 # kill_browser()
 ```
 
-![](https://github.com/18520339/facebook-crawling/blob/master/img/proxy.png?raw=true)
+![](https://github.com/18520339/facebook-crawling/blob/master/2%20-%20Automation%20tools%20with%20IP%20hiding%20techniques/img/proxy.png?raw=true)
