@@ -34,14 +34,14 @@ def failed_to_load(driver, page_url):
 def load_more_posts(driver):
     driver.execute_script('window.scrollTo(0, document.body.scrollHeight)')
     while find_all(S('.async_saving [role="progressbar"]')) != []: pass
-    time.sleep(5)
+    time.sleep(random.randint(3, 7))
 
 @timer
 def click_multiple_buttons(driver, selector):
     for button in driver.find_elements_by_css_selector(selector):
         driver.execute_script('arguments[0].click()', button)
         while find_all(S(f'{COMMENTABLE_SELECTOR} [role="progressbar"]')) != []: pass
-        time.sleep(5)
+        time.sleep(random.randint(3, 7))
 
 def filter_comments(driver, by):
     if by == FILTER_CMTS.MOST_RELEVANT: return
