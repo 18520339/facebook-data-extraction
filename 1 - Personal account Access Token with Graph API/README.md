@@ -2,7 +2,10 @@
 
 Use your own Token with **almost full permission** for fetching data. This is the **MOST EFFECTIVE** method.
 
-> Demo: Updating...
+> The knowledge and the way to get **Access Token** below is translated from these 2 Vietnamese blogs:
+>
+> -   https://ahachat.com/help/blog/cach-lay-token-facebook
+> -   https://alotoi.com/get-token-full-quyen
 
 ## Knowledge
 
@@ -40,6 +43,22 @@ Note that using Facebook token can save you time, but you should not disclose th
 -   And if you suspect your token has been exposed, immediately change your Facebook password and delete the extensions installed in the browser. Or if you are more careful you can turn on **two-factor authentication** (2FA).
 
 👉 To ensure the safety of using Facebook tokens for personal purposes and save time, as mentioned above, you should use the method of getting tokens directly on Facebook by following the steps below.
+
+## Get full permissions Access Token
+
+In the past, getting Facebook tokens were very simple. Now many Facebook services are developing. Getting Facebook tokens is becoming more and more difficult. Facebook also restricts Full rights tokens to avoid Spam and excessive abuse of user behaviors. Or you can get Token, but it will be limited by basic permissions that we do not use, that is nothing compared to sometimes having an account locked (identity verification).
+
+Currently, this is the way to use the most. However, it may require you to authenticate with 2FA (via app or SMS Code). With these simple steps, you can get **almost full permission** token.
+
+-   Go to https://business.facebook.com/content_management.
+-   Press `Ctrl + U`, then `Ctrl + F` to find the code that contains `EAAG`. Copy the highlighted text, that's the Token you need to get.
+
+    ![](https://alotoi.com/wp-content/uploads/2020/08/token-business.png)
+
+-   You can go to this [facebook link](https://developers.facebook.com/tools/debug/accesstoken) to check the permissions of the above token.
+    ![](https://lh4.googleusercontent.com/0S64t2sjFXjkX8HUjo2GeEW8hyKL88G4lMXkpNF7RgtFCRm0oVPRT--vnoM1rkMyhrRvvHufW9J0ZeP8tPxfo4j5vYityQFM0m06NTI2hq4zk1JMp59W9voHXHYtOjE7zqDGMlhh)
+
+**Note**: I only share how to get **Access Token** from Facebook itself. Revealing tokens can seriously affect your Facebook account. Please refrain from getting tokens from unknown sources!
 
 ## Implement data extraction with Graph API
 
