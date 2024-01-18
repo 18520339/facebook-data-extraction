@@ -1,0 +1,1 @@
+# CSR Approach using Puppeteer

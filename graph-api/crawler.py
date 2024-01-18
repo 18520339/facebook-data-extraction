@@ -4,6 +4,14 @@ import time
 import re
 
 
+''' For Cookie
+1. Go to https://business.facebook.com/business_locations and login (It may require 2FA)
+2. Press F12 and go to the Network Panel 
+3. Select the first request and copy the Cookie value in the Request Headers
+*Note: Don't use document.cookie as this will only extract cookies that are accessible via JavaScript and are not marked as `HttpOnly`
+'''
+COOKIE = ""
+
 '''Maximum Posts 
 - For Page, you can only read a maximum of 100 feed posts with the limit field:
     - If you try to read more than that you will get an error message to not exceed 100.
@@ -16,7 +24,6 @@ import re
 '''
 LIMIT = 100
 MAX_POSTS = 375 # Maximum posts to crawl
-SLEEP = 2 # Waiting time between each request of {LIMIT} posts
    
 ''' Endpoint for posts in Page and Group
 - https://developers.facebook.com/docs/graph-api/reference/page/feed
@@ -27,13 +34,7 @@ SLEEP = 2 # Waiting time between each request of {LIMIT} posts
 POST_FIELDS = 'id,parent_id,created_time,permalink_url,full_picture,shares,reactions.summary(total_count),attachments{subattachments.limit(20)},message' 
 COMMENT_FIELDS = 'comments.order(chronological).summary(total_count){id,created_time,reactions.summary(total_count),message,comment_count,comments}'
 
-''' For Cookie
-1. Go to https://business.facebook.com/business_locations and login (It may require 2FA)
-2. Press F12 and go to the Network Panel 
-3. Select the first request and copy the Cookie value in the Request Headers
-*Note: Don't use document.cookie as this will only extract cookies that are accessible via JavaScript and are not marked as `HttpOnly`
-'''
-COOKIE = ""
+SLEEP = 2 # Waiting time between each request to get {LIMIT} posts
 PAGE_OR_GROUP_URL = 'https://www.facebook.com/groups/devoiminhdidauthe'
 SESSION = requests.Session()
 
