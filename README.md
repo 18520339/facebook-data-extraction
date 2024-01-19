@@ -7,28 +7,28 @@
 | Approach                                                                                            | Sign-in required |                                             Risk when sign-in                                              |  Risk when not sign-in  | Difficulty |      Speed      |
 | --------------------------------------------------------------------------------------------------- | :--------------: | :--------------------------------------------------------------------------------------------------------: | :---------------------: | :--------: | :-------------: |
 | 1️⃣ &nbsp;[Graph API + Full-permission Token](#approach-1-graph-api-with-full-permission-token)  |        ✅        | Access Token leaked, [Rate Limits](https://developers.facebook.com/docs/graph-api/overview/rate-limiting/) |       Not working       |    Easy    |      Fast       |
-| 2️⃣ &nbsp;[CSR - Client-side Rendering](#approach-2-csr---client-side-rendering)                    | Depend **(\*)**  |                                 Checkpoint but less _loading more_ failure                                 |         Safest          |    Hard    | Slow **(\*\*)** |
-| 3️⃣ &nbsp;[SSR - Server-side Rendering](#approach-3-ssr---server-side-rendering)                    | Depend **(\*)**  |                                                     -                                                      |            -            |    Hard    |        -        |
-| 4️⃣ &nbsp;[DevTools Console](#approach-4-devtools-console)                                          | Depend **(\*)**  |                                 Checkpoint but less _loading more_ failure                                 | Can be banned if abused |   Medium   | Slow **(\*\*)** |
+| 2️⃣ &nbsp;[CSR - Client-side Rendering](#approach-2-csr---client-side-rendering)                    | Depends **(\*)**  |                                 Checkpoint but less _loading more_ failure                                 |         Safest          |    Hard    | Slow **(\*\*)** |
+| 3️⃣ &nbsp;[SSR - Server-side Rendering](#approach-3-ssr---server-side-rendering)                    | Depends **(\*)**  |                                                     -                                                      |            -            |    Hard    |        -        |
+| 4️⃣ &nbsp;[DevTools Console](#approach-4-devtools-console)                                          | Depends **(\*)**  |                                 Checkpoint but less _loading more_ failure                                 | Can be banned if abused |   Medium   | Slow **(\*\*)** |
 
-**(\*)** Depend on the tasks that you need to sign in to perform. Example: Tasks that need to access private groups or private posts, ...
+**(\*)** Depends, some tasks you need to be signed in to perform. Example: Tasks that need to access private groups or private posts, ...
 
-**(\*\*)** Depend on how much data you want to extract, the more the number, the more times for scrolling down to load the contents.
+**(\*\*)** Depends on how much data you want to extract, the bigger the number, the more time it will take to load the contents.
 
-### I. My general conclusion after many tries with different approaches
+### I. My general conclusion after testing all the different approaches
 
--   When run at **not sign-in** state, Facebook usually redirects to the login page or prevent you from loading more comments / replies.
--   No matter which approach you use, any fast or irregular activity continuously in **sign-in** state for a long time can be likely to get blocked at any time.
--   If you want to use at **sign-in** state, for safety, I recommend create a **fake account** (you can use a [Temporary Email Address](https://temp-mail.org/en/) to create one) and use it for the extraction.
--   With the **sign-in** state, there's also another technique to limit the Checkpoint is to sign in with different **Cookies**.
+-   When run at the **not sign-in** state, Facebook usually redirects to the login page or prevents you from loading more comments / replies.
+-   No matter which approach you choose, any fast or irregular activity continuously in the **sign-in** state for a long period of time is likely to get blocked after some time.
+-   If you want to use the tool at the **sign-in** state, for safety, I recommend creating a **fake account** (you can use a [Temporary Email Address](https://temp-mail.org/en/) to create one) and use it for the extraction.
+-   With the **sign-in** state, there's also another technique to limit the Checkpoint, you can sign in with different **Cookies**.
 
 ### II. DISCLAIMER
 
-All information provided in this repo and related articles are for educational purposes only. So use at your own risk, I will not guarantee & not be responsible for any situations including:
+All information provided in this repo and related articles is for educational purposes only. So use the tool at your own risk, I will not guarantee & not be responsible for any situations including:
 
--   Whether your Facebook account may get Checkpoint due to repeatedly or rapid actions.
--   Problems that may occur or for any abuse of the information or the code provided.
--   Problems about your privacy while using [IP hiding techniques](#i-ip-hiding-techniques) or any malicious scripts.
+-   Whether your Facebook account may get Checkpoint beacuse of repeated or rapid actions.
+-   Problems that may occur with or for any abuse of the information or the code provided.
+-   Problems with your privacy while using [IP hiding techniques](#i-ip-hiding-techniques) or any malicious scripts.
 
 ## Data Extraction Approaches
 
@@ -36,26 +36,26 @@ All information provided in this repo and related articles are for educational p
 
 👉 Check out my implementation with [Python](./graph-api/).
 
-You will query [Facebook Graph API](https://developers.facebook.com/docs/graph-api) using your own Token with **full permission** for fetching data. This is the **MOST EFFECTIVE** approach.
+You need to query [Facebook Graph API](https://developers.facebook.com/docs/graph-api) using your own Token with **full permission** for fetching data. This is the **MOST EFFECTIVE** approach.
 
-> The knowledge and the way to get **Access Token** below are translated from these 2 Vietnamese blogs:
+> The description of and the method to get the **Access Token** below are translated from these 2 Vietnamese blogs:
 >
 > -   https://ahachat.com/help/blog/cach-lay-token-facebook
 > -   https://alotoi.com/get-token-full-quyen
 
-**I. What is Facebook Token?**
+**I. What is a Facebook Token?**
 
 A Facebook **Access Token** is a randomly generated code that contains data linked to a Facebook account. It contains the permissions to perform an action on the library (API) provided by Facebook. Each Facebook account will have different **Access Tokens**, and there can be ≥ 1 Tokens on the same account.
 
 Depending on the limitations of each Token's permissions, which are generated for use with corresponding features, either many or few, they can be used for various purposes, but the main goal is to automate all manual operations. Some common applications include:
 
-- Increasing likes, subscriptions on Facebook.
-- Automatically posting on Facebook.
-- Automatically commenting and sharing posts.
-- Automatically interacting in groups and Pages.
+- Increasing likes and subscriptions on Facebook.
+- Automatizing posting on Facebook.
+- Automatizing commenting and sharing posts.
+- Automatizing interactions in groups and Pages.
 - ...
 
-There are 2 types of Facebook Tokens: **App-based Token** and **Personal Account-based Token**. The Facebook **Token by App** is the safest one, as it will have a limited lifetime and only has some basic permissions to interact with `Pages` and `Groups`. Our main focus will on the Facebook **Personal Account-based Token**.
+There are 2 types of Facebook Tokens: an **App-based Token** and a **Personal Account-based Token**. The Facebook **Token by App** is the safest one, as it has a limited lifetime and only has some basic permissions to interact with `Pages` and `Groups`. Our main focus will on the Facebook **Personal Account-based Token**.
 
 **II. Personal Account-based Access Token**
 
