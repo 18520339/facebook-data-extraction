@@ -1,29 +1,15 @@
-# Automation tools + IP hiding techniques
+# CSR Approach using Selenium (DEPRECATED)
 
-In this method, I will write example scripts to extract id, user info, content, date, comments, and replies of posts.
+> My scripts for this approach were made in 2020, so it's now deprecated with the new Facebook UI. But you can use it as a reference for other similar implementations with Selenium.
 
-**Note**: These scripts just working for **a Facebook page when not sign-in**, not group or any other object.
+In this approach, I will write example scripts to extract id, user info, content, date, comments, and replies of posts.
 
-> Demo: https://www.youtube.com/watch?v=Fx0UWOzYsig
+👉 Demo: https://www.youtube.com/watch?v=Fx0UWOzYsig
 
-## Knowledge
+**Note**:
 
-### I. Automation tools
-
-Updating...
-
-### II. IP hiding techniques
-
-| Method       | Speed rating | Cost         | Common risk                             | General Evaluation |
-| ------------ | :----------: | ------------ | --------------------------------------- | ------------------ |
-| VPN service  | `2`          | Usually paid | Some free providers might not be secure | Best way           |
-| Tor browser  | `4`          | Free         | Can be tracked by some rogue nodes      | Slowest choice     |
-| Proxy server | `3`          | Usually free | Data routing not private as VPNs        | Riskiest method    |
-| Public WiFi  | `1`          | Free         | Some might not be safe                  | Long distance way  |
-
-➔ Learn more about general information of above methods from this [site](https://whatismyipaddress.com/hide-ip).
-
-**IMPORTANT**: Nothing above is absolutely safe and secure. *Carefulness is never excessive*. You will need to do further research about them if you want more secure to your data & privacy.
+-   These scripts just working for **a Facebook page when not sign-in**, not group or any other object.
+-   Maybe you will need to edit some of the CSS Selectors in the scripts, as Facebook might have changed them at the time of your use.
 
 ## Overview the scripts
 
@@ -34,34 +20,34 @@ Updating...
 3.  Checking redirect.
 4.  Can be run with Incognito window.
 5.  Simplifying browser to minimize time complexity.
-6.  Delay with random intervals every *loading more* times to simulate human behavior.
+6.  Delay with random intervals every _loading more_ times to simulate human behavior.
 7.  Not required sign-in to **prevent Checkpoint**.
 8.  Hiding IP address to **prevent from banning** by:
-    -   Collecting proxies and filtering the slowest ones from:
+    -   Collecting Proxies and filtering the slowest ones from:
         -   http://proxyfor.eu/geo.php
         -   http://free-proxy-list.net
         -   http://rebro.weebly.com/proxy-list.html
         -   http://www.samair.ru/proxy/time-01.htm
         -   https://www.sslproxies.org
-    -   [Tor Relays](https://github.com/18520339/facebook-crawling/tree/master/2%20-%20Automation%20tools%20with%20IP%20hiding%20techniques/tor) which used in [Tor Browser](https://www.torproject.org/), a network is comprised of thousands of volunteer-run servers.
+    -   [Tor Relays](./tor/) which used in [Tor Browser](https://www.torproject.org/), a network is comprised of thousands of volunteer-run servers.
 
 ### II. Weaknesses
 
 -   Unable to detect some failed responses. Example: **Rate limit exceeded** (Facebook prevents from loading more).
-     
-    ![](https://github.com/18520339/facebook-crawling/blob/master/2%20-%20Automation%20tools%20with%20IP%20hiding%20techniques/img/rate_limit_exceeded.png?raw=true)
+
+    ![](./img/rate_limit_exceeded.png?raw=true)
 
     ➔ Have to run with `HEADLESS = False` to detect manually.
 
--   Quite slow when running with a large number of _loading more_ or when using [IP hiding techniques](#ii-ip-hiding-techniques).
+-   Quite slow when running with a large number of _loading more_ or when using [IP hiding techniques](https://github.com/18520339/facebook-data-extraction/tree/master/#i-ip-hiding-techniques).
 
 ### III. Result
 
--   Each post will be separated [line by line](https://raw.githubusercontent.com/18520339/facebook-crawling/master/2%20-%20Automation%20tools%20with%20IP%20hiding%20techniques/data/KTXDHQGConfessions-inline.json).
+-   Each post will be separated [line by line](./data/KTXDHQGConfessions.jsonl).
 -   Most of my successful tests were on **Firefox** with [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer) proxy server.
 -   My latest run on **Firefox** with **Incognito** windows using [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer):
 
-    ![](https://github.com/18520339/facebook-crawling/blob/master/2%20-%20Automation%20tools%20with%20IP%20hiding%20techniques/img/result.png?raw=true)
+    ![](./img/result.png?raw=true)
 
 <details>
     <summary>
@@ -110,12 +96,12 @@ Updating...
 -   [Helium](https://github.com/mherrmann/selenium-python-helium): a wrapper around [Selenium](https://selenium-python.readthedocs.io/) with more high-level API for web automation.
 -   [HTTP Request Randomizer](https://github.com/pgaref/HTTP_Request_Randomizer): used for collecting free proxies.
 
-### II. Customize parameters in [crawler.py](https://github.com/18520339/facebook-crawling/blob/master/2%20-%20Automation%20tools%20with%20IP%20hiding%20techniques/crawler.py)
+### II. Customize CONFIG VARIABLES in [crawler.py](./crawler.py)
 
-1.  **Running browser**:
+1.  **Running the Browser**:
 
-    -   **PAGE_URL**: url of Facebook page.
-    -   **TOR_PATH**: use proxy with Tor for `WINDOWS` / `MAC` / `LINUX` / `NONE`:
+    -   **PAGE_URL**: URL of Facebook page.
+    -   **TOR_PATH**: use Proxy with Tor for `WINDOWS` / `MAC` / `LINUX` / `NONE`:
     -   **BROWSER_OPTIONS**: run scripts using `CHROME` / `FIREFOX`.
     -   **PRIVATE**: run with private mode or not:
         -   Prevent from **Selenium** detection ➔ **navigator.driver** must be _undefined_ (check in Dev Tools).
@@ -150,11 +136,11 @@ Updating...
         browser_options.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false')
         ```
 
-2.  **Loading page**:
+2.  **Loading the Page**:
 
     -   **SCROLL_DOWN**: number of times to scroll for **view more posts**.
     -   **FILTER_CMTS_BY**: filter comments by `MOST_RELEVANT` / `NEWEST` / `ALL_COMMENTS`.
-        ![](https://github.com/18520339/facebook-crawling/blob/master/2%20-%20Automation%20tools%20with%20IP%20hiding%20techniques/img/filter.png?raw=true)
+        ![](./img/filter.png?raw=true)
     -   **VIEW_MORE_CMTS**: number of times to click **view more comments**.
     -   **VIEW_MORE_REPLIES**: number of times to click **view more replies**.
 
@@ -163,10 +149,10 @@ Updating...
     python crawler.py
 
 -   Run at sign out state, cause some CSS Selectors will be different as sign in.
--   With some proxies, it might be quite slow or required to sign in (redirected).
+-   With some Proxies, it might be quite slow or required to sign in (redirected).
 -   **To achieve higher speed**:
-    -   If this is first time using these scripts, you can **run without tor & proxies** until Facebook requires to sign in.
-    -   Use some popular **VPN services** (also **run without tor & proxies**): [NordVPN](https://nordvpn.com), [ExpressVPN](https://www.expressvpn.com), ...
+    -   If this is first time using these scripts, you can **run without Tor & Proxies** until Facebook requires to sign in.
+    -   Use some popular **VPN services** (also **run without Tor & Proxies**): [NordVPN](https://ref.nordvpn.com/dnaEbnXnysg), [ExpressVPN](https://www.expressvpn.com), ...
 
 ## Test proxy server
 
@@ -182,7 +168,7 @@ setup_free_proxy(page_url, proxy_server, browser_options)
 # kill_browser()
 ```
 
-2. With [Tor Relays](https://github.com/18520339/facebook-crawling/tree/master/2%20-%20Automation%20tools%20with%20IP%20hiding%20techniques/tor):
+2. With [Tor Relays](./tor):
 
 ```python
 from browser import *
@@ -194,4 +180,4 @@ setup_tor_proxy(page_url, tor_path, browser_options)
 # kill_browser()
 ```
 
-![](https://github.com/18520339/facebook-crawling/blob/master/2%20-%20Automation%20tools%20with%20IP%20hiding%20techniques/img/proxy.png?raw=true)
+![](./img/proxy.png?raw=true)
