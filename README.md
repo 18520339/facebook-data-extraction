@@ -1,6 +1,6 @@
 # Summary of Facebook data extraction approaches
 
-> I'm editing everything to match the latest big changes
+> I'm finalizing everything to accommodate the latest major changes
 
 ##  Overview
 

@@ -1,7 +1,14 @@
 const fs = require('fs');
 const os = require('os');
 
-const sleep = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds));
+function isFileExists(installedPath) {
+	try {
+		fs.accessSync(installedPath, fs.constants.F_OK);
+		return true;
+	} catch (e) {
+		return false;
+	}
+}
 
 // Cannot use the same profile for multiple browsers => Not working with CONCURRENCY_BROWSER
 function getChromeProfilePath() {
@@ -19,22 +26,13 @@ function getChromeProfilePath() {
 }
 
 function getChromeExecutablePath() {
-	const isFileExists = path => {
-		try {
-			fs.accessSync(path, fs.constants.F_OK);
-			return true;
-		} catch (e) {
-			return false;
-		}
-	};
-
 	switch (os.platform()) {
 		case 'win32': // Windows
-			const paths = [
+			for (let installedPath of [
 				'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
 				'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
-			];
-			for (let path of paths) if (isFileExists(path)) return path;
+			])
+				if (isFileExists(installedPath)) return installedPath;
 			throw new Error('Chrome executable not found in expected locations on Windows');
 		case 'darwin': // macOS
 			return '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
@@ -45,4 +43,19 @@ function getChromeExecutablePath() {
 	}
 }
 
-module.exports = { getChromeProfilePath, getChromeExecutablePath, sleep };
+async function loadNotBlankPage(page, url, proxyUsername = '', proxyPassword = '') {
+	const browser = page.browser();
+	const context = browser.defaultBrowserContext();
+	await context.overridePermissions(url, []);
+
+	const pagesArray = await browser.pages();
+	const notBlankPage = pagesArray[0];
+	await page.close(pagesArray[1]);
+
+	if (proxyUsername && proxyPassword)
+		await notBlankPage.authenticate({ username: proxyUsername, password: proxyPassword });
+	await notBlankPage.goto(url, { waitUntil: 'networkidle2', timeout: 0 });
+	return notBlankPage;
+}
+
+module.exports = { isFileExists, getChromeProfilePath, getChromeExecutablePath, loadNotBlankPage };
