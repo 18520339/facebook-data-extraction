@@ -1,16 +1,16 @@
 # Graph API with Full-permission Token Approach
 
-I wrote a [simple script](./crawler.py) to get data of posts from any **Page**/**Group** by querying [Facebook Graph API](https://developers.facebook.com/docs/graph-api) with Full-permission Token. My implementation for this approach only needs *100 lines* of code (not including comments) with some built-in Python functions.
+I wrote a [simple script](./scraper.py) to get data of posts from any **Page**/**Group** by querying [Facebook Graph API](https://developers.facebook.com/docs/graph-api) with Full-permission Token. My implementation for this approach only needs *130 lines* of code (100 if not including comments) with some built-in Python functions.
 
 👉 Demo: https://www.youtube.com/watch?v=Q4oAsz__e_M
 
 ### I. Usage
 
-    python crawler.py
+    python scraper.py
 
 1. **COOKIE** (Most important setup):
 
-    This [script](./crawler.py) needs your **COOKIE** to work. You can get it by following these steps:
+    This [script](./scraper.py) needs your **COOKIE** to work. You can get it by following these steps:
     - Go to https://business.facebook.com/business_locations and login (It may require `2FA`).
     - Press `F12` and go to the `Network` Panel.
     - Select the first request and copy the **Cookie** value in the **Request Headers**.
@@ -48,12 +48,12 @@ I wrote a [simple script](./crawler.py) to get data of posts from any **Page**/*
 
 ### II. Recommendation
 
-I have learned too much from this [repo](https://github.com/HoangTran0410/FBMediaDownloader). It's a NodeJs tool for auto download media from Facebook with lots of cool stuff:
+I have learned a lot from this [repo](https://github.com/HoangTran0410/FBMediaDownloader). It's a NodeJs tool for auto downloading Facebook media with various features:
 
 -   View album information (name, number of photos, link, ...)
--   Download **timeline album** of a FB page: this kind of album is hidden, containing all the photos so far in that FB page, like [this album](https://www.facebook.com/groups/j2team.community/posts/1377217242610392/).
--   Download any kind of album: `user`'s, `group`'s, or `page`'s.
+-   Download **timeline album** of a FB page: this kind of album is hidden, containing all the photos so far in a FB page, like [this album](https://www.facebook.com/groups/j2team.community/posts/1377217242610392/).
+-   Download any kind of albums: `user`'s, `group`'s, or `page`'s.
 -   Download all photos/videos on the wall of an object (`user`/`group`/`page`).
--   To be able to download the above items, it also provided [scripts](https://github.com/HoangTran0410/FBMediaDownloader/blob/master/scripts/bookmarks.js) to extract `album_id` / `user_id` / `group_id` / `page_id`.
+-   It also provided [scripts](https://github.com/HoangTran0410/FBMediaDownloader/blob/master/scripts/bookmarks.js) to extract `album_id` / `user_id` / `group_id` / `page_id`.
 
-The only disadvantage is that the description and instructions of this [repo](https://github.com/HoangTran0410/FBMediaDownloader) are in Vietnamese, _my language_. But I think it's not too hard to understand, you can watch its [instruction video](https://www.youtube.com/watch?v=g4zh9p-QfAQ) for more information. Hopefully, in the future, the author will update the description as well as the instructions in English.
+The only disadvantage is that the description and instructions of this [repo](https://github.com/HoangTran0410/FBMediaDownloader) are in Vietnamese, _my language_. But I think you can use the translation feature of your browser to read, or you can watch its [instruction video](https://www.youtube.com/watch?v=g4zh9p-QfAQ) for more information. Hopefully, in the future, the author will update the description as well as the instructions in English.

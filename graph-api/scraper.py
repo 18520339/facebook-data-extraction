@@ -23,7 +23,7 @@ COOKIE = ""
 *Note: If the data retrieved is too large, you can receive this error message: "Please reduce the amount of data you're asking for, then retry your request"
 '''
 LIMIT = 100
-MAX_POSTS = 375 # Maximum posts to crawl
+MAX_POSTS = 375 # Maximum posts to scrape
    
 ''' Endpoint for posts in Page and Group
 - https://developers.facebook.com/docs/graph-api/reference/page/feed
@@ -104,7 +104,7 @@ def get_data_and_next_endpoint(endpoint, access_token):
     return data, next_endpoint
 
 
-def remove_paging(obj): # Remove all paging keys to make it concise and safe as the access token is in them
+def remove_paging(obj): # Remove all paging keys to make the result concise and safe as the access token is in them
     if isinstance(obj, dict):
         return {k: remove_paging(v) for k, v in obj.items() if k != 'paging'}
     elif isinstance(obj, list):
@@ -123,7 +123,7 @@ with open(f'{file_name}.jsonl', 'w', encoding='utf-8') as file:
         posts = [json.dumps(remove_paging(post), ensure_ascii=False) for post in data]
         count += len(posts)
         
-        if LIMIT > MAX_POSTS - count: # If the remaining posts are less than LIMIT, then change LIMIT to the remaining number
+        if LIMIT > MAX_POSTS - count: # If remaining posts < LIMIT, => LIMIT = the remaining number
             endpoint = endpoint.replace(f'/feed?limit={LIMIT}&', f'/feed?limit={MAX_POSTS - count}&')
         file.write('\n'.join(posts) + '\n')
         
